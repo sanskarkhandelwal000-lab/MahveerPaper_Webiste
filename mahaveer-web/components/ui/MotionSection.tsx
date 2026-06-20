@@ -1,0 +1,35 @@
+"use client";
+
+import { useReducedMotion, motion, type HTMLMotionProps } from "framer-motion";
+import { forwardRef } from "react";
+
+type MotionSectionProps = HTMLMotionProps<"section"> & {
+  delay?: number;
+};
+
+export const MotionSection = forwardRef<HTMLElement, MotionSectionProps>(
+  ({ children, delay = 0, ...props }, ref) => {
+    const prefersReduced = useReducedMotion();
+
+    const variants = {
+      hidden: prefersReduced ? {} : { opacity: 0, y: 32 },
+      visible: { opacity: 1, y: 0 },
+    };
+
+    return (
+      <motion.section
+        ref={ref}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: 0.6, delay, ease: "easeOut" }}
+        variants={variants}
+        {...props}
+      >
+        {children}
+      </motion.section>
+    );
+  }
+);
+
+MotionSection.displayName = "MotionSection";
