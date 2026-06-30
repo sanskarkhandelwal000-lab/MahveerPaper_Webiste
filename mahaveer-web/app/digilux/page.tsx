@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
@@ -22,23 +21,14 @@ export default function DigiLuxPage() {
       <main id="main-content" tabIndex={-1}>
         {/* ── HERO ── Same layout as Products page */}
         <section
-          className="relative min-h-[70vh] flex items-end overflow-hidden"
+          className="relative min-h-[70vh] flex items-end overflow-hidden bg-[#0a1520]"
           aria-label="DigiLux hero"
         >
-          <Image
-            src="https://images.unsplash.com/photo-1585944672038-25a5c4a27e16?w=1920&q=80"
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center"
-            aria-hidden="true"
-          />
           <div
             className="absolute inset-0"
             style={{
-              background:
-                "linear-gradient(to bottom, rgba(15,25,35,0.35) 0%, rgba(15,25,35,0.82) 65%, rgba(15,25,35,0.97) 100%)",
+              background: "linear-gradient(135deg, #0d1b2a 0%, #0a1520 40%, #111d2c 100%)",
+              opacity: 0.98,
             }}
             aria-hidden="true"
           />

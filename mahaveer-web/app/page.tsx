@@ -5,7 +5,6 @@ import { Hero } from "@/components/home/Hero";
 import { About } from "@/components/home/About";
 import { Categories } from "@/components/home/Categories";
 import { Services } from "@/components/home/Services";
-import { Testimonials } from "@/components/home/Testimonials";
 import { CTA } from "@/components/home/CTA";
 import { FAQ } from "@/components/home/FAQ";
 import { ContactForm } from "@/components/home/ContactForm";
@@ -26,7 +25,6 @@ export default function HomePage() {
         <About />
         <Categories />
         <Services />
-        <Testimonials />
         <CTA />
         <FAQ />
         <ContactForm />

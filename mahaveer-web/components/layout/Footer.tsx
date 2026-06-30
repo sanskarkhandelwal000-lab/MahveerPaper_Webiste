@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Phone, Mail } from "lucide-react";
 import { siteConfig } from "@/lib/config";
@@ -42,11 +43,16 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
           {/* Brand column */}
           <div className="flex flex-col gap-5 lg:col-span-1">
-            <Link href="/" className="flex items-center gap-2 w-fit">
-              <div className="flex h-8 w-8 items-center justify-center rounded bg-brand-orange">
-                <span className="text-white font-bold text-sm leading-none">M</span>
+            <Link href="/" className="flex items-center w-fit">
+              <div className="bg-white rounded-xl px-3 py-2">
+                <Image
+                  src="/logo.png"
+                  alt="Mahaveer Papers"
+                  width={140}
+                  height={42}
+                  className="h-9 w-auto object-contain"
+                />
               </div>
-              <span className="font-semibold text-base tracking-tight">Mahaveer Papers</span>
             </Link>
             <p className="text-sm text-white/60 leading-relaxed max-w-xs">
               {siteConfig.tagline}

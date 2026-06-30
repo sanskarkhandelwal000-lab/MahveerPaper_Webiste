@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronRight } from "lucide-react";
@@ -47,15 +48,17 @@ export function Navbar() {
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange rounded-sm"
+          className="flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange rounded-sm"
           aria-label="Mahaveer Papers — Home"
         >
-          <div className="flex h-8 w-8 items-center justify-center rounded bg-brand-orange">
-            <span className="text-white font-bold text-sm leading-none">M</span>
-          </div>
-          <span className="text-white font-semibold text-base tracking-tight hidden sm:block">
-            Mahaveer Papers
-          </span>
+          <Image
+            src="/logo.png"
+            alt="Mahaveer Papers"
+            width={160}
+            height={48}
+            className="h-10 w-auto object-contain"
+            priority
+          />
         </Link>
 
         {/* Desktop links */}

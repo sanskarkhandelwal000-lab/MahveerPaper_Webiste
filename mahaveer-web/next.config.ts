@@ -15,6 +15,7 @@ const securityHeaders = [
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: https:",
       "connect-src 'self'",
+      "frame-src 'self' https://www.google.com https://maps.google.com",
     ].join("; "),
   },
 ];
@@ -31,6 +32,7 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "www.mahaveerpapers.com" },
     ],
   },
 };

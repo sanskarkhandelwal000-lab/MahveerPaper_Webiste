@@ -1,13 +1,30 @@
 "use client";
 
 import Image from "next/image";
+import { Suspense } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Loader2, Phone, Mail } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { contactFormSchema, type ContactFormValues } from "@/lib/validations";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
+
+function ProductBanner() {
+  const searchParams = useSearchParams();
+  const product = searchParams.get("product");
+  if (!product) return null;
+  return (
+    <div className="mb-6 flex items-start gap-3 rounded-xl border border-brand-orange/30 bg-brand-orange/5 px-4 py-3">
+      <span className="mt-0.5 h-2 w-2 rounded-full bg-brand-orange shrink-0" />
+      <p className="text-sm text-brand-navy">
+        <span className="font-semibold">Enquiry regarding:</span>{" "}
+        <span className="text-brand-orange font-medium">{product}</span>
+      </p>
+    </div>
+  );
+}
 
 const renovationTypes = [
   "Printing & Publishing",
@@ -70,12 +87,24 @@ export function ContactForm() {
   });
 
   const onSubmit = async (data: ContactFormValues) => {
-    await new Promise((r) => setTimeout(r, 1200));
-    console.log("Form data:", data);
-    toast.success("Quote request sent!", {
-      description: "We'll get back to you within 24 hours.",
-    });
-    reset();
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error("Server error");
+
+      toast.success("Quote request sent!", {
+        description: "We'll get back to you within 24 hours. Check your inbox for a confirmation.",
+      });
+      reset();
+    } catch {
+      toast.error("Something went wrong", {
+        description: "Please try again or email us directly at mppapier@yahoo.co.in",
+      });
+    }
   };
 
   return (
@@ -123,27 +152,23 @@ export function ContactForm() {
                   <Phone className="h-4 w-4 text-brand-orange group-hover:text-white transition-colors" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">
-                    Call Us Now
-                  </p>
+                  <p className="text-xs text-gray-400 font-medium">Call Us Now</p>
                   <p className="text-sm font-semibold text-brand-navy">
                     {siteConfig.contact.whatsapp}
                   </p>
                 </div>
               </a>
               <a
-                href={`mailto:${siteConfig.contact.emails[0]}`}
+                href={`mailto:${siteConfig.contact.emails[1]}`}
                 className="flex items-center gap-3 group"
               >
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-orange/10 group-hover:bg-brand-orange transition-colors shrink-0">
                   <Mail className="h-4 w-4 text-brand-orange group-hover:text-white transition-colors" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">
-                    Email Us
-                  </p>
+                  <p className="text-xs text-gray-400 font-medium">Email Us</p>
                   <p className="text-sm font-semibold text-brand-navy">
-                    {siteConfig.contact.emails[0]}
+                    {siteConfig.contact.emails[1]}
                   </p>
                 </div>
               </a>
@@ -157,6 +182,11 @@ export function ContactForm() {
             aria-label="Request a quote form"
             className="grid grid-cols-1 sm:grid-cols-2 gap-5"
           >
+            <div className="sm:col-span-2">
+              <Suspense>
+                <ProductBanner />
+              </Suspense>
+            </div>
             <Field
               label="Full Name"
               required
@@ -283,15 +313,25 @@ export function ContactForm() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="btn-primary w-full justify-center disabled:opacity-60 disabled:cursor-not-allowed"
+                className="inline-flex items-center justify-between gap-4 bg-brand-navy hover:bg-[#0d1b2a] text-white text-sm font-semibold rounded-full px-6 py-3 w-full transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    Sending…
+                    <span>Sending…</span>
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-orange shrink-0">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    </span>
                   </>
                 ) : (
-                  "Request Free Quote"
+                  <>
+                    <span>Request Free Quote</span>
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-orange shrink-0">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                        <path d="M2 7h10M8 3l4 4-4 4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </span>
+                  </>
                 )}
               </button>
             </div>

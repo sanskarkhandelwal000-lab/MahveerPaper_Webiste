@@ -2,131 +2,339 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { ChevronDown, ChevronRight, Home } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { ArrowRight, Search } from "lucide-react";
 import { MotionDiv } from "@/components/ui/MotionDiv";
+import { catalogProducts, BOOKS, PRODUCT_TYPES, APP_TYPES } from "@/data/products";
 
-// Figma Product.pdf card description (same placeholder on every card)
-const FIGMA_DESC = "Compared to other industries, paper manufacturing has significant potential to be truly sustainable.";
+type DropdownKey = "book" | "type" | "app";
 
-const allProducts = [
-  { id: "kraft",      name: "Kraft",             category: "Packaging",          colors: 1, description: FIGMA_DESC, image: "https://images.unsplash.com/photo-1594041680534-e8c8cdebd659?w=600&q=80", href: "/digilux" },
-  { id: "majestic",   name: "Majestic",           category: "Packaging",          colors: 1, description: FIGMA_DESC, image: "https://images.unsplash.com/photo-1567225557594-88d73e55f2cb?w=600&q=80", href: "/digilux" },
-  { id: "tube",       name: "Tube",               category: "Packaging",          colors: 1, description: FIGMA_DESC, image: "https://images.unsplash.com/photo-1525904097878-94fb15835963?w=600&q=80", href: "/digilux" },
-  { id: "liner",      name: "Liner",              category: "Packaging",          colors: 1, description: FIGMA_DESC, image: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&q=80", href: "/digilux" },
-  { id: "corrugated", name: "Corrugated Medium",  category: "Packaging",          colors: 1, description: FIGMA_DESC, image: "https://images.unsplash.com/photo-1559526324-593bc073d938?w=600&q=80", href: "/digilux" },
-  { id: "duplex",     name: "Duplex Board",       category: "Packaging",          colors: 1, description: FIGMA_DESC, image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80", href: "/digilux" },
-  { id: "bond",       name: "Bond Paper",         category: "Printing & Writing", colors: 1, description: FIGMA_DESC, image: "https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?w=600&q=80", href: "/digilux" },
-  { id: "offset",     name: "Offset Paper",       category: "Printing & Writing", colors: 1, description: FIGMA_DESC, image: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=600&q=80", href: "/digilux" },
-  { id: "newsprint",  name: "Newsprint",          category: "Printing & Writing", colors: 1, description: FIGMA_DESC, image: "https://images.unsplash.com/photo-1557682224-5b8590cd9ec5?w=600&q=80", href: "/digilux" },
-];
-
-const categories = ["All", "Packaging", "Printing & Writing", "School & Office", "Specialty"];
-const applications = ["All Applications", "Commercial Printing", "Packaging", "Publishing", "Industrial"];
-const shades = ["All Colours", "White", "Cream", "Kraft Brown", "Natural", "Metallic"];
+// Defined outside the component so React never treats this as a new type on re-render
+function CheckboxDropdown({
+  options,
+  pending,
+  setPending,
+  showClear,
+  onApply,
+}: {
+  options: readonly string[];
+  pending: string[];
+  setPending: (v: string[]) => void;
+  showClear: boolean;
+  onApply: () => void;
+}) {
+  return (
+    <div className="absolute top-[calc(100%+12px)] left-0 min-w-[260px] bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50">
+      <div className="py-2 max-h-72 overflow-y-auto">
+        {options.map(opt => (
+          <label key={opt} className="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={pending.includes(opt)}
+              onChange={() =>
+                setPending(pending.includes(opt) ? pending.filter(x => x !== opt) : [...pending, opt])
+              }
+              className="h-4 w-4 rounded border-gray-300 accent-brand-orange cursor-pointer"
+            />
+            <span className="text-sm text-brand-navy select-none">{opt}</span>
+          </label>
+        ))}
+      </div>
+      <div className="flex items-center justify-between px-5 py-3 border-t border-gray-100">
+        {showClear ? (
+          <button
+            type="button"
+            onClick={() => setPending([])}
+            className="text-brand-orange text-sm font-medium hover:underline"
+          >
+            Clear all
+          </button>
+        ) : (
+          <span />
+        )}
+        <button
+          type="button"
+          onClick={onApply}
+          className="inline-flex items-center gap-2 bg-brand-navy text-white text-sm font-semibold rounded-full pl-4 pr-1 py-1 hover:bg-[#0d1b2a] transition-colors"
+        >
+          Apply
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-orange shrink-0">
+            <ArrowRight className="w-3.5 h-3.5" />
+          </span>
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export function ProductsCatalog() {
-  const [activeCategory, setActiveCategory] = useState("Packaging");
-  const [activeApplication, setActiveApplication] = useState("All Applications");
-  const [activeShade, setActiveShade] = useState("All Colours");
+  const [appliedBooks, setAppliedBooks] = useState<string[]>([]);
+  const [appliedTypes, setAppliedTypes] = useState<string[]>([]);
+  const [appliedApps,  setAppliedApps]  = useState<string[]>([]);
 
-  const filtered = allProducts.filter(
-    (p) => activeCategory === "All" || p.category === activeCategory
-  );
+  const [pendingBooks, setPendingBooks] = useState<string[]>([]);
+  const [pendingTypes, setPendingTypes] = useState<string[]>([]);
+  const [pendingApps,  setPendingApps]  = useState<string[]>([]);
+
+  const [openKey, setOpenKey] = useState<DropdownKey | null>(null);
+  const pillRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handler(e: MouseEvent) {
+      if (pillRef.current && !pillRef.current.contains(e.target as Node)) setOpenKey(null);
+    }
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  function toggle(key: DropdownKey) {
+    if (openKey === key) { setOpenKey(null); return; }
+    if (key === "book") setPendingBooks([...appliedBooks]);
+    if (key === "type") setPendingTypes([...appliedTypes]);
+    if (key === "app")  setPendingApps([...appliedApps]);
+    setOpenKey(key);
+  }
+
+  function apply(key: DropdownKey) {
+    if (key === "book") setAppliedBooks([...pendingBooks]);
+    if (key === "type") setAppliedTypes([...pendingTypes]);
+    if (key === "app")  setAppliedApps([...pendingApps]);
+    setOpenKey(null);
+  }
+
+  function applyAll() {
+    setAppliedBooks([...pendingBooks]);
+    setAppliedTypes([...pendingTypes]);
+    setAppliedApps([...pendingApps]);
+    setOpenKey(null);
+  }
+
+  const filtered = catalogProducts.filter(p => {
+    const matchBook = appliedBooks.length === 0 || appliedBooks.includes(p.book);
+    const matchType = appliedTypes.length === 0 || appliedTypes.includes(p.type);
+    const matchApp  = appliedApps.length  === 0 || appliedApps.includes(p.app);
+    return matchBook && matchType && matchApp;
+  });
+
+  const grouped = BOOKS.map(book => ({
+    label: book,
+    items: filtered.filter(p => p.book === book),
+  })).filter(g => g.items.length > 0);
+
+  const hasActiveFilters = appliedBooks.length > 0 || appliedTypes.length > 0 || appliedApps.length > 0;
+
+  function pillLabel(applied: string[], placeholder: string) {
+    if (applied.length === 0) return placeholder;
+    if (applied.length === 1) return applied[0];
+    return `${applied.length} selected`;
+  }
+
+  function sectionBtn(key: DropdownKey, extraRadius = "") {
+    if (!openKey) return `hover:bg-gray-50 ${extraRadius}`;
+    if (openKey === key) return `bg-white shadow-sm ${extraRadius}`;
+    return extraRadius;
+  }
 
   return (
     <>
-      {/* ── FILTER BAR ── Fixed to bottom of hero */}
-      <div className="bg-brand-navy/95 backdrop-blur-sm border-t border-white/10">
-        <div className="container-max section-padding py-5">
-          <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/10 gap-4 sm:gap-0">
-            <div className="sm:pr-8">
-              <p className="text-xs font-semibold uppercase tracking-widest text-white/40 mb-1">Application</p>
-              <p className="text-sm text-white/60 mb-2 font-medium">What&apos;s your Project?</p>
-              <div className="relative">
-                <select value={activeApplication} onChange={(e) => setActiveApplication(e.target.value)}
-                  className="w-full appearance-none bg-white/10 border border-white/20 text-white text-sm rounded-lg px-3 py-2 pr-8 focus:outline-none focus:border-brand-orange cursor-pointer">
-                  {applications.map((a) => <option key={a} value={a} className="text-brand-navy bg-white">{a}</option>)}
-                </select>
-                <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-white/50 pointer-events-none" />
-              </div>
+      {/* ── PILL FILTER BAR ── */}
+      <div className="bg-[#0a1520] py-10 lg:py-14">
+        <div className="container-max section-padding">
+          <div
+            ref={pillRef}
+            className={`relative flex items-stretch rounded-full shadow-2xl transition-colors duration-200 ${openKey ? "bg-[#e8e8e8]" : "bg-white"}`}
+          >
+            {/* Book */}
+            <div className="relative flex-1 min-w-0">
+              <button
+                type="button"
+                onClick={() => toggle("book")}
+                className={`w-full h-full text-left px-7 py-5 transition-colors duration-200 ${sectionBtn("book", "rounded-l-full")}`}
+              >
+                <p className="font-semibold text-brand-navy text-[15px] leading-tight">Book</p>
+                <p className="text-gray-400 text-[13px] mt-1 truncate">
+                  {pillLabel(appliedBooks, "Which product range?")}
+                </p>
+              </button>
+              {openKey === "book" && (
+                <CheckboxDropdown
+                  options={BOOKS}
+                  pending={pendingBooks}
+                  setPending={setPendingBooks}
+                  showClear={true}
+                  onApply={() => apply("book")}
+                />
+              )}
             </div>
-            <div className="sm:px-8">
-              <p className="text-xs font-semibold uppercase tracking-widest text-white/40 mb-1">Categories</p>
-              <p className="text-sm text-white/60 mb-2 font-medium">What&apos;s your Category?</p>
-              <div className="relative">
-                <select value={activeCategory} onChange={(e) => setActiveCategory(e.target.value)}
-                  className="w-full appearance-none bg-white/10 border border-white/20 text-white text-sm rounded-lg px-3 py-2 pr-8 focus:outline-none focus:border-brand-orange cursor-pointer">
-                  {categories.map((c) => <option key={c} value={c} className="text-brand-navy bg-white">{c}</option>)}
-                </select>
-                <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-white/50 pointer-events-none" />
-              </div>
+
+            <div className={`self-center h-10 w-px flex-shrink-0 transition-colors duration-200 ${openKey ? "bg-[#d0d0d0]" : "bg-gray-200"}`} />
+
+            {/* Paper Type */}
+            <div className="relative flex-1 min-w-0">
+              <button
+                type="button"
+                onClick={() => toggle("type")}
+                className={`w-full h-full text-left px-7 py-5 transition-colors duration-200 ${sectionBtn("type", "rounded-2xl")}`}
+              >
+                <p className="font-semibold text-brand-navy text-[15px] leading-tight">Paper Type</p>
+                <p className="text-gray-400 text-[13px] mt-1 truncate">
+                  {pillLabel(appliedTypes, "Eco, Metallic, Textured…")}
+                </p>
+              </button>
+              {openKey === "type" && (
+                <CheckboxDropdown
+                  options={PRODUCT_TYPES}
+                  pending={pendingTypes}
+                  setPending={setPendingTypes}
+                  showClear={true}
+                  onApply={() => apply("type")}
+                />
+              )}
             </div>
-            <div className="sm:pl-8">
-              <p className="text-xs font-semibold uppercase tracking-widest text-white/40 mb-1">Colour</p>
-              <p className="text-sm text-white/60 mb-2 font-medium">What&apos;s your Shade?</p>
-              <div className="relative">
-                <select value={activeShade} onChange={(e) => setActiveShade(e.target.value)}
-                  className="w-full appearance-none bg-white/10 border border-white/20 text-white text-sm rounded-lg px-3 py-2 pr-8 focus:outline-none focus:border-brand-orange cursor-pointer">
-                  {shades.map((s) => <option key={s} value={s} className="text-brand-navy bg-white">{s}</option>)}
-                </select>
-                <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-white/50 pointer-events-none" />
-              </div>
+
+            <div className={`self-center h-10 w-px flex-shrink-0 transition-colors duration-200 ${openKey ? "bg-[#d0d0d0]" : "bg-gray-200"}`} />
+
+            {/* Application */}
+            <div className="relative flex-1 min-w-0">
+              <button
+                type="button"
+                onClick={() => toggle("app")}
+                className={`w-full h-full text-left px-7 py-5 transition-colors duration-200 ${sectionBtn("app", "rounded-2xl")}`}
+              >
+                <p className="font-semibold text-brand-navy text-[15px] leading-tight">Application</p>
+                <p className="text-gray-400 text-[13px] mt-1 truncate">
+                  {pillLabel(appliedApps, "What's your end use?")}
+                </p>
+              </button>
+              {openKey === "app" && (
+                <CheckboxDropdown
+                  options={APP_TYPES}
+                  pending={pendingApps}
+                  setPending={setPendingApps}
+                  showClear={true}
+                  onApply={() => apply("app")}
+                />
+              )}
+            </div>
+
+            {/* Search button — applies all pending selections */}
+            <div className="flex items-center px-2 flex-shrink-0">
+              <button
+                type="button"
+                aria-label="Apply filters"
+                onClick={applyAll}
+                className="bg-brand-orange hover:bg-orange-600 transition-colors text-white rounded-full w-12 h-12 flex items-center justify-center"
+              >
+                <Search className="w-5 h-5" />
+              </button>
             </div>
           </div>
+
+          {/* Active filter tags */}
+          {hasActiveFilters && (
+            <div className="flex flex-wrap items-center gap-2 mt-4">
+              {[...appliedBooks, ...appliedTypes, ...appliedApps].map(tag => (
+                <span
+                  key={tag}
+                  className="inline-flex items-center gap-1.5 bg-white/10 text-white text-xs font-medium px-3 py-1.5 rounded-full"
+                >
+                  {tag}
+                </span>
+              ))}
+              <button
+                type="button"
+                onClick={() => {
+                  setAppliedBooks([]); setAppliedTypes([]); setAppliedApps([]);
+                  setPendingBooks([]); setPendingTypes([]); setPendingApps([]);
+                }}
+                className="text-brand-orange text-xs font-semibold hover:underline ml-1"
+              >
+                Clear all
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
       {/* ── CATALOG ── */}
-      <div className="section-padding py-10 lg:py-14 bg-white">
-        <div className="container-max">
-          <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-sm text-gray-400 mb-5">
-            <Link href="/" className="hover:text-brand-orange transition-colors flex items-center gap-1">
-              <Home className="h-3.5 w-3.5" /> Home
-            </Link>
-            <ChevronRight className="h-3.5 w-3.5" />
-            <span className="text-brand-navy font-medium">Product</span>
-          </nav>
+      <div className="bg-white py-10 lg:py-16 px-9">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-gray-400 mb-10 text-[15px]">
+          <Link href="/" className="hover:text-brand-orange transition-colors">Home</Link>
+          <span className="text-gray-300">&gt;</span>
+          <span className="text-brand-navy font-medium">Products</span>
+        </nav>
 
-          <div className="flex items-end justify-between mb-8">
-            <h2 className="font-display italic text-brand-orange" style={{ fontSize: "clamp(2rem,4vw,3rem)" }}>
-              {activeCategory === "All" ? "All Products" : activeCategory}
-            </h2>
-            <p className="text-sm text-gray-400 font-medium">{filtered.length} Product</p>
+        {grouped.length === 0 && (
+          <div className="text-center py-20 text-gray-400">
+            <p className="text-base font-medium">No products match your filters.</p>
+            <p className="text-sm mt-1">Try adjusting the selection above.</p>
           </div>
+        )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-7">
-            {filtered.map((product, i) => (
-              <MotionDiv key={product.id} delay={0.05 + i * 0.06}>
-                <Link href={product.href}
-                  className="group block rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-shadow"
-                  aria-label={`Explore ${product.name}`}
-                >
-                  <div className="relative h-52 lg:h-64 overflow-hidden bg-gray-100">
-                    <Image src={product.image} alt={product.name} fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute top-3 left-3">
-                      <span className="inline-flex items-center text-xs font-semibold bg-white/90 text-brand-navy px-2 py-0.5 rounded-full">
-                        {product.colors} colour{product.colors !== 1 ? "s" : ""}
+        {grouped.map(group => (
+          <div key={group.label} className="mb-14 lg:mb-20">
+            <div className="mb-8 lg:mb-10">
+              <h2 className="font-sans font-bold text-brand-navy" style={{ fontSize: "clamp(1.75rem,3.5vw,2.5rem)" }}>
+                {group.label}
+              </h2>
+              <p className="text-gray-400 font-medium mt-1" style={{ fontSize: "clamp(1rem,1.5vw,1.25rem)" }}>
+                {group.items.length} Product{group.items.length !== 1 ? "s" : ""}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+              {group.items.map((product, i) => (
+                <MotionDiv key={product.id} delay={0.04 + (i % 6) * 0.06}>
+                  <Link href={`/products/${product.id}`} className="group block" aria-label={`View ${product.name}`}>
+                    {/* Image container — no padding so image fills edge-to-edge */}
+                    <div
+                      className="relative rounded-2xl overflow-hidden mb-5 transition-transform duration-500 group-hover:scale-[1.02]"
+                      style={{ aspectRatio: "4/5" }}
+                    >
+                      <Image
+                        src={product.image}
+                        alt={product.name}
+                        fill
+                        unoptimized
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover"
+                      />
+                    </div>
+
+                    {/* Colour / variant badge */}
+                    <div className="mb-3">
+                      <span className="inline-flex items-center border border-gray-300 text-gray-500 text-[11px] font-semibold tracking-widest px-3 py-1 rounded-full uppercase">
+                        {product.colors} {product.colors === 1 ? "COLOUR" : "COLOURS"}
                       </span>
                     </div>
-                  </div>
-                  <div className="p-5 lg:p-6">
-                    <h3 className="font-display italic text-brand-navy text-2xl lg:text-3xl mb-2 group-hover:text-brand-orange transition-colors">
+
+                    {/* Product name */}
+                    <h3
+                      className="font-sans font-bold text-brand-navy mb-1 group-hover:text-brand-orange transition-colors"
+                      style={{ fontSize: "clamp(1.5rem,2.2vw,2rem)" }}
+                    >
                       {product.name}
                     </h3>
-                    <p className="text-xs lg:text-sm text-gray-500 leading-relaxed mb-4">{product.description}</p>
-                    <span className="inline-flex items-center gap-1.5 text-brand-orange text-sm font-semibold">
-                      Explore <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                    </span>
-                  </div>
-                </Link>
-              </MotionDiv>
-            ))}
+
+                    {/* GSM */}
+                    <p className="text-xs text-gray-400 font-medium mb-3">{product.gsm}</p>
+
+                    {/* Description */}
+                    <p className="text-sm text-gray-500 leading-relaxed mb-5">{product.description}</p>
+
+                    {/* Explore pill */}
+                    <div className="inline-flex items-center gap-3 border border-gray-200 group-hover:border-brand-orange rounded-full pl-5 pr-1.5 py-1.5 transition-colors">
+                      <span className="text-sm font-medium text-brand-navy">Explore</span>
+                      <span className="bg-brand-orange text-white rounded-full w-7 h-7 flex items-center justify-center flex-shrink-0">
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </span>
+                    </div>
+                  </Link>
+                </MotionDiv>
+              ))}
+            </div>
           </div>
-        </div>
+        ))}
       </div>
     </>
   );
