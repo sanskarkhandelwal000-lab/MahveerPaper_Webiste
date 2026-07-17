@@ -118,12 +118,12 @@ export function ContactForm() {
           <span className="chip inline-flex mb-4">Request a Quote</span>
           <h2
             id="contact-heading"
-            className="font-sans font-bold text-display-md text-brand-navy leading-tight"
+            className="font-sans font-medium text-display-md text-brand-ink leading-tight"
           >
             Let&apos;s{" "}
-            <span className="font-display italic text-brand-orange">Talk</span>
+            <span className="text-brand-orange">Talk</span>
           </h2>
-          <p className="mt-2 text-gray-500 text-lg">
+          <p className="mt-2 text-brand-body text-lg">
             Let&apos;s Build Better Supply Chains Together!
           </p>
         </div>
@@ -134,7 +134,7 @@ export function ContactForm() {
             {/* Interior photo */}
             <div className="relative h-64 lg:h-80 rounded-2xl overflow-hidden bg-brand-navy">
               <Image
-                src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80"
+                src="/figma/contact-photo.jpg"
                 alt="Our office space"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
@@ -152,8 +152,8 @@ export function ContactForm() {
                   <Phone className="h-4 w-4 text-brand-orange group-hover:text-white transition-colors" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-400 font-medium">Call Us Now</p>
-                  <p className="text-sm font-semibold text-brand-navy">
+                  <p className="text-lg font-medium text-brand-ink">Call Us Now</p>
+                  <p className="text-base text-brand-body">
                     {siteConfig.contact.whatsapp}
                   </p>
                 </div>
@@ -166,8 +166,8 @@ export function ContactForm() {
                   <Mail className="h-4 w-4 text-brand-orange group-hover:text-white transition-colors" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-400 font-medium">Email Us</p>
-                  <p className="text-sm font-semibold text-brand-navy">
+                  <p className="text-lg font-medium text-brand-ink">Email Us</p>
+                  <p className="text-base text-brand-body">
                     {siteConfig.contact.emails[1]}
                   </p>
                 </div>
@@ -180,7 +180,7 @@ export function ContactForm() {
             onSubmit={handleSubmit(onSubmit)}
             noValidate
             aria-label="Request a quote form"
-            className="grid grid-cols-1 sm:grid-cols-2 gap-5"
+            className="grid grid-cols-1 sm:grid-cols-2 gap-5 bg-brand-gray rounded-2xl p-6 sm:p-8"
           >
             <div className="sm:col-span-2">
               <Suspense>
@@ -313,20 +313,20 @@ export function ContactForm() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="inline-flex items-center justify-between gap-4 bg-brand-navy hover:bg-[#0d1b2a] text-white text-sm font-semibold rounded-full px-6 py-3 w-full transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                className="inline-flex items-center justify-between gap-4 bg-brand-dark hover:bg-black text-white text-sm font-normal rounded-full px-6 py-3 w-full transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin" />
                     <span>Sending…</span>
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-orange shrink-0">
+                    <span className="btn-icon-badge h-8 w-8">
                       <Loader2 className="h-4 w-4 animate-spin" />
                     </span>
                   </>
                 ) : (
                   <>
                     <span>Request Free Quote</span>
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-orange shrink-0">
+                    <span className="btn-icon-badge h-8 w-8">
                       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                         <path d="M2 7h10M8 3l4 4-4 4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>

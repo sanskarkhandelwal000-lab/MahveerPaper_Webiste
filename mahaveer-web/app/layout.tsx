@@ -1,21 +1,34 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Geist, Newsreader, Manrope, Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { ChatWidget } from "@/components/chat/ChatWidget";
 import { siteConfig } from "@/lib/config";
 import "./globals.css";
+
+const geist = Geist({
+  subsets: ["latin"],
+  variable: "--font-geist",
+  display: "swap",
+});
+
+const newsreader = Newsreader({
+  subsets: ["latin"],
+  variable: "--font-newsreader",
+  display: "swap",
+  style: ["normal", "italic"],
+});
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-manrope",
+  display: "swap",
+});
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
-});
-
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-playfair",
-  display: "swap",
-  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
@@ -63,11 +76,12 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} ${playfair.variable}`}
+      className={`${geist.variable} ${newsreader.variable} ${manrope.variable} ${inter.variable}`}
     >
       <body className="min-h-screen bg-white font-sans antialiased">
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
           {children}
+          <ChatWidget />
           <Toaster richColors position="top-right" />
         </ThemeProvider>
       </body>

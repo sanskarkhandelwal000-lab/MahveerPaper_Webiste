@@ -1,6 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
-import { Phone, Mail } from "lucide-react";
+import { Phone, Mail, ChevronRight } from "lucide-react";
 import { siteConfig } from "@/lib/config";
 
 function FacebookIcon({ className }: { className?: string }) {
@@ -43,25 +42,14 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
           {/* Brand column */}
           <div className="flex flex-col gap-5 lg:col-span-1">
-            <Link href="/" className="flex items-center w-fit">
-              <div className="bg-white rounded-xl px-3 py-2">
-                <Image
-                  src="/logo.png"
-                  alt="Mahaveer Papers"
-                  width={140}
-                  height={42}
-                  className="h-9 w-auto object-contain"
-                />
-              </div>
-            </Link>
-            <p className="text-sm text-white/60 leading-relaxed max-w-xs">
+            <p className="text-2xl font-normal text-white leading-tight max-w-xs">
               {siteConfig.tagline}
             </p>
-            <Link
-              href="/contact"
-              className="btn-primary w-fit text-sm py-2"
-            >
+            <Link href="/contact" className="btn-light w-fit">
               Request Free Quote
+              <span className="btn-icon-badge">
+                <ChevronRight className="h-4 w-4" />
+              </span>
             </Link>
 
             {/* Social */}
@@ -69,21 +57,21 @@ export function Footer() {
               <a
                 href={siteConfig.social.facebook}
                 aria-label="Facebook"
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white/70 hover:bg-brand-orange hover:text-white transition-colors"
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-[#404040] text-white/80 hover:bg-brand-orange hover:text-white transition-colors"
               >
                 <FacebookIcon className="h-4 w-4" />
               </a>
               <a
                 href={siteConfig.social.instagram}
                 aria-label="Instagram"
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white/70 hover:bg-brand-orange hover:text-white transition-colors"
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-[#404040] text-white/80 hover:bg-brand-orange hover:text-white transition-colors"
               >
                 <InstagramIcon className="h-4 w-4" />
               </a>
               <a
                 href={siteConfig.social.linkedin}
                 aria-label="LinkedIn"
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white/70 hover:bg-brand-orange hover:text-white transition-colors"
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-[#404040] text-white/80 hover:bg-brand-orange hover:text-white transition-colors"
               >
                 <LinkedinIcon className="h-4 w-4" />
               </a>
@@ -92,15 +80,15 @@ export function Footer() {
 
           {/* Quick links */}
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-widest text-white/40 mb-5">
+            <h3 className="text-lg font-normal text-brand-light mb-6">
               Quick Links
             </h3>
-            <ul className="flex flex-col gap-3" role="list">
+            <ul className="flex flex-col gap-4" role="list">
               {quickLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/70 hover:text-white transition-colors"
+                    className="text-base text-[#D4D4D4] hover:text-white transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -111,17 +99,17 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-widest text-white/40 mb-5">
+            <h3 className="text-lg font-normal text-brand-light mb-6">
               Contact Us
             </h3>
-            <ul className="flex flex-col gap-3" role="list">
+            <ul className="flex flex-col gap-4" role="list">
               {siteConfig.contact.phones.map((phone) => (
                 <li key={phone}>
                   <a
                     href={`tel:${phone.replace(/\s/g, "")}`}
-                    className="flex items-center gap-2 text-sm text-white/70 hover:text-white transition-colors"
+                    className="flex items-center gap-2 text-base text-[#D4D4D4] hover:text-white transition-colors"
                   >
-                    <Phone className="h-3.5 w-3.5 shrink-0 text-brand-orange" />
+                    <Phone className="h-3.5 w-3.5 shrink-0" />
                     {phone}
                   </a>
                 </li>
@@ -130,9 +118,9 @@ export function Footer() {
                 <li key={email}>
                   <a
                     href={`mailto:${email}`}
-                    className="flex items-center gap-2 text-sm text-white/70 hover:text-white transition-colors break-all"
+                    className="flex items-center gap-2 text-base text-[#D4D4D4] hover:text-white transition-colors break-all"
                   >
-                    <Mail className="h-3.5 w-3.5 shrink-0 text-brand-orange" />
+                    <Mail className="h-3.5 w-3.5 shrink-0" />
                     {email}
                   </a>
                 </li>
@@ -143,7 +131,7 @@ export function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-white/10">
+      <div className="border-t border-brand-orange/20">
         <div className="container-max section-padding py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-white/40">
           <p>© {new Date().getFullYear()} Mahaveer Papers. All rights reserved.</p>
           <div className="flex gap-4">

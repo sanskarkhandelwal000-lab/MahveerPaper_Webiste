@@ -5,7 +5,7 @@ export const faqs: FAQ[] = [
     id: "place-order",
     question: "How can I place an order?",
     answer:
-      "You can reach out via our contact form or directly connect with our sales team for bulk inquiries. We typically respond within 24 business hours to discuss your requirements.",
+      "You can reach out via our contact form or directly connect with our sales team for bulk inquiries.",
   },
   {
     id: "custom-solutions",

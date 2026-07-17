@@ -11,25 +11,37 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          orange: "#F26B24",
-          "orange-dark": "#D95C18",
-          navy: "#0F1923",
+          // Figma design tokens (file c0mJUUqcNZPsVA9R4CVksJ, frame 35:1217)
+          orange: "#EA580C",
+          "orange-light": "#F87853",
+          "orange-dark": "#C2410C",
+          navy: "#002350",
           "navy-light": "#1A2B3C",
-          cream: "#FBF9F6",
-          "cream-dark": "#F2EDE6",
+          blue: "#00449A",
+          ink: "#262626",
+          body: "#525252",
+          muted: "#A3A3A3",
+          dark: "#0A0A0A",
+          light: "#FAFAFA",
+          gray: "#F5F5F5",
+          cream: "#F5F5F5",
+          "cream-dark": "#E5E2E1",
         },
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
-        display: ["var(--font-playfair)", "Georgia", "serif"],
+        sans: ["var(--font-geist)", "system-ui", "sans-serif"],
+        display: ["var(--font-newsreader)", "Georgia", "serif"],
+        serif: ["var(--font-newsreader)", "Georgia", "serif"],
+        manrope: ["var(--font-manrope)", "system-ui", "sans-serif"],
+        inter: ["var(--font-inter)", "system-ui", "sans-serif"],
       },
       fontSize: {
-        "display-xl": ["clamp(2.5rem, 5vw, 4rem)", { lineHeight: "1.1" }],
-        "display-lg": ["clamp(2rem, 4vw, 3rem)", { lineHeight: "1.15" }],
-        "display-md": ["clamp(1.5rem, 3vw, 2.25rem)", { lineHeight: "1.2" }],
-      },
-      backgroundImage: {
-        "hero-gradient": "linear-gradient(to bottom, rgba(15,25,35,0.7) 0%, rgba(15,25,35,0.5) 100%)",
+        // Figma type scale @1920 — fluid up to a 1280px "standard desktop" reference,
+        // then flat at the exact Figma px value (previously only hit full size at ~1920px+,
+        // which under-sized headings — and broke intended line-wraps — on normal screens).
+        "display-xl": ["clamp(3.25rem, 8.125vw, 6.5rem)", { lineHeight: "1", letterSpacing: "-0.02em" }],
+        "display-lg": ["clamp(2rem, 3.125vw, 2.5rem)", { lineHeight: "1.2", letterSpacing: "-1.6px" }],
+        "display-md": ["clamp(1.75rem, 3.125vw, 2.5rem)", { lineHeight: "1.2", letterSpacing: "-1.6px" }],
       },
       animation: {
         "fade-in": "fadeIn 0.6s ease-out forwards",

@@ -29,9 +29,9 @@ export default function AboutPage() {
           className="relative min-h-[75vh] flex items-end overflow-hidden pb-20 lg:pb-28"
           aria-label="About hero"
         >
-          {/* Background photo */}
+          {/* Background photo — Figma: abstract dark paper-wave render */}
           <Image
-            src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=1920&q=80"
+            src="/figma/about-hero-bg.jpg"
             alt=""
             fill
             priority
@@ -39,12 +39,12 @@ export default function AboutPage() {
             className="object-cover object-center"
             aria-hidden="true"
           />
-          {/* Gradient overlay — dark navy at bottom, transparent at top */}
+          {/* Gradient overlay — subtle bottom darkening for text legibility */}
           <div
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(to bottom, rgba(15,25,35,0.45) 0%, rgba(15,25,35,0.85) 70%, rgba(15,25,35,0.95) 100%)",
+                "linear-gradient(to bottom, rgba(10,10,8,0.15) 0%, rgba(10,10,8,0.55) 70%, rgba(10,10,8,0.7) 100%)",
             }}
             aria-hidden="true"
           />

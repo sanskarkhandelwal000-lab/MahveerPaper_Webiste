@@ -14,7 +14,7 @@ export function FAQ() {
   const toggle = (id: string) => setOpenId((prev) => (prev === id ? null : id));
 
   return (
-    <MotionSection className="section-padding py-20 lg:py-28 bg-brand-cream">
+    <MotionSection className="section-padding py-20 lg:py-28 bg-brand-gray">
       <div className="container-max max-w-3xl">
         {/* Header */}
         <div className="text-center mb-12">
@@ -22,13 +22,13 @@ export function FAQ() {
             <span className="chip mb-4 inline-flex">FAQ&apos;s</span>
           </MotionDiv>
           <MotionDiv delay={0.1}>
-            <h2 className="font-sans font-bold text-display-md text-brand-navy leading-tight">
+            <h2 className="font-sans font-medium text-display-md text-brand-ink leading-tight">
               Frequently Asked{" "}
-              <span className="font-display italic text-brand-orange">Questions</span>
+              <span className="text-brand-orange">Questions</span>
             </h2>
           </MotionDiv>
           <MotionDiv delay={0.15}>
-            <p className="mt-4 text-gray-500 leading-relaxed">
+            <p className="mt-4 text-brand-body leading-relaxed">
               We know choosing paper comes with big questions. Here are answers
               to the ones we hear most — so you can feel confident from the start.
             </p>
@@ -58,7 +58,7 @@ export function FAQ() {
                     <span
                       className={cn(
                         "font-medium transition-colors",
-                        openId === faq.id ? "text-brand-navy" : "text-gray-700"
+                        openId === faq.id ? "text-brand-ink" : "text-gray-700"
                       )}
                     >
                       {faq.question}

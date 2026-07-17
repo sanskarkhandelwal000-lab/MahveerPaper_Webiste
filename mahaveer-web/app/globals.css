@@ -24,34 +24,55 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-sans font-semibold tracking-tight;
+    @apply font-sans tracking-tight;
   }
 }
 
 @layer components {
+  /* Figma sections consistently use a 360px side gutter at the 1920px reference width
+     (360/1920 = 18.75%), i.e. a 1200px centered content column. max-w-7xl (1280px) was
+     too wide and left the page looking edge-to-edge on ordinary desktop screens. */
   .section-padding {
-    @apply px-4 sm:px-6 lg:px-8;
+    @apply px-4 sm:px-6 lg:px-10;
   }
 
   .container-max {
-    @apply max-w-7xl mx-auto;
+    @apply max-w-[1200px] mx-auto;
   }
 
+  /* Pill button — dark fill, white text, orange circle+chevron (Figma "Link - CTA Button", fill #0A0A0A, border rgba(250,250,250,0.5)) */
   .btn-primary {
-    @apply inline-flex items-center gap-2 bg-brand-orange text-white font-semibold px-6 py-3 rounded-full
-           hover:bg-brand-orange-dark transition-colors duration-200 focus:outline-none
+    @apply inline-flex items-center gap-2.5 bg-brand-dark text-brand-light text-[16px] lg:text-[18px] font-normal
+           pl-5 pr-1.5 py-1.5 rounded-full border border-[rgba(250,250,250,0.5)]
+           hover:bg-black transition-colors duration-200 focus:outline-none
            focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2;
   }
 
+  /* Pill button — light fill, black text, orange circle+chevron (Figma fill #FAFAFA, border rgba(250,250,250,0.5)) */
+  .btn-light {
+    @apply inline-flex items-center gap-2.5 bg-brand-light text-brand-dark text-[16px] lg:text-[18px] font-normal
+           pl-5 pr-1.5 py-1.5 rounded-full border border-[rgba(250,250,250,0.5)]
+           hover:bg-white transition-colors duration-200 focus:outline-none
+           focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2;
+  }
+
+  /* Pill button — transparent, white border + text (Figma "Call Us Now", border rgba(250,250,250,0.5)) */
   .btn-outline {
-    @apply inline-flex items-center gap-2 border-2 border-white text-white font-semibold px-6 py-3 rounded-full
-           hover:bg-white hover:text-brand-navy transition-colors duration-200 focus:outline-none
+    @apply inline-flex items-center gap-2.5 bg-transparent text-brand-light text-[16px] lg:text-[18px] font-normal
+           pl-5 pr-1.5 py-1.5 rounded-full border border-[rgba(250,250,250,0.5)]
+           hover:bg-white/10 transition-colors duration-200 focus:outline-none
            focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2;
   }
 
+  /* Orange circular icon badge that sits at the end of every pill button */
+  .btn-icon-badge {
+    @apply flex h-9 w-9 items-center justify-center rounded-full bg-brand-orange text-white flex-shrink-0;
+  }
+
+  /* Eyebrow chip — pill outline + icon + label (Figma "Variant 1", Geist Medium 14px, ls 0.7px) */
   .chip {
-    @apply inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest
-           text-brand-orange border border-brand-orange rounded-full px-3 py-1;
+    @apply inline-flex items-center gap-1.5 text-sm font-medium uppercase tracking-[0.035em]
+           text-brand-orange border border-brand-orange rounded-full px-3 py-1.5;
   }
 }
 

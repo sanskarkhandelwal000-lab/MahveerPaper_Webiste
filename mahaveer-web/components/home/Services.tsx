@@ -1,77 +1,73 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { ArrowRight, Settings } from "lucide-react";
 import { MotionSection } from "@/components/ui/MotionSection";
 import { MotionDiv } from "@/components/ui/MotionDiv";
 
+// Card titles, copy and images exactly as in the Figma home page design (frame 35:1217).
 const serviceCards = [
   {
     id: "specialty",
-    name: "Specialty Papers",
-    description: "Compared to other industries, paper manufacturing has significant potential to be truly sustainable.",
-    image: "https://images.unsplash.com/photo-1557682224-5b8590cd9ec5?w=800&q=80",
+    name: "Kitchen Specialty Papers",
+    description: "Smart, stylish kitchens built for daily living.",
+    image: "/figma/colored-papers.jpg",
   },
   {
     id: "printing-writing",
     name: "Printing & Writing Papers",
-    description: "Compared to other industries, paper manufacturing has significant potential to be truly sustainable.",
-    image: "https://images.unsplash.com/photo-1567225557594-88d73e55f2cb?w=800&q=80",
+    description: "Modern, functional bathrooms with lasting comfort and quality.",
+    image: "/figma/hero-bg.jpg",
   },
   {
     id: "packaging",
     name: "Packaging Papers",
-    description: "Compared to other industries, paper manufacturing has significant potential to be truly sustainable.",
-    image: "https://images.unsplash.com/photo-1594041680534-e8c8cdebd659?w=800&q=80",
+    description: "Extend your home with inviting patios, decks, and garden zones.",
+    image: "/figma/paper-roll.jpg",
   },
   {
-    id: "industrial",
-    name: "Industrial Papers",
-    description: "Compared to other industries, paper manufacturing has significant potential to be truly sustainable.",
-    image: "https://images.unsplash.com/photo-1525904097878-94fb15835963?w=800&q=80",
+    id: "bulk-supply",
+    name: "Bulk Supply & Distribution Finishing",
+    description: "Built-ins, trim, flooring, lighting — we sweat the small stuff.",
+    image: "/figma/services-card-4.jpg",
   },
 ];
 
+// Figma: MP file, node 2001:1317 "Service Section"
 export function Services() {
   return (
-    <MotionSection className="bg-brand-cream overflow-hidden">
-
-      {/* ── HEADER ROW ──────────────────────────────────────────────────────
-          Figma: LEFT column = chip + heading (x=360)
-                 RIGHT column = body paragraph + button (x=990)
-          Both columns sit inside the content container, side by side.       */}
+    <MotionSection className="bg-brand-gray overflow-hidden">
       <div className="container-max section-padding pt-20 lg:pt-28 pb-10 lg:pb-14">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start">
-
           {/* LEFT: chip + heading */}
           <div className="flex flex-col gap-4">
             <MotionDiv>
-              <span className="chip inline-flex">Our Services</span>
+              <span className="chip inline-flex">
+                <Settings className="h-3.5 w-3.5" />
+                Our Services
+              </span>
             </MotionDiv>
             <MotionDiv delay={0.1}>
-              <h2 className="font-sans font-bold text-display-md text-brand-navy leading-tight">
-                We Provide Paper Solutions{" "}
-                <span className="font-display italic text-brand-orange">
-                  Designed for Every Industry
-                </span>
+              <h2 className="font-sans font-medium text-display-md text-brand-ink leading-tight">
+                <span className="text-brand-orange">We Provide</span>{" "}
+                Paper Solutions Designed for Every Industry
               </h2>
             </MotionDiv>
           </div>
 
-          {/* RIGHT: body text + button (aligned to top of chip, button to heading bottom) */}
+          {/* RIGHT: body text + button */}
           <div className="flex flex-col gap-6 justify-between">
             <MotionDiv delay={0.15}>
-              <p className="text-gray-600 leading-relaxed text-sm">
-                From sourcing to delivery, we offer end-to-end paper supply solutions
-                tailored to your industry, volume, and quality requirements. Whether
-                you need specialty papers or bulk industrial grades, Mahaveer Papers
-                delivers consistently.
+              <p className="text-brand-body leading-[27px] text-[18px]">
+                From design to delivery, we offer end-to-end solutions tailored to
+                your space, style, and schedule. Whether you&apos;re updating one room or
+                remodeling your entire home, Mahaveer Papers makes it seamless.
               </p>
             </MotionDiv>
             <MotionDiv delay={0.2}>
               <Link href="/contact" className="btn-primary w-fit">
                 Request Free Quote
-                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/20">
-                  <ChevronRight className="h-3 w-3" />
+                <span className="btn-icon-badge">
+                  <ArrowRight className="h-5 w-5" />
                 </span>
               </Link>
             </MotionDiv>
@@ -79,46 +75,36 @@ export function Services() {
         </div>
       </div>
 
-      {/* ── CARD CAROUSEL ───────────────────────────────────────────────────
-          Figma: cards are BELOW the header row, spanning full viewport width.
-          Card 1 starts near the left edge (x≈0 in Figma).
-          Cards extend to the right beyond viewport — horizontal scroll.
-          Card sizes at 1920px: ~650px wide × ~780px tall.
-          Scaled to 1440px (×0.75): ~490px × ~585px.
-          We use section-padding for the left start so card 1 aligns with
-          the page content left margin, no right padding so cards bleed right. */}
-      <div className="flex gap-4 lg:gap-5 overflow-x-auto scrollbar-none pb-20 lg:pb-28 pl-4 sm:pl-6 lg:pl-8 pr-0">
+      <div className="flex gap-4 lg:gap-6 overflow-x-auto scrollbar-none pb-20 lg:pb-28 pl-4 sm:pl-6 lg:pl-8 pr-0">
         {serviceCards.map((card) => (
           <div
             key={card.id}
             className="
-              group flex-shrink-0 relative cursor-pointer overflow-hidden rounded-2xl bg-gray-200
-              w-[72vw] h-[50vw]
-              sm:w-[340px] sm:h-[420px]
-              lg:w-[460px] lg:h-[560px]
+              group flex-shrink-0 relative cursor-pointer overflow-hidden rounded-[10px] bg-gray-200
+              w-[72vw] h-[86.4vw]
+              sm:w-[340px] sm:h-[408px]
+              lg:w-[500px] lg:h-[600px]
             "
           >
             <Image
               src={card.image}
               alt={card.name}
               fill
-              sizes="(max-width: 640px) 72vw, (max-width: 1024px) 340px, 460px"
+              sizes="(max-width: 640px) 72vw, (max-width: 1024px) 340px, 500px"
               className="object-cover group-hover:scale-105 transition-transform duration-500"
             />
-            {/* Gradient at bottom — fade from navy to transparent */}
-            <div className="absolute inset-0 bg-gradient-to-t from-brand-navy/85 via-brand-navy/10 to-transparent" />
-            {/* Label */}
-            <div className="absolute bottom-5 left-5 right-5">
-              <p className="text-white font-semibold text-base lg:text-xl leading-tight">
+            {/* Gradient at bottom — Figma: #171717 solid fading to transparent over the bottom ~1/3 of the card */}
+            <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#171717] to-transparent" />
+            <div className="absolute bottom-6 left-6 right-6">
+              <p className="text-brand-gray font-medium text-lg lg:text-[24px] leading-tight lg:leading-[28.8px] lg:tracking-[-0.48px]">
                 {card.name}
               </p>
-              <p className="text-white/60 text-xs lg:text-sm mt-1.5 leading-relaxed line-clamp-2">
+              <p className="text-[#D4D4D4] text-sm lg:text-[16px] mt-1.5 leading-relaxed lg:leading-[24px] line-clamp-2">
                 {card.description}
               </p>
             </div>
           </div>
         ))}
-        {/* Trailing spacer so the last card isn't flush against the edge */}
         <div className="flex-shrink-0 w-4 sm:w-6 lg:w-8" aria-hidden="true" />
       </div>
     </MotionSection>

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useReducedMotion, motion, type Variants } from "framer-motion";
 
 const containerVariants: Variants = {
@@ -15,17 +15,18 @@ const itemVariants: Variants = {
   visible: { opacity: 1, y: 0 },
 };
 
+// Figma: MP file, node 2001:1215 "Section - Hero section"
 export function Hero() {
   const prefersReduced = useReducedMotion();
 
   return (
     <section
-      className="relative min-h-screen flex items-center overflow-hidden"
+      className="relative min-h-[600px] lg:aspect-[1920/1037] flex items-center overflow-hidden bg-white"
       aria-label="Hero"
     >
       {/* Background photo */}
       <Image
-        src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?w=1920&q=80"
+        src="/figma/hero-bg.jpg"
         alt=""
         fill
         priority
@@ -33,58 +34,59 @@ export function Hero() {
         className="object-cover object-center"
         aria-hidden="true"
       />
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-brand-navy/60" aria-hidden="true" />
+      {/* Dark overlay — Figma "Overlay", black @ 65% opacity */}
+      <div className="absolute inset-0 bg-black/65" aria-hidden="true" />
 
-      <div className="relative z-10 container-max section-padding pt-32 pb-24 w-full">
+      <div
+        className="relative z-10 flex w-full flex-col gap-8 md:gap-16 lg:gap-[128px]
+                   pt-16 sm:pt-24 lg:pt-[230px] pb-10 lg:pb-[60px]
+                   px-4 sm:px-8 lg:px-10 lg:mx-auto lg:max-w-[1200px]"
+      >
         <motion.div
-          variants={containerVariants}
           initial="hidden"
           animate="visible"
           transition={{ duration: 0.7, ease: "easeOut" }}
-          className="max-w-2xl"
+          className="flex w-full max-w-[818px] flex-col"
         >
-          {/* Three-line heading — Playfair Display throughout */}
+          {/* Two-line heading — Newsreader, orange regular + white italic */}
           <motion.h1
             variants={prefersReduced ? {} : itemVariants}
-            className="font-display text-display-xl leading-[1.05] mb-7"
+            className="flex flex-col gap-2 lg:gap-3 font-display text-display-xl tracking-[-0.02em]"
           >
-            <span className="text-brand-orange not-italic font-bold">The Foundation</span>
-            <br />
-            <span className="italic text-white">of Exceptional</span>
-            <br />
-            <span className="italic text-white">Print</span>
+            <span className="not-italic font-normal leading-[1] text-brand-orange">
+              The Foundation
+            </span>
+            <span className="italic font-normal leading-[0.75] text-white">
+              of Exceptional Print
+            </span>
           </motion.h1>
+        </motion.div>
 
-          <motion.p
-            variants={prefersReduced ? {} : itemVariants}
-            className="text-white/80 text-base leading-relaxed mb-4 max-w-md"
-          >
-            Engineered paper solutions crafted for performance, consistency, and
-            scale—trusted by businesses that demand more from every sheet.
-          </motion.p>
+        <motion.div
+          variants={prefersReduced ? {} : itemVariants}
+          initial="hidden"
+          animate="visible"
+          transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
+          className="flex flex-col items-start gap-6 lg:gap-10"
+        >
+          <div className="flex w-full max-w-[570px] flex-col gap-[27px] font-sans text-[18px] leading-[27px] text-[#f5f5f5]">
+            <p>
+              Engineered paper solutions crafted for performance, consistency, and
+              scale—trusted by businesses that demand more from every sheet.
+            </p>
+            <p>
+              From fine printing to industrial applications, Mahaveer Papers delivers
+              precision-made paper products designed to elevate quality, efficiency,
+              and reliability across industries.
+            </p>
+          </div>
 
-          <motion.p
-            variants={prefersReduced ? {} : itemVariants}
-            className="text-white/60 text-sm leading-relaxed mb-10 max-w-md"
-          >
-            From fine printing to industrial applications, Mahaveer Papers delivers
-            precision-made paper products designed to elevate quality, efficiency,
-            and reliability across industries.
-          </motion.p>
-
-          <motion.div variants={prefersReduced ? {} : itemVariants}>
-            {/* Dark pill button matching Figma hero — navy bg with orange circle accent */}
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 bg-brand-navy text-white font-semibold px-6 py-3 rounded-full hover:bg-brand-navy/80 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
-            >
-              Request Free Quote
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-orange flex-shrink-0">
-                <ChevronRight className="h-3.5 w-3.5 text-white" />
-              </span>
-            </Link>
-          </motion.div>
+          <Link href="/contact" className="btn-primary">
+            Request Free Quote
+            <span className="btn-icon-badge">
+              <ArrowRight className="h-5 w-5" />
+            </span>
+          </Link>
         </motion.div>
       </div>
     </section>

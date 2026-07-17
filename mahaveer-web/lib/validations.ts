@@ -58,4 +58,5 @@ export const testimonialSchema = z.object({
   name: z.string(),
   location: z.string(),
   quote: z.string(),
+  avatar: z.string(),
 });

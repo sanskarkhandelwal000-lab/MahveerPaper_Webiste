@@ -1,18 +1,25 @@
 "use client";
 
-import { Quote } from "lucide-react";
+import Image from "next/image";
+import { Camera, Quote } from "lucide-react";
 import { MotionSection } from "@/components/ui/MotionSection";
 import { MotionDiv } from "@/components/ui/MotionDiv";
 import { testimonials } from "@/data/testimonials";
 
 export function Testimonials() {
+  const cards = testimonials.slice(0, 4);
+  const featured = testimonials[4];
+
   return (
     <MotionSection className="section-padding py-20 lg:py-28 bg-white">
       <div className="container-max">
         {/* Header */}
-        <div className="mb-12">
+        <div className="mb-10">
           <MotionDiv>
-            <span className="chip mb-4 inline-flex">Testimonials</span>
+            <span className="chip mb-4 inline-flex">
+              <Camera className="h-3.5 w-3.5" />
+              Testimonials
+            </span>
           </MotionDiv>
           <MotionDiv delay={0.1}>
             <h2 className="font-sans font-bold text-display-md text-brand-navy leading-tight max-w-lg">
@@ -23,60 +30,85 @@ export function Testimonials() {
           </MotionDiv>
           <MotionDiv delay={0.15}>
             <p className="mt-3 text-gray-500 max-w-md">
-              Real stories from businesses who rely on Mahaveer Papers every day.
+              Real Stories from Homeowners Who Trusted Livohaus for Their Home
             </p>
           </MotionDiv>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {testimonials.slice(0, 3).map((t, i) => (
-            <MotionDiv key={t.id} delay={0.1 + i * 0.08}>
-              <figure
-                className="flex flex-col gap-4 rounded-2xl border border-gray-100 bg-white p-7 shadow-sm hover:shadow-md transition-shadow"
-                aria-label={`Testimonial from ${t.name}`}
-              >
-                <Quote className="h-6 w-6 text-brand-orange/40" aria-hidden="true" />
-                <blockquote>
-                  <p className="text-gray-700 leading-relaxed text-sm">
-                    &ldquo;{t.quote}&rdquo;
+        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-5 items-stretch">
+          {/* 2x2 quote card grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {cards.map((t, i) => (
+              <MotionDiv key={t.id} delay={0.1 + i * 0.08}>
+                <figure
+                  className="flex h-full flex-col gap-4 rounded-2xl bg-gray-50 p-6"
+                  aria-label={`Testimonial from ${t.name}`}
+                >
+                  <blockquote>
+                    <p className="text-gray-700 leading-relaxed text-[15px]">
+                      &ldquo;{t.quote}&rdquo;
+                    </p>
+                  </blockquote>
+                  <figcaption className="mt-auto flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full">
+                        <Image
+                          src={t.avatar}
+                          alt=""
+                          fill
+                          sizes="36px"
+                          className="object-cover"
+                        />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-brand-navy text-sm leading-tight">
+                          {t.name}
+                        </p>
+                        <p className="text-xs text-gray-400 leading-tight">{t.location}</p>
+                      </div>
+                    </div>
+                    <Quote
+                      className="h-6 w-6 shrink-0 fill-brand-orange text-brand-orange rotate-180"
+                      aria-hidden="true"
+                    />
+                  </figcaption>
+                </figure>
+              </MotionDiv>
+            ))}
+          </div>
+
+          {/* Featured image with quote overlay */}
+          {featured && (
+            <MotionDiv delay={0.4} className="min-h-[360px] lg:min-h-0">
+              <figure className="relative h-full min-h-[360px] overflow-hidden rounded-2xl">
+                <Image
+                  src="/figma/testimonial-paper-fan.jpg"
+                  alt=""
+                  fill
+                  sizes="(min-width: 1024px) 40vw, 100vw"
+                  className="object-cover"
+                  aria-hidden="true"
+                />
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      "linear-gradient(to top, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.5) 45%, rgba(10,10,10,0) 75%)",
+                  }}
+                  aria-hidden="true"
+                />
+                <blockquote className="absolute inset-x-0 bottom-0 p-8">
+                  <p className="font-display italic text-white text-lg leading-snug mb-3">
+                    &ldquo;{featured.quote}&rdquo;
                   </p>
+                  <figcaption className="text-sm italic text-white/90">
+                    - {featured.name}, {featured.location}
+                  </figcaption>
                 </blockquote>
-                <figcaption className="flex items-center gap-3 mt-auto pt-4 border-t border-gray-100">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-orange text-white font-bold text-sm shrink-0">
-                    {t.name.charAt(0)}
-                  </div>
-                  <div>
-                    <p className="font-semibold text-brand-navy text-sm">{t.name}</p>
-                    <p className="text-xs text-gray-400">{t.location}</p>
-                  </div>
-                </figcaption>
               </figure>
             </MotionDiv>
-          ))}
+          )}
         </div>
-
-        {/* Featured large testimonial */}
-        {testimonials[4] && (
-          <MotionDiv delay={0.4} className="mt-6">
-            <figure className="rounded-2xl bg-brand-navy text-white p-8 lg:p-10">
-              <Quote className="h-8 w-8 text-brand-orange/60 mb-4" aria-hidden="true" />
-              <blockquote>
-                <p className="text-lg lg:text-xl font-medium leading-relaxed max-w-3xl">
-                  &ldquo;{testimonials[4].quote}&rdquo;
-                </p>
-              </blockquote>
-              <figcaption className="mt-6 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-orange text-white font-bold shrink-0">
-                  {testimonials[4].name.charAt(0)}
-                </div>
-                <div>
-                  <p className="font-semibold">— {testimonials[4].name}</p>
-                  <p className="text-sm text-white/50">{testimonials[4].location}</p>
-                </div>
-              </figcaption>
-            </figure>
-          </MotionDiv>
-        )}
       </div>
     </MotionSection>
   );
