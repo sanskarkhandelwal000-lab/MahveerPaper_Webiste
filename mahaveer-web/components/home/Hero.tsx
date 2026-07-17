@@ -56,7 +56,7 @@ export function Hero() {
             <span className="not-italic font-normal leading-[1] text-brand-orange">
               The Foundation
             </span>
-            <span className="italic font-normal leading-[0.75] text-white">
+            <span className="italic font-normal leading-[1] text-white">
               of Exceptional Print
             </span>
           </motion.h1>

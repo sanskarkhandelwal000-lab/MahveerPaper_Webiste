@@ -51,14 +51,28 @@ export default function AboutPage() {
 
           <div className="relative z-10 container-max section-padding pt-32 w-full">
             <div className="max-w-3xl">
-              {/* Figma: "Industry" + "that choose us" at fs=128 */}
+              {/* Figma/Framer: "Industry that choose us", Newsreader 400, fs 104/lh 104, ls -2.08px */}
               <MotionDiv>
-                <h1 className="font-display italic text-white leading-[1.0] mb-6">
-                  {/* Figma: "Industry" line 1 (orange bold), "that choose us" line 2 (italic white) */}
-                  <span className="block text-brand-orange not-italic font-bold" style={{ fontSize: "clamp(3rem,8vw,7rem)" }}>
+                <h1 className="font-display italic text-white mb-6">
+                  {/* "Industry" line 1 (orange, not italic), "that choose us" line 2 (italic white) */}
+                  <span
+                    className="block text-brand-orange not-italic font-normal"
+                    style={{
+                      fontSize: "clamp(2.5rem,6.5vw,6.5rem)",
+                      lineHeight: 1,
+                      letterSpacing: "-0.02em",
+                    }}
+                  >
                     Industry
                   </span>
-                  <span className="block" style={{ fontSize: "clamp(3rem,8vw,7rem)" }}>
+                  <span
+                    className="block font-normal"
+                    style={{
+                      fontSize: "clamp(2.5rem,6.5vw,6.5rem)",
+                      lineHeight: 1,
+                      letterSpacing: "-0.02em",
+                    }}
+                  >
                     that choose us
                   </span>
                 </h1>
@@ -94,11 +108,11 @@ export default function AboutPage() {
         {/* ── ABOUT SECTION (reuse home component) ── */}
         <About />
 
-        {/* ── TESTIMONIALS ── */}
-        <Testimonials />
-
         {/* ── CTA ── */}
         <CTA />
+
+        {/* ── TESTIMONIALS ── */}
+        <Testimonials />
 
         {/* ── FAQ ── */}
         <FAQ />

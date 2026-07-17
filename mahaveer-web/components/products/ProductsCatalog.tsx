@@ -261,7 +261,7 @@ export function ProductsCatalog() {
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-gray-400 mb-10 text-[15px]">
           <Link href="/" className="hover:text-brand-orange transition-colors">Home</Link>
           <span className="text-gray-300">&gt;</span>
-          <span className="text-brand-navy font-medium">Products</span>
+          <span className="font-medium" style={{ color: "#202020" }}>Product</span>
         </nav>
 
         {grouped.length === 0 && (
@@ -274,11 +274,11 @@ export function ProductsCatalog() {
         {grouped.map(group => (
           <div key={group.label} className="mb-14 lg:mb-20">
             <div className="mb-8 lg:mb-10">
-              <h2 className="font-sans font-bold text-brand-navy" style={{ fontSize: "clamp(1.75rem,3.5vw,2.5rem)" }}>
+              <h2 className="font-sans font-semibold" style={{ fontSize: "clamp(1.75rem,3.5vw,2.5rem)", color: "#202020" }}>
                 {group.label}
               </h2>
-              <p className="text-gray-400 font-medium mt-1" style={{ fontSize: "clamp(1rem,1.5vw,1.25rem)" }}>
-                {group.items.length} Product{group.items.length !== 1 ? "s" : ""}
+              <p className="text-gray-400 font-normal mt-1" style={{ fontSize: "clamp(1rem,1.5vw,1.25rem)" }}>
+                {group.items.length} Product
               </p>
             </div>
 
@@ -301,23 +301,23 @@ export function ProductsCatalog() {
                       />
                     </div>
 
-                    {/* Colour / variant badge */}
+                    {/* Colour / variant badge — Figma: blue outline pill */}
                     <div className="mb-3">
-                      <span className="inline-flex items-center border border-gray-300 text-gray-500 text-[11px] font-semibold tracking-widest px-3 py-1 rounded-full uppercase">
+                      <span
+                        className="inline-flex items-center border text-[11px] font-semibold tracking-widest px-3 py-1 rounded-full uppercase"
+                        style={{ color: "#00449A", borderColor: "#00449A" }}
+                      >
                         {product.colors} {product.colors === 1 ? "COLOUR" : "COLOURS"}
                       </span>
                     </div>
 
-                    {/* Product name */}
+                    {/* Product name — Figma: near-black, semibold */}
                     <h3
-                      className="font-sans font-bold text-brand-navy mb-1 group-hover:text-brand-orange transition-colors"
-                      style={{ fontSize: "clamp(1.5rem,2.2vw,2rem)" }}
+                      className="font-sans font-semibold mb-2 group-hover:text-brand-orange transition-colors"
+                      style={{ fontSize: "clamp(1.5rem,2.2vw,2rem)", color: "#202020" }}
                     >
                       {product.name}
                     </h3>
-
-                    {/* GSM */}
-                    <p className="text-xs text-gray-400 font-medium mb-3">{product.gsm}</p>
 
                     {/* Description */}
                     <p className="text-sm text-gray-500 leading-relaxed mb-5">{product.description}</p>

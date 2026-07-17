@@ -89,79 +89,89 @@ const blogPosts = [
   },
 ];
 
-// Figma badge: white/light pill with orange text — subtle, not solid coloured
-const categoryStyle: Record<string, string> = {
-  Sustainability:    "bg-white/90 text-green-700",
-  "Industry Tips":   "bg-white/90 text-brand-orange",
-  "Product Guide":   "bg-white/90 text-amber-700",
-  Insights:          "bg-white/90 text-brand-orange",
-};
+// Figma badge: plain white pill, dark text — same style for every category
+const badgeClass = "bg-white/90 text-brand-navy";
+
+function BlogCard({ post, delay }: { post: (typeof blogPosts)[number]; delay: number }) {
+  return (
+    <MotionDiv delay={delay}>
+      <Link href={post.href} className="group block" aria-label={post.title}>
+        {/* Image — landscape, rounded, matches Figma card shape */}
+        <div className="relative rounded-2xl overflow-hidden aspect-[16/10] mb-4">
+          <Image
+            src={post.image}
+            alt={post.title}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+          {/* Category badge — Figma: white pill, dark text, bottom-left */}
+          <div className="absolute bottom-3 left-3">
+            <span className={`inline-block text-xs font-semibold px-3 py-1.5 rounded-full backdrop-blur-sm ${badgeClass}`}>
+              {post.category}
+            </span>
+          </div>
+        </div>
+
+        {/* Title — Figma: medium weight, dark navy */}
+        <h2 className="font-medium text-brand-navy text-[18px] leading-snug mb-2 group-hover:text-brand-orange transition-colors line-clamp-2">
+          {post.title}
+        </h2>
+
+        {/* Date */}
+        <p className="text-gray-400 text-sm">{post.date}</p>
+      </Link>
+    </MotionDiv>
+  );
+}
 
 export default function BlogPage() {
+  const [featuredPosts, gridPosts] = [blogPosts.slice(0, 2), blogPosts.slice(2)];
+
   return (
     <>
       <Navbar />
       <main id="main-content" tabIndex={-1}>
 
-        {/* ── Full page lavender background ── */}
+        {/* ── Lavender header + featured row ── */}
         <div className="bg-[#ECEEF8]">
 
-          {/* ── HEADER ── centered, matches Figma position */}
+          {/* ── HEADER ── box centered, text left-aligned, matches Figma position */}
           <MotionSection className="container-max section-padding pt-32 pb-12 lg:pt-44 lg:pb-16">
-            <MotionDiv className="max-w-2xl mx-auto text-center">
+            <MotionDiv className="max-w-2xl mx-auto">
               <p className="text-brand-orange font-medium text-base mb-4 tracking-wide">
                 Our Blog
               </p>
               <h1
                 className="font-display italic text-brand-navy leading-tight"
-                style={{ fontSize: "clamp(1.8rem,3.5vw,3rem)" }}
+                style={{ fontSize: "clamp(1.5rem,2.4vw,2.25rem)" }}
               >
-                Explore expert tips, industry trends, and actionable advice to stay ahead in your field
+                Explore expert tips, industry trends, and{" "}
+                <br className="hidden sm:block" />
+                actionable advice to stay ahead in your field
               </h1>
             </MotionDiv>
           </MotionSection>
 
-          {/* ── BLOG GRID — 2 columns matching Figma ── */}
-          <MotionSection className="container-max section-padding pb-20 lg:pb-28">
+          {/* ── FEATURED ROW — first 2 posts, 2 columns ── */}
+          <MotionSection className="container-max section-padding pb-16 lg:pb-20">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
-              {blogPosts.map((post, i) => (
-                <MotionDiv key={post.id} delay={0.05 + (i % 6) * 0.07}>
-                  <Link
-                    href={post.href}
-                    className="group block"
-                    aria-label={post.title}
-                  >
-                    {/* Image — landscape, rounded, matches Figma card shape */}
-                    <div className="relative rounded-2xl overflow-hidden aspect-[16/10] mb-4">
-                      <Image
-                        src={post.image}
-                        alt={post.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      {/* Category badge — Figma: white pill, orange/colored text, bottom-left */}
-                      <div className="absolute bottom-3 left-3">
-                        <span className={`inline-block text-xs font-semibold px-3 py-1.5 rounded-full backdrop-blur-sm ${categoryStyle[post.category] ?? "bg-white/90 text-brand-orange"}`}>
-                          {post.category}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Title — Figma: medium weight, dark navy */}
-                    <h2 className="font-medium text-brand-navy text-[18px] leading-snug mb-2 group-hover:text-brand-orange transition-colors line-clamp-2">
-                      {post.title}
-                    </h2>
-
-                    {/* Date */}
-                    <p className="text-gray-400 text-sm">{post.date}</p>
-                  </Link>
-                </MotionDiv>
+              {featuredPosts.map((post, i) => (
+                <BlogCard key={post.id} post={post} delay={0.05 + i * 0.07} />
               ))}
             </div>
           </MotionSection>
 
         </div>
+
+        {/* ── BLOG GRID — remaining posts, 3 columns, white background ── */}
+        <MotionSection className="container-max section-padding py-16 lg:py-20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+            {gridPosts.map((post, i) => (
+              <BlogCard key={post.id} post={post} delay={0.05 + (i % 6) * 0.07} />
+            ))}
+          </div>
+        </MotionSection>
 
         {/* ── CONTACT FORM ── */}
         <ContactForm />

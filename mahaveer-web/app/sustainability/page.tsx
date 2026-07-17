@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ContactForm } from "@/components/home/ContactForm";
@@ -19,15 +20,15 @@ const actions = [
     id: "climate",
     title: "Climate",
     body: "We are dedicated to reducing the carbon footprint of our paper. Our Climate Action Roadmap outlines our commitments and targets, including a significant reduction in CO₂ emissions by 2030.",
-    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=900&q=80",
-    imageAlt: "Person on a mountain landscape",
+    image: "https://images.unsplash.com/photo-1500049242364-5f500807cdd7?w=900&q=80",
+    imageAlt: "Two hikers pausing to look at a mountain view",
     imageLeft: false,
   },
   {
     id: "nature",
     title: "Nature & Forestry",
     body: "Sustainable forestry and biodiversity are integral to our operations. We ensure that our wood sourcing practices are responsible and that we contribute to the preservation of natural habitats. We also comply with the European Union Deforestation Regulation (EUDR).",
-    image: "https://images.unsplash.com/photo-1444927714506-8492d94b4e3d?w=900&q=80",
+    image: "https://images.unsplash.com/photo-1623612374192-bb28178ed476?w=900&q=80",
     imageAlt: "Butterfly on a leaf in nature",
     imageLeft: true,
   },
@@ -35,9 +36,17 @@ const actions = [
     id: "people",
     title: "People & Society",
     body: "We believe in creating a positive impact on society through our business practices. Our focus on social responsibility includes promoting safety, diversity, and community engagement.",
-    image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=900&q=80",
-    imageAlt: "People in a meeting",
+    image: "https://images.unsplash.com/photo-1758518727477-3885839edee7?w=900&q=80",
+    imageAlt: "Colleagues talking on a sofa in a modern office",
     imageLeft: false,
+  },
+  {
+    id: "resources",
+    title: "Resources & Certification",
+    body: "We leverage extensive data, industry expertise, and recognized certifications to demonstrate our ongoing commitment to sustainability. This offers trusted assurance to all our stakeholders.",
+    image: "https://images.unsplash.com/photo-1728496120908-4fa5eb92ebee?w=900&q=80",
+    imageAlt: "Person writing on a document",
+    imageLeft: true,
   },
 ];
 
@@ -53,7 +62,7 @@ export default function SustainabilityPage() {
           aria-label="Sustainability hero"
         >
           <Image
-            src="https://images.unsplash.com/photo-1500829243541-74b677fecc30?w=1920&q=80"
+            src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1920&q=80"
             alt=""
             fill
             priority
@@ -73,14 +82,14 @@ export default function SustainabilityPage() {
             <div className="max-w-3xl">
               <MotionDiv>
                 <h1
-                  className="font-display italic text-white leading-[1.0] mb-7"
-                  style={{ fontSize: "clamp(2.5rem,7vw,6.5rem)" }}
+                  className="font-display italic font-normal text-white leading-[1.0] mb-7"
+                  style={{ fontSize: "clamp(2.5rem,7vw,6.5rem)", letterSpacing: "-0.02em" }}
                 >
-                  <span className="text-brand-orange not-italic font-bold">A lasting</span>
+                  <span className="text-brand-orange not-italic">A lasting</span>
                   <br />
                   commitment to
                   <br />
-                  sustainability
+                  sustainablity
                 </h1>
               </MotionDiv>
               <MotionDiv delay={0.1}>
@@ -89,6 +98,19 @@ export default function SustainabilityPage() {
                   toward a more resilient future. Sustainability for us isn't a destination
                   – it's a daily practice that shapes our future, and the future of paper.
                 </p>
+                <p className="text-white/80 text-base leading-relaxed mb-10 max-w-xl">
+                  As a trusted partner, we work to ensure that paper remains a sustainable
+                  choice for generations to come – for our customers, for society, for the
+                  planet.
+                </p>
+              </MotionDiv>
+              <MotionDiv delay={0.2}>
+                <Link href="/contact" className="btn-primary">
+                  Request Free Quote
+                  <span className="btn-icon-badge">
+                    <ArrowRight className="h-5 w-5" />
+                  </span>
+                </Link>
               </MotionDiv>
             </div>
           </div>
@@ -99,22 +121,22 @@ export default function SustainabilityPage() {
           <div className="container-max">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
-              {/* Left: 2×2 image grid */}
+              {/* Left: 2×2 image grid — same images as Home/About mosaic */}
               <MotionDiv direction="left">
                 <div className="grid grid-cols-2 gap-3" style={{ height: "420px" }}>
                   <div className="relative rounded-2xl overflow-hidden h-full">
                     <Image
-                      src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80"
-                      alt="Wood grain texture"
+                      src="/figma/paper-roll.jpg"
+                      alt="Brown paper roll close-up"
                       fill
                       sizes="25vw"
-                      className="object-cover"
+                      className="object-cover object-bottom"
                     />
                   </div>
                   <div className="flex flex-col gap-3 h-full">
                     <div className="relative rounded-2xl overflow-hidden flex-1">
                       <Image
-                        src="https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500&q=80"
+                        src="/figma/hero-bg.jpg"
                         alt="Colorful paper rolls"
                         fill
                         sizes="25vw"
@@ -123,8 +145,8 @@ export default function SustainabilityPage() {
                     </div>
                     <div className="relative rounded-2xl overflow-hidden flex-1">
                       <Image
-                        src="https://images.unsplash.com/photo-1550259979-ed79b48d2a30?w=500&q=80"
-                        alt="Abstract colorful paper"
+                        src="/figma/colored-papers.jpg"
+                        alt="Vibrant purple and blue paper textures"
                         fill
                         sizes="25vw"
                         className="object-cover"
@@ -137,13 +159,26 @@ export default function SustainabilityPage() {
               {/* Right: chip + heading + body */}
               <div className="flex flex-col gap-5">
                 <MotionDiv delay={0.1}>
-                  <span className="chip inline-flex">About Mahaveer Papers</span>
+                  {/* Blue variant chip — Figma: border/text #00449A, distinct from site-wide orange chip */}
+                  <span
+                    className="inline-flex items-center gap-1.5 text-sm font-medium uppercase tracking-[0.035em] rounded-full px-3 py-1.5 bg-white border"
+                    style={{ color: "#00449A", borderColor: "#00449A" }}
+                  >
+                    About Mahaveer Papers
+                  </span>
                 </MotionDiv>
                 <MotionDiv delay={0.15}>
-                  <h2 className="font-sans font-bold text-brand-navy leading-tight"
-                    style={{ fontSize: "clamp(1.75rem,3vw,2.5rem)" }}>
+                  <h2
+                    className="font-sans font-medium"
+                    style={{
+                      fontSize: "clamp(1.75rem,3vw,2.5rem)",
+                      lineHeight: 1.2,
+                      letterSpacing: "-0.04em",
+                      color: "#262626",
+                    }}
+                  >
                     What makes paper{" "}
-                    <span className="font-display italic text-brand-orange">sustainable?</span>
+                    <span className="text-brand-orange">sustainable?</span>
                   </h2>
                 </MotionDiv>
                 <MotionDiv delay={0.2}>
@@ -176,8 +211,12 @@ export default function SustainabilityPage() {
           <div className="container-max section-padding">
             <MotionDiv className="text-center mb-10 lg:mb-14">
               <h2
-                className="font-sans font-bold text-brand-navy"
-                style={{ fontSize: "clamp(1.5rem,2.5vw,2rem)" }}
+                className="font-sans font-semibold"
+                style={{
+                  fontSize: "clamp(1.5rem,2.5vw,2rem)",
+                  lineHeight: 1.5,
+                  color: "#202020",
+                }}
               >
                 Explore our actions:
               </h2>
@@ -191,21 +230,29 @@ export default function SustainabilityPage() {
                     {/* Text block */}
                     <div className={action.imageLeft ? "lg:order-2" : "lg:order-1"}>
                       <h3
-                        className="font-sans font-bold text-brand-navy mb-4"
-                        style={{ fontSize: "clamp(1.4rem,2vw,1.75rem)" }}
+                        className="font-sans font-semibold mb-4"
+                        style={{ fontSize: "clamp(1.4rem,2vw,1.5rem)", lineHeight: 1.333, color: "#202020" }}
                       >
                         {action.title}
                       </h3>
-                      <p className="text-gray-500 text-sm leading-relaxed mb-6 max-w-md">
+                      <p
+                        className="mb-6 max-w-md"
+                        style={{ fontSize: "16px", lineHeight: "24px", letterSpacing: "0.16px", color: "#2E2E2E" }}
+                      >
                         {action.body}
                       </p>
+                      {/* Learn more — icon-left circular badge, matches Figma "Component 2" */}
                       <Link
                         href="/contact"
-                        className="inline-flex items-center gap-3 text-brand-navy text-sm font-medium hover:text-brand-orange transition-colors"
+                        className="group relative inline-flex h-8 items-center rounded-full pl-10 pr-5 text-sm font-medium transition-colors"
+                        style={{ color: "#2E2E2E" }}
                       >
-                        <span className="flex h-8 w-8 items-center justify-center rounded-full border border-current">
-                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                            <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <span
+                          className="absolute left-0 top-0 flex h-8 w-8 items-center justify-center rounded-full border-2 transition-transform group-hover:translate-x-0.5"
+                          style={{ borderColor: "#2E2E2E" }}
+                        >
+                          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                            <path d="M1 9L9 1M9 1H2.5M9 1V7.5" stroke="#2E2E2E" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
                         </span>
                         Learn more

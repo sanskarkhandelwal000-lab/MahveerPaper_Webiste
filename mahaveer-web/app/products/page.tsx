@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ProductsCatalog } from "@/components/products/ProductsCatalog";
@@ -16,32 +17,37 @@ export default function ProductsPage() {
     <>
       <Navbar />
       <main id="main-content" tabIndex={-1}>
-        {/* ── HERO ── Figma: dark textured background, "Bring your / Creativity to life" */}
+        {/* ── HERO ── Figma: paper-roll photo background, "Bring your / Creativity to life" */}
         <section
-          className="relative min-h-[70vh] flex items-end overflow-hidden bg-[#0a1520]"
+          className="relative min-h-[70vh] flex items-end overflow-hidden"
           aria-label="Products hero"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.08'/%3E%3C/rect%3E%3C/svg%3E")`,
-          }}
         >
+          <Image
+            src="/figma/hero-bg.jpg"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+            aria-hidden="true"
+          />
           <div
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(135deg, #0d1b2a 0%, #0a1520 40%, #111d2c 100%)",
-              opacity: 0.98,
+                "linear-gradient(to bottom, rgba(10,10,8,0.15) 0%, rgba(10,10,8,0.55) 70%, rgba(10,10,8,0.75) 100%)",
             }}
             aria-hidden="true"
           />
 
           <div className="relative z-10 w-full container-max section-padding pt-36 pb-10">
             <MotionDiv className="max-w-3xl mb-6">
-              {/* Figma: "Bring your" (orange, bold) + "Creativity to life" (white, italic) */}
+              {/* Figma: "Bring your" (orange) + "Creativity to life" (white, italic), Newsreader 400, fs 104/lh 104, ls -2.08px */}
               <h1
-                className="font-display italic text-white leading-[1.0] mb-5"
-                style={{ fontSize: "clamp(2.5rem,7vw,6.5rem)" }}
+                className="font-display italic font-normal text-white leading-[1.0] mb-5"
+                style={{ fontSize: "clamp(2.5rem,7vw,6.5rem)", letterSpacing: "-0.02em" }}
               >
-                <span className="text-brand-orange not-italic font-bold">Bring your</span>
+                <span className="text-brand-orange not-italic">Bring your</span>
                 <br />
                 Creativity to life
               </h1>
