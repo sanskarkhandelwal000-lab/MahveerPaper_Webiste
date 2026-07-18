@@ -10,25 +10,25 @@ const serviceCards = [
     id: "specialty",
     name: "Kitchen Specialty Papers",
     description: "Smart, stylish kitchens built for daily living.",
-    image: "/figma/colored-papers.jpg",
+    image: "/figma/svc-kitchen.jpg",
   },
   {
     id: "printing-writing",
     name: "Printing & Writing Papers",
     description: "Modern, functional bathrooms with lasting comfort and quality.",
-    image: "/figma/hero-bg.jpg",
+    image: "/figma/svc-printing.jpg",
   },
   {
     id: "packaging",
     name: "Packaging Papers",
     description: "Extend your home with inviting patios, decks, and garden zones.",
-    image: "/figma/paper-roll.jpg",
+    image: "/figma/svc-packaging.jpg",
   },
   {
     id: "bulk-supply",
     name: "Bulk Supply & Distribution Finishing",
     description: "Built-ins, trim, flooring, lighting — we sweat the small stuff.",
-    image: "/figma/services-card-4.jpg",
+    image: "/figma/svc-bulk.jpg",
   },
 ];
 

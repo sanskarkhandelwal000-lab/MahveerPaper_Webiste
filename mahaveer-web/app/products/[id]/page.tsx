@@ -44,7 +44,7 @@ export default async function ProductPage({ params }: Props) {
   return (
     <>
       <Navbar />
-      <main id="main-content" tabIndex={-1}>
+      <main id="main-content" tabIndex={-1} className="scroll-mt-[92px]">
 
         {/* ── HERO ── same as Products page: paper-roll photo + heading */}
         <section

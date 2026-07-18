@@ -23,8 +23,8 @@ export function About() {
           <div className="mt-6 flex w-1/2 shrink-0 flex-col gap-4 sm:mt-8 lg:mt-16 lg:w-[240.5px]">
             <div className="relative h-[160px] overflow-hidden rounded-[10px] sm:h-[153px]">
               <Image
-                src="/figma/hero-bg.jpg"
-                alt="Paper rolls in warm light"
+                src="/figma/about-layers.jpg"
+                alt="Layered teal and coral paper sheets"
                 fill
                 sizes="(max-width: 1024px) 40vw, 240px"
                 className="object-cover"

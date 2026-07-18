@@ -8,17 +8,17 @@ import { siteConfig } from "@/lib/config";
 export function CTA() {
   return (
     <MotionSection className="relative overflow-hidden py-24 lg:py-32">
-      {/* Background photo */}
+      {/* Background photo — premium navy crumpled paper texture */}
       <Image
-        src="/figma/cta-bg.jpg"
+        src="/figma/cta-paper-navy.jpg"
         alt=""
         fill
         sizes="100vw"
         className="object-cover object-center"
         aria-hidden="true"
       />
-      {/* Dark overlay — Figma "Overlay", #171717 @ 70% opacity */}
-      <div className="absolute inset-0 bg-[#171717]/70" aria-hidden="true" />
+      {/* Dark overlay — texture is already dark, lighter scrim for legibility */}
+      <div className="absolute inset-0 bg-[#171717]/50" aria-hidden="true" />
 
       <div className="relative z-10 container-max section-padding text-center">
         <MotionDiv>

@@ -16,7 +16,7 @@ export default function ProductsPage() {
   return (
     <>
       <Navbar />
-      <main id="main-content" tabIndex={-1}>
+      <main id="main-content" tabIndex={-1} className="scroll-mt-[92px]">
         {/* ── HERO ── Figma: paper-roll photo background, "Bring your / Creativity to life" */}
         <section
           className="relative min-h-[70vh] flex items-end overflow-hidden"

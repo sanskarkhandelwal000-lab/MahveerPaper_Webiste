@@ -1,154 +1,104 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { MessageCircle, X, ArrowUp, ArrowUpRight } from "lucide-react";
-import type { CatalogProduct } from "@/data/products";
-import { cn } from "@/lib/utils";
-
-interface ChatMessage {
-  id: string;
-  role: "user" | "assistant";
-  content: string;
-  products?: CatalogProduct[];
-  isSeed?: boolean;
-}
-
-const WELCOME_MESSAGE: ChatMessage = {
-  id: "seed",
-  role: "assistant",
-  isSeed: true,
-  content:
-    "Hi! I can help you find the right paper from our collection. Try something like “white paper for wedding cards” or “eco-friendly kraft for packaging.”",
-};
-
-function TypingDots() {
-  return (
-    <div className="flex items-center gap-1 px-4 py-3">
-      {[0, 1, 2].map((i) => (
-        <motion.span
-          key={i}
-          className="h-1.5 w-1.5 rounded-full bg-gray-400"
-          animate={{ y: [0, -4, 0] }}
-          transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15, ease: "easeInOut" }}
-        />
-      ))}
-    </div>
-  );
-}
-
-function ProductCard({ product }: { product: CatalogProduct }) {
-  return (
-    <Link
-      href={`/products/${product.id}`}
-      className="group flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-2.5 transition-colors hover:border-brand-orange"
-    >
-      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-gray-100">
-        <Image
-          src={product.image}
-          alt={product.name}
-          fill
-          sizes="48px"
-          className="object-cover"
-        />
-      </div>
-      <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-medium text-brand-ink">{product.name}</p>
-        <p className="truncate text-xs text-gray-500">
-          {product.book} &middot; {product.gsm}
-        </p>
-      </div>
-      <ArrowUpRight className="h-4 w-4 shrink-0 text-gray-300 transition-colors group-hover:text-brand-orange" />
-    </Link>
-  );
-}
+import { Sparkles, X, ArrowUp } from "lucide-react";
+import { MessageBubble, SuggestedPrompts, TypingDots, useChatAssistant } from "@/components/chat/shared";
 
 export function ChatWidget() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([WELCOME_MESSAGE]);
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const [showTeaser, setShowTeaser] = useState(false);
+  const { messages, input, setInput, loading, send, scrollRef } = useChatAssistant();
   const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
-  }, [messages, loading]);
+  const hasOpenedRef = useRef(false);
 
   useEffect(() => {
     if (open) inputRef.current?.focus();
   }, [open]);
 
-  const send = async () => {
-    const text = input.trim();
-    if (!text || loading) return;
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!hasOpenedRef.current) setShowTeaser(true);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
-    const userMessage: ChatMessage = { id: crypto.randomUUID(), role: "user", content: text };
-    const nextMessages = [...messages, userMessage];
-    setMessages(nextMessages);
-    setInput("");
-    setLoading(true);
-
-    try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: nextMessages
-            .filter((m) => !m.isSeed)
-            .map((m) => ({ role: m.role, content: m.content })),
-        }),
-      });
-
-      if (!res.ok) throw new Error("Request failed");
-      const data: { reply: string; products: CatalogProduct[] } = await res.json();
-
-      setMessages((prev) => [
-        ...prev,
-        { id: crypto.randomUUID(), role: "assistant", content: data.reply, products: data.products },
-      ]);
-    } catch {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: crypto.randomUUID(),
-          role: "assistant",
-          content:
-            "Sorry, something went wrong on my end. Please try again, or reach our team directly via the contact form.",
-        },
-      ]);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    if (open) {
+      hasOpenedRef.current = true;
+      setShowTeaser(false);
     }
-  };
+  }, [open]);
+
+  // The dedicated full-page chat has its own always-open interface — don't
+  // double up with the floating launcher on top of it.
+  if (pathname?.startsWith("/chat")) return null;
 
   return (
     <>
       {/* Floating launcher button */}
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-6 right-6 z-50 flex items-end gap-3">
         <AnimatePresence>
-          {!open && (
-            <motion.span
-              initial={{ opacity: 0.6, scale: 1 }}
-              animate={{ opacity: [0.5, 0, 0.5], scale: [1, 1.5, 1] }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute inset-0 rounded-full bg-brand-orange/50"
-              aria-hidden="true"
-            />
+          {showTeaser && !open && (
+            <motion.div
+              initial={{ opacity: 0, x: 16, scale: 0.95 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: 16, scale: 0.95 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              className="relative mb-1 max-w-[230px] rounded-2xl rounded-br-md border border-gray-100 bg-white px-4 py-3 shadow-xl"
+            >
+              <button
+                type="button"
+                onClick={() => setShowTeaser(false)}
+                aria-label="Dismiss greeting"
+                className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-brand-navy text-white shadow-md transition-colors hover:bg-black"
+              >
+                <X className="h-3 w-3" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setOpen(true)}
+                className="text-left"
+              >
+                <p className="text-sm font-medium text-brand-ink">
+                  Happy to help! 👋
+                </p>
+                <p className="mt-1 text-xs leading-relaxed text-gray-500">
+                  I&apos;m the AI assistant at Mahaveer Papers — how can I help you today?
+                </p>
+              </button>
+              <span
+                className="absolute -bottom-1.5 right-6 h-3 w-3 rotate-45 border-b border-r border-gray-100 bg-white"
+                aria-hidden="true"
+              />
+            </motion.div>
           )}
         </AnimatePresence>
-        <motion.button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          aria-label={open ? "Close chat" : "Open product assistant chat"}
-          aria-expanded={open}
-          className="relative flex h-14 w-14 items-center justify-center rounded-full bg-brand-navy text-white shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2"
-        >
+
+        <div className="relative">
+          <AnimatePresence>
+            {!open && (
+              <motion.span
+                initial={{ opacity: 0.6, scale: 1 }}
+                animate={{ opacity: [0.5, 0, 0.5], scale: [1, 1.5, 1] }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute inset-0 rounded-full bg-brand-orange/50"
+                aria-hidden="true"
+              />
+            )}
+          </AnimatePresence>
+          <motion.button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            whileHover={{ scale: 1.06 }}
+            whileTap={{ scale: 0.94 }}
+            aria-label={open ? "Close chat" : "Open product assistant chat"}
+            aria-expanded={open}
+            className="relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#0c2f66] via-brand-navy to-[#00112b] text-white shadow-[0_12px_32px_-6px_rgba(234,88,12,0.5)] ring-1 ring-white/15 transition-shadow duration-300 hover:shadow-[0_16px_40px_-4px_rgba(234,88,12,0.65)] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2"
+          >
           <AnimatePresence mode="wait" initial={false}>
             {open ? (
               <motion.span
@@ -163,19 +113,31 @@ export function ChatWidget() {
             ) : (
               <motion.span
                 key="chat"
-                initial={{ rotate: 90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: -90, opacity: 0 }}
-                transition={{ duration: 0.15 }}
+                initial={{ rotate: 90, opacity: 0, scale: 0.6 }}
+                animate={{
+                  rotate: 0,
+                  opacity: 1,
+                  scale: 1,
+                  filter: [
+                    "drop-shadow(0 0 0px rgba(234,88,12,0))",
+                    "drop-shadow(0 0 6px rgba(234,88,12,0.7))",
+                    "drop-shadow(0 0 0px rgba(234,88,12,0))",
+                  ],
+                }}
+                exit={{ rotate: -90, opacity: 0, scale: 0.6 }}
+                transition={{
+                  rotate: { duration: 0.2 },
+                  opacity: { duration: 0.2 },
+                  scale: { duration: 0.2 },
+                  filter: { duration: 2.6, repeat: Infinity, ease: "easeInOut" },
+                }}
               >
-                <MessageCircle className="h-6 w-6" />
+                <Sparkles className="h-6 w-6 text-brand-orange" strokeWidth={2} />
               </motion.span>
             )}
           </AnimatePresence>
-          <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-brand-orange text-[9px] font-bold text-white ring-2 ring-white">
-            AI
-          </span>
-        </motion.button>
+          </motion.button>
+        </div>
       </div>
 
       {/* Chat panel */}
@@ -193,13 +155,14 @@ export function ChatWidget() {
           >
             {/* Header */}
             <div className="flex items-center gap-3 bg-brand-navy px-5 py-4 text-white">
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-orange/20">
-                <MessageCircle className="h-4.5 w-4.5 text-brand-orange" />
+              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-brand-orange/30 to-brand-orange/10 ring-1 ring-brand-orange/30">
+                <Sparkles className="h-4.5 w-4.5 text-brand-orange" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium leading-tight">Paper Assistant</p>
-                <p className="text-xs leading-tight text-white/50">
-                  Ask about our products
+                <p className="flex items-center gap-1.5 text-xs leading-tight text-white/50">
+                  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400" />
+                  Online &middot; Mahaveer Papers AI
                 </p>
               </div>
               <button
@@ -213,31 +176,19 @@ export function ChatWidget() {
             </div>
 
             {/* Messages */}
-            <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto bg-brand-gray/50 p-4">
+            <div ref={scrollRef} className="flex-1 space-y-4 overflow-y-auto bg-brand-gray/50 p-4">
               {messages.map((m) => (
-                <div key={m.id} className={cn("flex flex-col gap-2", m.role === "user" && "items-end")}>
-                  <div
-                    className={cn(
-                      "max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed",
-                      m.role === "user"
-                        ? "rounded-br-sm bg-brand-navy text-white"
-                        : "rounded-bl-sm border border-gray-200 bg-white text-gray-700"
-                    )}
-                  >
-                    {m.content}
-                  </div>
-                  {m.products && m.products.length > 0 && (
-                    <div className="flex w-[85%] min-w-[220px] flex-col gap-2">
-                      {m.products.map((p) => (
-                        <ProductCard key={p.id} product={p} />
-                      ))}
-                    </div>
-                  )}
-                </div>
+                <MessageBubble key={m.id} message={m} onSampleClick={() => setOpen(false)} />
               ))}
+              {messages.length === 1 && (
+                <SuggestedPrompts onSelect={(prompt) => send(prompt)} />
+              )}
               {loading && (
-                <div className="w-fit rounded-2xl rounded-bl-sm border border-gray-200 bg-white">
-                  <TypingDots />
+                <div className="flex items-end gap-2">
+                  <div className="h-7 w-7 shrink-0 rounded-full bg-gradient-to-br from-brand-orange/25 to-brand-orange/10 ring-1 ring-brand-orange/25" />
+                  <div className="w-fit rounded-2xl rounded-bl-sm border border-gray-200 bg-white">
+                    <TypingDots />
+                  </div>
                 </div>
               )}
             </div>

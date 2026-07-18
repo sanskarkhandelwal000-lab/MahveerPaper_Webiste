@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { Suspense } from "react";
-import { useForm } from "react-hook-form";
+import { Suspense, useEffect } from "react";
+import { useForm, type UseFormSetValue } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Loader2, Phone, Mail } from "lucide-react";
@@ -10,6 +10,7 @@ import { useSearchParams } from "next/navigation";
 import { contactFormSchema, type ContactFormValues } from "@/lib/validations";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
+import { RENOVATION_TYPES } from "@/lib/contactOptions";
 
 function ProductBanner() {
   const searchParams = useSearchParams();
@@ -26,14 +27,16 @@ function ProductBanner() {
   );
 }
 
-const renovationTypes = [
-  "Printing & Publishing",
-  "Packaging",
-  "School & Office Supplies",
-  "High-End Printing",
-  "Industrial / Specialty",
-  "Other",
-];
+function FormPrefiller({ setValue }: { setValue: UseFormSetValue<ContactFormValues> }) {
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    const renovationType = searchParams.get("renovationType");
+    const message = searchParams.get("message");
+    if (renovationType) setValue("renovationType", renovationType, { shouldValidate: true });
+    if (message) setValue("message", message, { shouldValidate: true });
+  }, [searchParams, setValue]);
+  return null;
+}
 
 function Field({
   label,
@@ -81,6 +84,7 @@ export function ContactForm() {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
@@ -131,11 +135,11 @@ export function ContactForm() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
           {/* Left: image + contact info */}
           <div className="flex flex-col gap-6">
-            {/* Interior photo */}
+            {/* Brand-colour paper photo — blue & orange folded sheets */}
             <div className="relative h-64 lg:h-80 rounded-2xl overflow-hidden bg-brand-navy">
               <Image
-                src="/figma/contact-photo.jpg"
-                alt="Our office space"
+                src="/figma/contact-paper.jpg"
+                alt="Blue and orange folded paper sheets"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
@@ -185,6 +189,7 @@ export function ContactForm() {
             <div className="sm:col-span-2">
               <Suspense>
                 <ProductBanner />
+                <FormPrefiller setValue={setValue} />
               </Suspense>
             </div>
             <Field
@@ -278,7 +283,7 @@ export function ContactForm() {
                   <option value="" disabled>
                     Select…
                   </option>
-                  {renovationTypes.map((t) => (
+                  {RENOVATION_TYPES.map((t) => (
                     <option key={t} value={t}>
                       {t}
                     </option>

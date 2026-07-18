@@ -23,7 +23,7 @@ export default function AboutPage() {
   return (
     <>
       <Navbar />
-      <main id="main-content" tabIndex={-1}>
+      <main id="main-content" tabIndex={-1} className="scroll-mt-[92px]">
         {/* ── HERO ── */}
         <section
           className="relative min-h-[75vh] flex items-end overflow-hidden pb-20 lg:pb-28"

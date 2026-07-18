@@ -54,7 +54,7 @@ export default function SustainabilityPage() {
   return (
     <>
       <Navbar />
-      <main id="main-content" tabIndex={-1}>
+      <main id="main-content" tabIndex={-1} className="scroll-mt-[92px]">
 
         {/* ── HERO ── */}
         <section

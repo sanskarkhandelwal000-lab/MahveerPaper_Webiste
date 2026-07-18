@@ -77,7 +77,7 @@ export default function DigiLuxPage() {
   return (
     <>
       <Navbar />
-      <main id="main-content" tabIndex={-1}>
+      <main id="main-content" tabIndex={-1} className="scroll-mt-[92px]">
 
         {/* ── HERO ── Figma: fanned grey paper sheets, serif cream heading bottom-left */}
         <section

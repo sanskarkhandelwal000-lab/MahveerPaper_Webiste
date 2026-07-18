@@ -131,7 +131,7 @@ export default function BlogPage() {
   return (
     <>
       <Navbar />
-      <main id="main-content" tabIndex={-1}>
+      <main id="main-content" tabIndex={-1} className="scroll-mt-[92px]">
 
         {/* ── Lavender header + featured row ── */}
         <div className="bg-[#ECEEF8]">
