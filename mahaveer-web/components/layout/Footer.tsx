@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Phone, Mail, ChevronRight } from "lucide-react";
 import { siteConfig } from "@/lib/config";
+import { MotionSection } from "@/components/ui/MotionSection";
 
 function FacebookIcon({ className }: { className?: string }) {
   return (
@@ -38,7 +39,7 @@ export function Footer() {
     <footer className="bg-brand-navy text-white" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">Footer</h2>
 
-      <div className="container-max section-padding py-14 lg:py-16">
+      <MotionSection className="container-max section-padding py-14 lg:py-16">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
           {/* Brand column */}
           <div className="flex flex-col gap-5 lg:col-span-1">
@@ -128,7 +129,7 @@ export function Footer() {
             </ul>
           </div>
         </div>
-      </div>
+      </MotionSection>
 
       {/* Bottom bar */}
       <div className="border-t border-brand-orange/20">

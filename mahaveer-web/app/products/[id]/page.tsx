@@ -6,7 +6,7 @@ import { Mail } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { MotionDiv } from "@/components/ui/MotionDiv";
-import { catalogProducts } from "@/data/products";
+import { catalogProducts, COLOR_NAME_HEX } from "@/data/products";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -16,6 +16,11 @@ function formatGsm(gsm: string): string {
   const base = gsm.replace(/\s*(GSM|MM)\s*$/i, "");
   const values = base.split("·").map(s => s.trim()).filter(Boolean);
   return `${values.join(", ")} ${unit}`;
+}
+
+// "63 x 91 CM · 79 x 109 CM" → "63 x 91 CM, 79 x 109 CM" (each value keeps its own unit)
+function formatSizes(sizes: string): string {
+  return sizes.split("·").map(s => s.trim()).filter(Boolean).join(", ");
 }
 
 export async function generateStaticParams() {
@@ -39,7 +44,12 @@ export default async function ProductPage({ params }: Props) {
   if (!product) notFound();
 
   const gsmLabel = formatGsm(product.gsm);
-  const swatchCount = Math.max(1, product.colors);
+  const sizesLabel = product.sizes ? formatSizes(product.sizes) : null;
+  // One card per real named colour when we have that data — falls back to repeating
+  // the family name/image for the handful of products with no colour breakdown.
+  const swatches = product.colorNames?.length
+    ? product.colorNames.map((name) => ({ name, hex: COLOR_NAME_HEX[name] }))
+    : Array.from({ length: Math.max(1, product.colors) }, () => ({ name: product.name, hex: undefined }));
 
   return (
     <>
@@ -52,7 +62,7 @@ export default async function ProductPage({ params }: Props) {
           aria-label="Products hero"
         >
           <Image
-            src="/figma/hero-bg.jpg"
+            src="/images/banners/products-banner.jpg"
             alt=""
             fill
             priority
@@ -102,40 +112,55 @@ export default async function ProductPage({ params }: Props) {
               {product.app}
             </h2>
             <p className="text-gray-400 font-normal mt-1" style={{ fontSize: "clamp(1rem,1.5vw,1.25rem)" }}>
-              {swatchCount} Product
+              {swatches.length} Product
             </p>
           </div>
 
           {/* Swatch grid — Figma: square texture, envelope chip, blue GSM pill, name */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-12">
-            {Array.from({ length: swatchCount }).map((_, i) => (
-              <MotionDiv key={i} delay={0.04 + (i % 4) * 0.05}>
+            {swatches.map((swatch, i) => (
+              <MotionDiv key={`${swatch.name}-${i}`} delay={0.04 + (i % 4) * 0.05}>
                 <div className="relative overflow-hidden rounded-sm" style={{ aspectRatio: "1/1" }}>
                   <Image
                     src={product.image}
-                    alt={`${product.name} texture swatch`}
+                    alt={`${product.name} — ${swatch.name}`}
                     fill
                     unoptimized
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     className="object-cover"
                   />
+                  {swatch.hex && (
+                    <div
+                      className="absolute inset-0"
+                      style={{ backgroundColor: swatch.hex, mixBlendMode: "color" }}
+                      aria-hidden="true"
+                    />
+                  )}
                   <span className="absolute bottom-2 right-2 flex h-6 w-7 items-center justify-center rounded-[4px] bg-white shadow-sm">
                     <Mail className="h-3.5 w-3.5 text-gray-700" />
                   </span>
                 </div>
-                <div className="mt-4">
+                <div className="mt-4 flex flex-wrap items-center gap-2">
                   <span
                     className="inline-flex items-center border text-[13px] font-medium px-3 py-1 rounded-full"
                     style={{ color: "#00449A", borderColor: "#00449A" }}
                   >
                     {gsmLabel}
                   </span>
+                  {sizesLabel && (
+                    <span
+                      className="inline-flex items-center border text-[13px] font-medium px-3 py-1 rounded-full"
+                      style={{ color: "#6B7280", borderColor: "#D1D5DB" }}
+                    >
+                      {sizesLabel}
+                    </span>
+                  )}
                 </div>
                 <h3
                   className="font-sans font-semibold mt-2"
                   style={{ fontSize: "clamp(1.25rem,1.8vw,1.75rem)", color: "#202020" }}
                 >
-                  {product.name}
+                  {swatch.name}
                 </h3>
               </MotionDiv>
             ))}

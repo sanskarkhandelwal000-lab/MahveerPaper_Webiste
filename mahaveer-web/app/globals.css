@@ -11,10 +11,6 @@
     box-sizing: border-box;
   }
 
-  html {
-    scroll-behavior: smooth;
-  }
-
   body {
     @apply bg-white text-gray-900 antialiased;
   }
@@ -44,7 +40,8 @@
   .btn-primary {
     @apply inline-flex items-center gap-2.5 bg-brand-dark text-brand-light text-[16px] lg:text-[18px] font-normal
            pl-5 pr-1.5 py-1.5 rounded-full border border-[rgba(250,250,250,0.5)]
-           hover:bg-black transition-colors duration-200 focus:outline-none
+           hover:bg-black hover:shadow-lg hover:-translate-y-px active:translate-y-0 active:scale-[0.98]
+           transition-all duration-300 ease-out focus:outline-none
            focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2;
   }
 
@@ -52,7 +49,8 @@
   .btn-light {
     @apply inline-flex items-center gap-2.5 bg-brand-light text-brand-dark text-[16px] lg:text-[18px] font-normal
            pl-5 pr-1.5 py-1.5 rounded-full border border-[rgba(250,250,250,0.5)]
-           hover:bg-white transition-colors duration-200 focus:outline-none
+           hover:bg-white hover:shadow-lg hover:-translate-y-px active:translate-y-0 active:scale-[0.98]
+           transition-all duration-300 ease-out focus:outline-none
            focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2;
   }
 
@@ -60,13 +58,22 @@
   .btn-outline {
     @apply inline-flex items-center gap-2.5 bg-transparent text-brand-light text-[16px] lg:text-[18px] font-normal
            pl-5 pr-1.5 py-1.5 rounded-full border border-[rgba(250,250,250,0.5)]
-           hover:bg-white/10 transition-colors duration-200 focus:outline-none
+           hover:bg-white/10 hover:-translate-y-px active:translate-y-0 active:scale-[0.98]
+           transition-all duration-300 ease-out focus:outline-none
            focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2;
   }
 
-  /* Orange circular icon badge that sits at the end of every pill button */
+  /* Orange circular icon badge that sits at the end of every pill button — nudges
+     right on hover, a small deliberate touch rather than the whole button jumping. */
   .btn-icon-badge {
-    @apply flex h-9 w-9 items-center justify-center rounded-full bg-brand-orange text-white flex-shrink-0;
+    @apply flex h-9 w-9 items-center justify-center rounded-full bg-brand-orange text-white flex-shrink-0
+           transition-transform duration-300 ease-out;
+  }
+
+  .btn-primary:hover .btn-icon-badge,
+  .btn-light:hover .btn-icon-badge,
+  .btn-outline:hover .btn-icon-badge {
+    transform: translateX(2px);
   }
 
   /* Eyebrow chip — pill outline + icon + label (Figma "Variant 1", Geist Medium 14px, ls 0.7px) */
@@ -88,5 +95,27 @@
 
   .scrollbar-none::-webkit-scrollbar {
     display: none;
+  }
+
+  /* Slow, continuous Ken Burns drift for each hero carousel slide — runs
+     independently of the crossfade timing so a slide is always mid-drift
+     (never a hard reset) whenever it becomes visible. */
+  .animate-hero-zoom {
+    animation: hero-zoom 16s ease-in-out infinite alternate;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-hero-zoom {
+      animation: none;
+    }
+  }
+}
+
+@keyframes hero-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
   }
 }

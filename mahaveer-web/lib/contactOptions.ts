@@ -1,4 +1,4 @@
-export const RENOVATION_TYPES = [
+export const APPLICATION_TYPES = [
   "Printing & Publishing",
   "Packaging",
   "School & Office Supplies",
@@ -7,4 +7,4 @@ export const RENOVATION_TYPES = [
   "Other",
 ] as const;
 
-export type RenovationType = (typeof RENOVATION_TYPES)[number];
+export type ApplicationType = (typeof APPLICATION_TYPES)[number];

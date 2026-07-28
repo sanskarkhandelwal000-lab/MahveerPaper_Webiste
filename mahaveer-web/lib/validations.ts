@@ -19,7 +19,7 @@ export const contactFormSchema = z.object({
     .string()
     .min(2, "Location is required")
     .max(100, "Location is too long"),
-  renovationType: z
+  applicationType: z
     .string()
     .min(1, "Please select a type"),
   message: z

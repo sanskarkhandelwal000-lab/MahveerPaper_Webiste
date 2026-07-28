@@ -1,13 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { ArrowRight, Search } from "lucide-react";
-import { MotionDiv } from "@/components/ui/MotionDiv";
-import { catalogProducts, BOOKS, PRODUCT_TYPES, APP_TYPES } from "@/data/products";
+import { ProductCard } from "@/components/products/ProductCard";
+import { catalogProducts, BOOKS, PAPER_TYPE_OPTIONS, APPLICATION_OPTIONS, COLOUR_GROUP_OPTIONS } from "@/data/products";
 
-type DropdownKey = "book" | "type" | "app";
+type DropdownKey = "type" | "app" | "color";
 
 // Defined outside the component so React never treats this as a new type on re-render
 function CheckboxDropdown({
@@ -68,13 +67,13 @@ function CheckboxDropdown({
 }
 
 export function ProductsCatalog() {
-  const [appliedBooks, setAppliedBooks] = useState<string[]>([]);
-  const [appliedTypes, setAppliedTypes] = useState<string[]>([]);
-  const [appliedApps,  setAppliedApps]  = useState<string[]>([]);
+  const [appliedTypes,  setAppliedTypes]  = useState<string[]>([]);
+  const [appliedApps,   setAppliedApps]   = useState<string[]>([]);
+  const [appliedColors, setAppliedColors] = useState<string[]>([]);
 
-  const [pendingBooks, setPendingBooks] = useState<string[]>([]);
-  const [pendingTypes, setPendingTypes] = useState<string[]>([]);
-  const [pendingApps,  setPendingApps]  = useState<string[]>([]);
+  const [pendingTypes,  setPendingTypes]  = useState<string[]>([]);
+  const [pendingApps,   setPendingApps]   = useState<string[]>([]);
+  const [pendingColors, setPendingColors] = useState<string[]>([]);
 
   const [openKey, setOpenKey] = useState<DropdownKey | null>(null);
   const pillRef = useRef<HTMLDivElement>(null);
@@ -89,31 +88,31 @@ export function ProductsCatalog() {
 
   function toggle(key: DropdownKey) {
     if (openKey === key) { setOpenKey(null); return; }
-    if (key === "book") setPendingBooks([...appliedBooks]);
-    if (key === "type") setPendingTypes([...appliedTypes]);
-    if (key === "app")  setPendingApps([...appliedApps]);
+    if (key === "type")  setPendingTypes([...appliedTypes]);
+    if (key === "app")   setPendingApps([...appliedApps]);
+    if (key === "color") setPendingColors([...appliedColors]);
     setOpenKey(key);
   }
 
   function apply(key: DropdownKey) {
-    if (key === "book") setAppliedBooks([...pendingBooks]);
-    if (key === "type") setAppliedTypes([...pendingTypes]);
-    if (key === "app")  setAppliedApps([...pendingApps]);
+    if (key === "type")  setAppliedTypes([...pendingTypes]);
+    if (key === "app")   setAppliedApps([...pendingApps]);
+    if (key === "color") setAppliedColors([...pendingColors]);
     setOpenKey(null);
   }
 
   function applyAll() {
-    setAppliedBooks([...pendingBooks]);
     setAppliedTypes([...pendingTypes]);
     setAppliedApps([...pendingApps]);
+    setAppliedColors([...pendingColors]);
     setOpenKey(null);
   }
 
   const filtered = catalogProducts.filter(p => {
-    const matchBook = appliedBooks.length === 0 || appliedBooks.includes(p.book);
-    const matchType = appliedTypes.length === 0 || appliedTypes.includes(p.type);
-    const matchApp  = appliedApps.length  === 0 || appliedApps.includes(p.app);
-    return matchBook && matchType && matchApp;
+    const matchType  = appliedTypes.length  === 0 || (p.paperTypes ?? []).some(t => appliedTypes.includes(t));
+    const matchApp   = appliedApps.length   === 0 || (p.applications ?? []).some(a => appliedApps.includes(a));
+    const matchColor = appliedColors.length === 0 || (p.colourGroups ?? []).some(c => appliedColors.includes(c));
+    return matchType && matchApp && matchColor;
   });
 
   const grouped = BOOKS.map(book => ({
@@ -121,7 +120,7 @@ export function ProductsCatalog() {
     items: filtered.filter(p => p.book === book),
   })).filter(g => g.items.length > 0);
 
-  const hasActiveFilters = appliedBooks.length > 0 || appliedTypes.length > 0 || appliedApps.length > 0;
+  const hasActiveFilters = appliedTypes.length > 0 || appliedApps.length > 0 || appliedColors.length > 0;
 
   function pillLabel(applied: string[], placeholder: string) {
     if (applied.length === 0) return placeholder;
@@ -144,37 +143,12 @@ export function ProductsCatalog() {
             ref={pillRef}
             className={`relative flex items-stretch rounded-full shadow-2xl transition-colors duration-200 ${openKey ? "bg-[#e8e8e8]" : "bg-white"}`}
           >
-            {/* Book */}
-            <div className="relative flex-1 min-w-0">
-              <button
-                type="button"
-                onClick={() => toggle("book")}
-                className={`w-full h-full text-left px-7 py-5 transition-colors duration-200 ${sectionBtn("book", "rounded-l-full")}`}
-              >
-                <p className="font-semibold text-brand-navy text-[15px] leading-tight">Book</p>
-                <p className="text-gray-400 text-[13px] mt-1 truncate">
-                  {pillLabel(appliedBooks, "Which product range?")}
-                </p>
-              </button>
-              {openKey === "book" && (
-                <CheckboxDropdown
-                  options={BOOKS}
-                  pending={pendingBooks}
-                  setPending={setPendingBooks}
-                  showClear={true}
-                  onApply={() => apply("book")}
-                />
-              )}
-            </div>
-
-            <div className={`self-center h-10 w-px flex-shrink-0 transition-colors duration-200 ${openKey ? "bg-[#d0d0d0]" : "bg-gray-200"}`} />
-
             {/* Paper Type */}
             <div className="relative flex-1 min-w-0">
               <button
                 type="button"
                 onClick={() => toggle("type")}
-                className={`w-full h-full text-left px-7 py-5 transition-colors duration-200 ${sectionBtn("type", "rounded-2xl")}`}
+                className={`w-full h-full text-left px-7 py-5 transition-colors duration-200 ${sectionBtn("type", "rounded-l-full")}`}
               >
                 <p className="font-semibold text-brand-navy text-[15px] leading-tight">Paper Type</p>
                 <p className="text-gray-400 text-[13px] mt-1 truncate">
@@ -183,7 +157,7 @@ export function ProductsCatalog() {
               </button>
               {openKey === "type" && (
                 <CheckboxDropdown
-                  options={PRODUCT_TYPES}
+                  options={PAPER_TYPE_OPTIONS}
                   pending={pendingTypes}
                   setPending={setPendingTypes}
                   showClear={true}
@@ -208,11 +182,36 @@ export function ProductsCatalog() {
               </button>
               {openKey === "app" && (
                 <CheckboxDropdown
-                  options={APP_TYPES}
+                  options={APPLICATION_OPTIONS}
                   pending={pendingApps}
                   setPending={setPendingApps}
                   showClear={true}
                   onApply={() => apply("app")}
+                />
+              )}
+            </div>
+
+            <div className={`self-center h-10 w-px flex-shrink-0 transition-colors duration-200 ${openKey ? "bg-[#d0d0d0]" : "bg-gray-200"}`} />
+
+            {/* Colour */}
+            <div className="relative flex-1 min-w-0">
+              <button
+                type="button"
+                onClick={() => toggle("color")}
+                className={`w-full h-full text-left px-7 py-5 transition-colors duration-200 ${sectionBtn("color", "rounded-2xl")}`}
+              >
+                <p className="font-semibold text-brand-navy text-[15px] leading-tight">Colour</p>
+                <p className="text-gray-400 text-[13px] mt-1 truncate">
+                  {pillLabel(appliedColors, "White, Black, Gold…")}
+                </p>
+              </button>
+              {openKey === "color" && (
+                <CheckboxDropdown
+                  options={COLOUR_GROUP_OPTIONS}
+                  pending={pendingColors}
+                  setPending={setPendingColors}
+                  showClear={true}
+                  onApply={() => apply("color")}
                 />
               )}
             </div>
@@ -233,7 +232,7 @@ export function ProductsCatalog() {
           {/* Active filter tags */}
           {hasActiveFilters && (
             <div className="flex flex-wrap items-center gap-2 mt-4">
-              {[...appliedBooks, ...appliedTypes, ...appliedApps].map(tag => (
+              {[...appliedTypes, ...appliedApps, ...appliedColors].map(tag => (
                 <span
                   key={tag}
                   className="inline-flex items-center gap-1.5 bg-white/10 text-white text-xs font-medium px-3 py-1.5 rounded-full"
@@ -244,8 +243,8 @@ export function ProductsCatalog() {
               <button
                 type="button"
                 onClick={() => {
-                  setAppliedBooks([]); setAppliedTypes([]); setAppliedApps([]);
-                  setPendingBooks([]); setPendingTypes([]); setPendingApps([]);
+                  setAppliedTypes([]); setAppliedApps([]); setAppliedColors([]);
+                  setPendingTypes([]); setPendingApps([]); setPendingColors([]);
                 }}
                 className="text-brand-orange text-xs font-semibold hover:underline ml-1"
               >
@@ -284,53 +283,7 @@ export function ProductsCatalog() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
               {group.items.map((product, i) => (
-                <MotionDiv key={product.id} delay={0.04 + (i % 6) * 0.06}>
-                  <Link href={`/products/${product.id}`} className="group block" aria-label={`View ${product.name}`}>
-                    {/* Image container — no padding so image fills edge-to-edge */}
-                    <div
-                      className="relative rounded-2xl overflow-hidden mb-5 transition-transform duration-500 group-hover:scale-[1.02]"
-                      style={{ aspectRatio: "4/5" }}
-                    >
-                      <Image
-                        src={product.image}
-                        alt={product.name}
-                        fill
-                        unoptimized
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="object-cover"
-                      />
-                    </div>
-
-                    {/* Colour / variant badge — Figma: blue outline pill */}
-                    <div className="mb-3">
-                      <span
-                        className="inline-flex items-center border text-[11px] font-semibold tracking-widest px-3 py-1 rounded-full uppercase"
-                        style={{ color: "#00449A", borderColor: "#00449A" }}
-                      >
-                        {product.colors} {product.colors === 1 ? "COLOUR" : "COLOURS"}
-                      </span>
-                    </div>
-
-                    {/* Product name — Figma: near-black, semibold */}
-                    <h3
-                      className="font-sans font-semibold mb-2 group-hover:text-brand-orange transition-colors"
-                      style={{ fontSize: "clamp(1.5rem,2.2vw,2rem)", color: "#202020" }}
-                    >
-                      {product.name}
-                    </h3>
-
-                    {/* Description */}
-                    <p className="text-sm text-gray-500 leading-relaxed mb-5">{product.description}</p>
-
-                    {/* Explore pill */}
-                    <div className="inline-flex items-center gap-3 border border-gray-200 group-hover:border-brand-orange rounded-full pl-5 pr-1.5 py-1.5 transition-colors">
-                      <span className="text-sm font-medium text-brand-navy">Explore</span>
-                      <span className="bg-brand-orange text-white rounded-full w-7 h-7 flex items-center justify-center flex-shrink-0">
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </span>
-                    </div>
-                  </Link>
-                </MotionDiv>
+                <ProductCard key={product.id} product={product} delay={0.04 + (i % 6) * 0.06} />
               ))}
             </div>
           </div>

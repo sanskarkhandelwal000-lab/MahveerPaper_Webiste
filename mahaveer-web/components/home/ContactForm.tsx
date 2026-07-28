@@ -10,7 +10,7 @@ import { useSearchParams } from "next/navigation";
 import { contactFormSchema, type ContactFormValues } from "@/lib/validations";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
-import { RENOVATION_TYPES } from "@/lib/contactOptions";
+import { APPLICATION_TYPES } from "@/lib/contactOptions";
 
 function ProductBanner() {
   const searchParams = useSearchParams();
@@ -30,9 +30,9 @@ function ProductBanner() {
 function FormPrefiller({ setValue }: { setValue: UseFormSetValue<ContactFormValues> }) {
   const searchParams = useSearchParams();
   useEffect(() => {
-    const renovationType = searchParams.get("renovationType");
+    const applicationType = searchParams.get("applicationType");
     const message = searchParams.get("message");
-    if (renovationType) setValue("renovationType", renovationType, { shouldValidate: true });
+    if (applicationType) setValue("applicationType", applicationType, { shouldValidate: true });
     if (message) setValue("message", message, { shouldValidate: true });
   }, [searchParams, setValue]);
   return null;
@@ -264,26 +264,26 @@ export function ContactForm() {
 
             <div className="sm:col-span-2">
               <Field
-                label="Type of Renovation"
+                label="Application"
                 required
-                error={errors.renovationType?.message}
-                htmlFor="renovationType"
+                error={errors.applicationType?.message}
+                htmlFor="applicationType"
               >
                 <select
-                  id="renovationType"
+                  id="applicationType"
                   className={cn(
                     inputClass,
                     "cursor-pointer",
-                    errors.renovationType && errorInputClass
+                    errors.applicationType && errorInputClass
                   )}
                   disabled={isSubmitting}
                   defaultValue=""
-                  {...register("renovationType")}
+                  {...register("applicationType")}
                 >
                   <option value="" disabled>
                     Select…
                   </option>
-                  {RENOVATION_TYPES.map((t) => (
+                  {APPLICATION_TYPES.map((t) => (
                     <option key={t} value={t}>
                       {t}
                     </option>

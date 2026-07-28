@@ -4,13 +4,14 @@ import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import { z } from "zod";
 import {
   buildCatalogPromptContext,
+  buildKnowledgeBaseRules,
   filterByRequestedColor,
   filterCatalogByColor,
   pickFallbackProducts,
   resolveProductIds,
 } from "@/lib/chatCatalog";
 import { siteConfig } from "@/lib/config";
-import type { RenovationType } from "@/lib/contactOptions";
+import type { ApplicationType } from "@/lib/contactOptions";
 import type { AppType, CatalogProduct } from "@/data/products";
 
 const chatMessageSchema = z.object({
@@ -28,7 +29,7 @@ const replySchema = z.object({
   productIds: z.array(z.string()),
 });
 
-const APP_TO_RENOVATION_TYPE: Record<AppType, RenovationType> = {
+const APP_TO_APPLICATION_TYPE: Record<AppType, ApplicationType> = {
   Packaging: "Packaging",
   "Stationery & Print": "Printing & Publishing",
   "Digital Printing": "High-End Printing",
@@ -37,17 +38,17 @@ const APP_TO_RENOVATION_TYPE: Record<AppType, RenovationType> = {
 
 const SAMPLE_REQUEST_PATTERN = /\bsamples?\b/i;
 
-/** Builds a /contact link pre-filled with a renovation type + message brief for a sample request. */
+/** Builds a /contact link pre-filled with an application type + message brief for a sample request. */
 function buildSampleRequestHref(products: CatalogProduct[], requestText: string): string {
   const productNames = products.map((p) => p.name).join(", ");
-  const renovationType: RenovationType = products[0]
-    ? APP_TO_RENOVATION_TYPE[products[0].app]
+  const applicationType: ApplicationType = products[0]
+    ? APP_TO_APPLICATION_TYPE[products[0].app]
     : "Other";
   const message = productNames
     ? `I would like to request a sample of ${productNames}.`
     : `I would like to request a paper sample. Here's what I'm looking for: ${requestText}`;
 
-  const params = new URLSearchParams({ renovationType, message });
+  const params = new URLSearchParams({ applicationType, message });
   if (productNames) params.set("product", productNames);
   return `/contact?${params.toString()}`;
 }
@@ -63,6 +64,9 @@ Your SOLE purpose is recommending specific products from the catalogue below. Yo
 
 Catalogue (id | book | name | gsm | colours | type | application | description):
 ${catalogText}
+
+Mahaveer's own internal knowledge-base policy for this catalogue (from their product data sheet — treat these as binding facts about what is and isn't true of the range, expressed here as plain guidance rather than the sheet's original bullet/section format, since your replies stay short and conversational and product cards already carry the specs):
+${buildKnowledgeBaseRules()}
 
 Rules:
 - Only recommend products from the catalogue above. Never invent a product, id, GSM, colour count, or price.

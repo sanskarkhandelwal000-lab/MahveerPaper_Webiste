@@ -12,7 +12,7 @@ export const MotionSection = forwardRef<HTMLElement, MotionSectionProps>(
     const prefersReduced = useReducedMotion();
 
     const variants = {
-      hidden: prefersReduced ? {} : { opacity: 0, y: 32 },
+      hidden: prefersReduced ? {} : { opacity: 0, y: 22 },
       visible: { opacity: 1, y: 0 },
     };
 
@@ -22,7 +22,7 @@ export const MotionSection = forwardRef<HTMLElement, MotionSectionProps>(
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.6, delay, ease: "easeOut" }}
+        transition={{ duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }}
         variants={variants}
         {...props}
       >

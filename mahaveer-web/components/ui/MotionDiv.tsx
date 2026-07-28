@@ -16,10 +16,10 @@ export function MotionDiv({
   const prefersReduced = useReducedMotion();
 
   const offsets = {
-    up: { y: 32 },
-    down: { y: -32 },
-    left: { x: 32 },
-    right: { x: -32 },
+    up: { y: 22 },
+    down: { y: -22 },
+    left: { x: 22 },
+    right: { x: -22 },
   };
 
   const variants = {
@@ -32,7 +32,9 @@ export function MotionDiv({
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.55, delay, ease: "easeOut" }}
+      // Expo-out curve — a slow, graceful settle rather than the more
+      // mechanical default ease, kept short enough to still feel immediate.
+      transition={{ duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }}
       variants={variants}
       {...props}
     >

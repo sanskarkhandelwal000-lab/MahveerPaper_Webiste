@@ -1,4 +1,4 @@
-import { catalogProducts, type AppType } from "@/data/products";
+import { catalogProducts, AI_KNOWLEDGE_BASE, type AppType } from "@/data/products";
 
 /**
  * Compact, token-efficient serialization of the catalog for the chatbot's
@@ -9,10 +9,49 @@ export function buildCatalogPromptContext(
   products: typeof catalogProducts = catalogProducts
 ): string {
   return products
-    .map(
-      (p) =>
-        `${p.id} | ${p.book} | ${p.name} | ${p.gsm} | ${p.colors} colour(s) | ${p.type} | ${p.app} | ${p.description}`
-    )
+    .map((p) => {
+      const sizeText = p.sizes ? ` | sizes: ${p.sizes}` : "";
+      const base = `${p.id} | ${p.book} | ${p.name} | ${p.gsm}${sizeText} | ${p.colors} colour(s) | ${p.type} | ${p.app} | ${p.description}`;
+      // Only the "Excellent" suitability entries — these are the uses this
+      // family is genuinely best positioned for, per the source spreadsheet's
+      // own ranking, not just anything it's merely compatible with.
+      const bestApplications = (p.applicationSuitability ?? [])
+        .filter((a) => a.suitability === "Excellent")
+        .map((a) => a.application);
+      // Only surface finishing/printing processes explicitly flagged as NOT
+      // recommended — this is what actually prevents a bad recommendation
+      // (e.g. Spot UV), rather than listing every compatible process.
+      const unsuitableProcesses = [
+        ...Object.entries(p.printingCompatibility ?? {}),
+        ...Object.entries(p.finishingCompatibility ?? {}),
+      ]
+        .filter(([, v]) => /not recommended/i.test(v))
+        .map(([k]) => k);
+      const extras = [
+        p.brand && `Brand: ${p.brand}`,
+        p.bestFor && `Best for: ${p.bestFor}`,
+        bestApplications.length && `Excels at: ${bestApplications.join(", ")}`,
+        p.aiSummary && `Recommendation notes: ${p.aiSummary}`,
+        p.sustainabilityNote && `Sustainability: ${p.sustainabilityNote}`,
+        unsuitableProcesses.length && `Not recommended for: ${unsuitableProcesses.join(", ")}`,
+        p.customerWarning && `Caution: ${p.customerWarning}`,
+      ].filter(Boolean);
+      return extras.length ? `${base}\n  ${extras.join(" | ")}` : base;
+    })
+    .join("\n");
+}
+
+/**
+ * The source spreadsheet's own "AI Knowledge Base" sheet — behavioural rules
+ * its authors defined for how the chatbot should recommend and talk about
+ * products (only recommend Active stock, never claim unverified specs, warn
+ * about dark-paper CMYK visibility, etc). Rendered as plain instructions so
+ * the system prompt is grounded in the sheet's stated policy rather than
+ * rules invented independently in code.
+ */
+export function buildKnowledgeBaseRules(): string {
+  return AI_KNOWLEDGE_BASE
+    .map((r) => `- [${r.category}] ${r.rule}${r.notes ? ` (${r.notes})` : ""}`)
     .join("\n");
 }
 
@@ -35,14 +74,18 @@ export function resolveProductIds(ids: unknown): typeof catalogProducts {
 }
 
 /**
- * Colour words that actually appear in catalogue product names/descriptions.
- * Used as a deterministic backstop so a mismatched colour (e.g. a "Black"
- * product surfaced for a "white" request) can never reach the user even if
- * the model's own colour reasoning slips — the LLM can't be trusted to
- * self-enforce a negative constraint like this on every turn.
+ * Colour words a visitor might type, matched against each product's real
+ * `colorNames` (sourced from the catalogue spreadsheet's Colour Name column)
+ * rather than guessed from name/description prose — several product names no
+ * longer contain their colour at all (e.g. "VTC" used to be "VTC Black"), so
+ * text-scanning would silently stop catching conflicts. This is a
+ * deterministic backstop so a mismatched colour can never reach the user even
+ * if the model's own colour reasoning slips.
  */
 const CATALOG_COLOR_WORDS = [
   "white", "black", "cream", "ivory", "gold", "grey", "gray", "natural", "brown",
+  "blue", "green", "red", "pink", "orange", "yellow", "purple", "violet",
+  "metallic", "maroon", "turquoise", "petrol", "silver",
 ];
 
 function colorWordsIn(text: string): Set<string> {
@@ -51,10 +94,24 @@ function colorWordsIn(text: string): Set<string> {
 }
 
 /**
- * Drops any product whose name/description names a catalogue colour that
- * conflicts with a colour explicitly requested in the visitor's message.
- * Products with no colour word in their text (colour-neutral, or only
- * described by the count-only `colors` field) are left untouched.
+ * A few `colorNames` in the sheet are Italian (Favini convention, e.g. "Nero").
+ * Translated only for matching purposes here — the raw name stays as-is in the
+ * data itself so the product detail page's swatch grid shows one card per real
+ * colour instead of a duplicate English/Italian pair.
+ */
+const ITALIAN_TO_ENGLISH_COLOR: Record<string, string> = {
+  Nero: "Black", Bianco: "White", Verde: "Green", Blu: "Blue", Marrone: "Brown", Rosso: "Red", Grigio: "Grey",
+};
+
+function colorNamesForMatching(names: string[]): string[] {
+  return names.flatMap((n) => (ITALIAN_TO_ENGLISH_COLOR[n] ? [n, ITALIAN_TO_ENGLISH_COLOR[n]] : [n]));
+}
+
+/**
+ * Drops any product whose known colour names conflict with a colour
+ * explicitly requested in the visitor's message. Products with no colour
+ * words among their `colorNames` (colour-neutral, or missing colour data
+ * entirely) are left untouched rather than assumed to conflict.
  */
 export function filterByRequestedColor(
   products: typeof catalogProducts,
@@ -64,7 +121,8 @@ export function filterByRequestedColor(
   if (requested.size === 0) return products;
 
   return products.filter((p) => {
-    const productColors = colorWordsIn(`${p.name} ${p.description}`);
+    const known = p.colorNames?.length ? colorNamesForMatching(p.colorNames) : [p.name, p.description];
+    const productColors = colorWordsIn(known.join(" "));
     if (productColors.size === 0) return true;
     return [...requested].some((c) => productColors.has(c));
   });

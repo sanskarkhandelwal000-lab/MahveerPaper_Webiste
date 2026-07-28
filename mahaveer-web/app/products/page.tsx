@@ -23,7 +23,7 @@ export default function ProductsPage() {
           aria-label="Products hero"
         >
           <Image
-            src="/figma/hero-bg.jpg"
+            src="/images/banners/products-banner.jpg"
             alt=""
             fill
             priority

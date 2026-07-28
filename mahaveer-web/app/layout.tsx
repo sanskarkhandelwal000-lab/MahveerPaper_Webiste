@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Newsreader, Manrope, Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { ScrollRestorationFix } from "@/components/providers/ScrollRestorationFix";
 import { ChatWidget } from "@/components/chat/ChatWidget";
 import { siteConfig } from "@/lib/config";
 import "./globals.css";
@@ -80,6 +81,7 @@ export default function RootLayout({
     >
       <body className="min-h-screen bg-white font-sans antialiased">
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+          <ScrollRestorationFix />
           {children}
           <ChatWidget />
           <Toaster richColors position="top-right" />

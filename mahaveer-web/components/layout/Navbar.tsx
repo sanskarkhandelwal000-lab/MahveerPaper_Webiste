@@ -11,6 +11,7 @@ import { siteConfig } from "@/lib/config";
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -22,8 +23,24 @@ export function Navbar() {
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
+  // Subtle border/shadow once the page has scrolled — a small cue that the
+  // bar is floating above content, without changing its colour or height.
+  useEffect(() => {
+    function onScroll() {
+      setScrolled(window.scrollY > 8);
+    }
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 bg-black">
+    <header
+      className={cn(
+        "sticky top-0 z-50 bg-black border-b transition-[border-color,box-shadow] duration-300",
+        scrolled ? "border-white/10 shadow-[0_8px_24px_-16px_rgba(0,0,0,0.6)]" : "border-transparent"
+      )}
+    >
       <nav
         className="container-max section-padding flex h-[92px] items-center justify-between"
         aria-label="Main navigation"
@@ -54,13 +71,20 @@ export function Navbar() {
               <Link
                 href={item.href}
                 className={cn(
-                  "text-lg font-normal transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange rounded-sm px-1",
+                  "group relative text-lg font-normal transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange rounded-sm px-1",
                   pathname === item.href
                     ? "text-brand-orange"
                     : "text-brand-light hover:text-white"
                 )}
               >
                 {item.label}
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    "absolute left-1 right-1 -bottom-1 h-px bg-current origin-left transition-transform duration-300 ease-out",
+                    pathname === item.href ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                  )}
+                />
               </Link>
             </li>
           ))}

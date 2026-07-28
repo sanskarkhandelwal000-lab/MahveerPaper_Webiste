@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { fullName, email, phone, projectLocation, renovationType, message } = parsed.data;
+    const { fullName, email, phone, projectLocation, applicationType, message } = parsed.data;
 
     const accessKey = process.env.WEB3FORMS_ACCESS_KEY;
     if (!accessKey) {
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
 
     const payload = {
       access_key: accessKey,
-      subject: `New Enquiry from ${fullName} – ${renovationType}`,
+      subject: `New Enquiry from ${fullName} – ${applicationType}`,
       from_name: "Mahaveer Papers Website",
       // Reply-to goes to the person who filled the form
       replyto: email,
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
       email,
       phone: phone || "—",
       location: projectLocation,
-      category: renovationType,
+      category: applicationType,
       message,
     };
 
