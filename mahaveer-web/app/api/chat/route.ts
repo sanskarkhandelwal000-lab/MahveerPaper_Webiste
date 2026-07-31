@@ -11,8 +11,7 @@ import {
   resolveProductIds,
 } from "@/lib/chatCatalog";
 import { siteConfig } from "@/lib/config";
-import type { ApplicationType } from "@/lib/contactOptions";
-import type { AppType, CatalogProduct } from "@/data/products";
+import type { CatalogProduct } from "@/data/products";
 
 const chatMessageSchema = z.object({
   role: z.enum(["user", "assistant"]),
@@ -29,21 +28,12 @@ const replySchema = z.object({
   productIds: z.array(z.string()),
 });
 
-const APP_TO_APPLICATION_TYPE: Record<AppType, ApplicationType> = {
-  Packaging: "Packaging",
-  "Stationery & Print": "Printing & Publishing",
-  "Digital Printing": "High-End Printing",
-  "Covering & Binding": "Industrial / Specialty",
-};
-
 const SAMPLE_REQUEST_PATTERN = /\bsamples?\b/i;
 
 /** Builds a /contact link pre-filled with an application type + message brief for a sample request. */
 function buildSampleRequestHref(products: CatalogProduct[], requestText: string): string {
   const productNames = products.map((p) => p.name).join(", ");
-  const applicationType: ApplicationType = products[0]
-    ? APP_TO_APPLICATION_TYPE[products[0].app]
-    : "Other";
+  const applicationType: string = products[0]?.app ?? "Other";
   const message = productNames
     ? `I would like to request a sample of ${productNames}.`
     : `I would like to request a paper sample. Here's what I'm looking for: ${requestText}`;
