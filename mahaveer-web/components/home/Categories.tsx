@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowUpRight, ChevronLeft, ChevronRight, ImageOff } from "lucide-react";
 import { motion } from "framer-motion";
 import { categories } from "@/data/categories";
 
@@ -87,13 +87,20 @@ export function Categories() {
               aria-label={`Explore ${cat.title}`}
             >
               <div className="relative aspect-[3/4] overflow-hidden bg-gray-100">
-                <Image
-                  src={cat.image}
-                  alt={cat.title}
-                  fill
-                  sizes="(max-width: 640px) 72vw, (max-width: 1024px) 320px, 360px"
-                  className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                />
+                {cat.image ? (
+                  <Image
+                    src={cat.image}
+                    alt={cat.title}
+                    fill
+                    sizes="(max-width: 640px) 72vw, (max-width: 1024px) 320px, 360px"
+                    className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                  />
+                ) : (
+                  <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-gray-400">
+                    <ImageOff className="h-8 w-8" strokeWidth={1.5} />
+                    <span className="text-xs font-medium">Photo coming soon</span>
+                  </div>
+                )}
               </div>
               <div className="pt-6">
                 <h3 className="font-sans font-normal text-brand-orange text-2xl lg:text-[32px] leading-[1.2] lg:leading-[38.4px] tracking-[-0.64px] mb-2">

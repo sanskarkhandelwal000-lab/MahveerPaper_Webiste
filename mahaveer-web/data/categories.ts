@@ -29,11 +29,12 @@ const BOOK_IMAGE_OVERRIDE: Partial<Record<BookName, string>> = {
   Coverings: "/images/favini/classy-cover.jpg",
 };
 
-function representativeImage(book: BookName): string {
-  if (BOOK_IMAGE_OVERRIDE[book]) return BOOK_IMAGE_OVERRIDE[book]!;
-  const productsInBook = catalogProducts.filter((p) => p.book === book);
-  const withRealPhoto = productsInBook.find((p) => !p.image.includes("pending-photo"));
-  return (withRealPhoto ?? productsInBook[0])?.image ?? "/swatches/pending-photo.jpg";
+// Only Favini families have a real photo now — some books (Blacks & Krafts,
+// Speciality, Core Board) have no Favini member at all, so this legitimately
+// returns undefined for those; Categories.tsx renders a placeholder instead.
+function representativeImage(book: BookName): string | undefined {
+  if (BOOK_IMAGE_OVERRIDE[book]) return BOOK_IMAGE_OVERRIDE[book];
+  return catalogProducts.find((p) => p.book === book && p.image)?.image;
 }
 
 export const categories: Category[] = BOOKS.map((book) => ({

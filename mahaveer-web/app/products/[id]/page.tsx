@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Mail } from "lucide-react";
+import { Mail, ImageOff } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { MotionDiv } from "@/components/ui/MotionDiv";
@@ -118,24 +118,57 @@ export default async function ProductPage({ params }: Props) {
 
           {/* Swatch grid — Figma: square texture, envelope chip, blue GSM pill, name */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-12">
-            {swatches.map((swatch, i) => (
+            {swatches.map((swatch, i) => {
+              // A real per-colour photo (client-provided, already the true
+              // colour) always wins and is never tinted. The family `image` +
+              // CSS tint fallback is ONLY valid for Favini's plain texture
+              // shots — those have no colour name printed on them, unlike
+              // Mahaveer's own label photos, which would show the wrong
+              // colour's name baked into every other swatch if reused this way.
+              const colorImage = product.colorImages?.[swatch.name];
+              const useTintedFamilyImage = !colorImage && !!product.image && !!product.isFavini && !!swatch.hex;
+              const plainHexBlock = !colorImage && !useTintedFamilyImage && !!swatch.hex;
+
+              return (
               <MotionDiv key={`${swatch.name}-${i}`} delay={0.04 + (i % 4) * 0.05}>
-                <div className="relative overflow-hidden rounded-sm" style={{ aspectRatio: "1/1" }}>
-                  <Image
-                    src={product.image}
-                    alt={`${product.name} — ${swatch.name}`}
-                    fill
-                    unoptimized
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    className="object-cover"
-                  />
-                  {swatch.hex && (
-                    <div
-                      className="absolute inset-0"
-                      style={{ backgroundColor: swatch.hex, mixBlendMode: "color" }}
-                      aria-hidden="true"
+                <div
+                  className="relative overflow-hidden rounded-sm"
+                  style={{
+                    aspectRatio: "1/1",
+                    backgroundColor: plainHexBlock ? swatch.hex : undefined,
+                  }}
+                >
+                  {colorImage ? (
+                    <Image
+                      src={colorImage}
+                      alt={`${product.name} — ${swatch.name}`}
+                      fill
+                      unoptimized
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                      className="object-cover"
                     />
-                  )}
+                  ) : useTintedFamilyImage ? (
+                    <>
+                      <Image
+                        src={product.image!}
+                        alt={`${product.name} — ${swatch.name}`}
+                        fill
+                        unoptimized
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                        className="object-cover"
+                      />
+                      <div
+                        className="absolute inset-0"
+                        style={{ backgroundColor: swatch.hex, mixBlendMode: "color" }}
+                        aria-hidden="true"
+                      />
+                    </>
+                  ) : !plainHexBlock ? (
+                    <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-gray-100 text-gray-400">
+                      <ImageOff className="h-7 w-7" strokeWidth={1.5} />
+                      <span className="text-[11px] font-medium">Photo coming soon</span>
+                    </div>
+                  ) : null}
                   <span className="absolute bottom-2 right-2 flex h-6 w-7 items-center justify-center rounded-[4px] bg-white shadow-sm">
                     <Mail className="h-3.5 w-3.5 text-gray-700" />
                   </span>
@@ -163,7 +196,8 @@ export default async function ProductPage({ params }: Props) {
                   {swatch.name}
                 </h3>
               </MotionDiv>
-            ))}
+              );
+            })}
           </div>
         </section>
 

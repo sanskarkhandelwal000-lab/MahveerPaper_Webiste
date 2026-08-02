@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Sparkles } from "lucide-react";
+import { ArrowUpRight, ImageOff, Sparkles } from "lucide-react";
 import type { CatalogProduct } from "@/data/products";
 import { cn } from "@/lib/utils";
 
@@ -142,13 +142,19 @@ export function ProductCard({ product }: { product: CatalogProduct }) {
       className="group flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-2.5 transition-colors hover:border-brand-orange hover:shadow-sm"
     >
       <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-gray-100">
-        <Image
-          src={product.image}
-          alt={product.name}
-          fill
-          sizes="48px"
-          className="object-cover"
-        />
+        {product.image ? (
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            sizes="48px"
+            className="object-cover"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-gray-400">
+            <ImageOff className="h-4 w-4" strokeWidth={1.5} />
+          </div>
+        )}
       </div>
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-medium text-brand-ink">{product.name}</p>

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ImageOff } from "lucide-react";
 import { MotionDiv } from "@/components/ui/MotionDiv";
 import type { CatalogProduct } from "@/data/products";
 
@@ -13,14 +13,21 @@ export function ProductCard({ product, delay = 0 }: { product: CatalogProduct; d
           className="relative rounded-2xl overflow-hidden mb-5 transition-transform duration-500 group-hover:scale-[1.02]"
           style={{ aspectRatio: "4/5" }}
         >
-          <Image
-            src={product.image}
-            alt={product.name}
-            fill
-            unoptimized
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover"
-          />
+          {product.image ? (
+            <Image
+              src={product.image}
+              alt={product.name}
+              fill
+              unoptimized
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover"
+            />
+          ) : (
+            <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-gray-100 text-gray-400">
+              <ImageOff className="h-8 w-8" strokeWidth={1.5} />
+              <span className="text-xs font-medium">Photo coming soon</span>
+            </div>
+          )}
         </div>
 
         {/* Colour / variant badge — Figma: blue outline pill */}

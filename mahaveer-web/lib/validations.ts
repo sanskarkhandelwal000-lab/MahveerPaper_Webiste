@@ -34,7 +34,7 @@ export const categorySchema = z.object({
   id: z.string(),
   title: z.string(),
   description: z.string(),
-  image: z.string(),
+  image: z.string().optional(),
   href: z.string(),
   tag: z.string().optional(),
 });
