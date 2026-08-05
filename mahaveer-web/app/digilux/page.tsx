@@ -25,13 +25,13 @@ const ELEVATE_BROWN = "#6E5A36"; // elevate heading
 
 const portfolioItems = [
   "Premium white boards",
-  "Texture Papers & Board (White & Ivory)",
+  "Texture Papers & Boards",
   "Metallic Papers & Board",
-  "Non-Tearable Synthetic Sheets",
-  "Cromo & Mirror Coat Boards",
-  "Gold & Silver Boards",
+  "Non Tearable & Clear Synthetic Sheets",
+  "Chromo & Mirror Coat Self-Adhesive Sheets",
+  "Gold & Silver Self-Adhesive Sheets",
   "PVC-Based Self-Adhesive Sheets",
-  "Specialty Print Media for Digital Production",
+  "Speciality Labels",
 ];
 
 const whyItems = [
