@@ -119,3 +119,14 @@
     transform: scale(1.06);
   }
 }
+
+/* Hero carousel progress segments — fills left-to-right over one slide's
+   dwell time, restarted (via React key) on every slide change. */
+@keyframes hero-progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}

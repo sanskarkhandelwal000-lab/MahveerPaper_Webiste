@@ -106,7 +106,7 @@ export function ContactForm() {
       reset();
     } catch {
       toast.error("Something went wrong", {
-        description: "Please try again or email us directly at mppapier@yahoo.co.in",
+        description: `Please try again or email us directly at ${siteConfig.contact.emails[0]}`,
       });
     }
   };
@@ -135,11 +135,11 @@ export function ContactForm() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
           {/* Left: image + contact info */}
           <div className="flex flex-col gap-6">
-            {/* Brand-colour paper photo — blue & orange folded sheets */}
+            {/* Paper mill — kraft rolls and finished packaging */}
             <div className="relative h-64 lg:h-80 rounded-2xl overflow-hidden bg-brand-navy">
               <Image
-                src="/figma/contact-paper.jpg"
-                alt="Blue and orange folded paper sheets"
+                src="/images/mahaveer/lets-talk.jpg"
+                alt="Mahaveer Papers production floor — kraft paper rolls and packaging"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
@@ -163,7 +163,7 @@ export function ContactForm() {
                 </div>
               </a>
               <a
-                href={`mailto:${siteConfig.contact.emails[1]}`}
+                href={`mailto:${siteConfig.contact.emails[0]}`}
                 className="flex items-center gap-3 group"
               >
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-orange/10 group-hover:bg-brand-orange transition-colors shrink-0">
@@ -172,7 +172,7 @@ export function ContactForm() {
                 <div>
                   <p className="text-lg font-medium text-brand-ink">Email Us</p>
                   <p className="text-base text-brand-body">
-                    {siteConfig.contact.emails[1]}
+                    {siteConfig.contact.emails[0]}
                   </p>
                 </div>
               </a>
@@ -201,7 +201,7 @@ export function ContactForm() {
               <input
                 id="fullName"
                 type="text"
-                placeholder="Jane Smith"
+                placeholder="Rahul Mehta"
                 autoComplete="name"
                 className={cn(inputClass, errors.fullName && errorInputClass)}
                 disabled={isSubmitting}
@@ -218,7 +218,7 @@ export function ContactForm() {
               <input
                 id="email"
                 type="email"
-                placeholder="jane@framer.com"
+                placeholder="rahul@yourcompany.com"
                 autoComplete="email"
                 className={cn(inputClass, errors.email && errorInputClass)}
                 disabled={isSubmitting}
@@ -234,7 +234,7 @@ export function ContactForm() {
               <input
                 id="phone"
                 type="tel"
-                placeholder="+1 (951) 239 0523"
+                placeholder="+91 98765 43210"
                 autoComplete="tel"
                 className={cn(inputClass, errors.phone && errorInputClass)}
                 disabled={isSubmitting}
@@ -243,7 +243,7 @@ export function ContactForm() {
             </Field>
 
             <Field
-              label="Project Location"
+              label="City"
               required
               error={errors.projectLocation?.message}
               htmlFor="projectLocation"
@@ -251,7 +251,7 @@ export function ContactForm() {
               <input
                 id="projectLocation"
                 type="text"
-                placeholder="California"
+                placeholder="Bengaluru"
                 autoComplete="address-level2"
                 className={cn(
                   inputClass,
@@ -330,7 +330,7 @@ export function ContactForm() {
                   </>
                 ) : (
                   <>
-                    <span>Request Free Quote</span>
+                    <span>Check Price & Availability</span>
                     <span className="btn-icon-badge h-8 w-8">
                       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                         <path d="M2 7h10M8 3l4 4-4 4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

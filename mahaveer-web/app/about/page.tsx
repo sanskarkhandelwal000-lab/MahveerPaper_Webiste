@@ -5,7 +5,6 @@ import { ChevronRight } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { About } from "@/components/home/About";
-import { Testimonials } from "@/components/home/Testimonials";
 import { CTA } from "@/components/home/CTA";
 import { FAQ } from "@/components/home/FAQ";
 import { ContactForm } from "@/components/home/ContactForm";
@@ -26,12 +25,12 @@ export default function AboutPage() {
       <main id="main-content" tabIndex={-1} className="scroll-mt-[92px]">
         {/* ── HERO ── */}
         <section
-          className="relative min-h-[75vh] flex items-end overflow-hidden pb-20 lg:pb-28"
+          className="relative min-h-screen flex items-end overflow-hidden pb-20 lg:pb-28"
           aria-label="About hero"
         >
-          {/* Background photo — Figma: abstract dark paper-wave render */}
+          {/* Background photo — layered paper-stock swatches */}
           <Image
-            src="/figma/about-hero-bg.jpg"
+            src="/images/mahaveer/about-hero.jpg"
             alt=""
             fill
             priority
@@ -51,10 +50,9 @@ export default function AboutPage() {
 
           <div className="relative z-10 container-max section-padding pt-32 w-full">
             <div className="max-w-3xl">
-              {/* Figma/Framer: "Industry that choose us", Newsreader 400, fs 104/lh 104, ls -2.08px */}
+              {/* Revision brief: "Industry that choose us" → "Industries that trust us" (copy only, styling unchanged) */}
               <MotionDiv>
                 <h1 className="font-display italic text-white mb-6">
-                  {/* "Industry" line 1 (orange, not italic), "that choose us" line 2 (italic white) */}
                   <span
                     className="block text-brand-orange not-italic font-normal"
                     style={{
@@ -63,7 +61,7 @@ export default function AboutPage() {
                       letterSpacing: "-0.02em",
                     }}
                   >
-                    Industry
+                    Industries
                   </span>
                   <span
                     className="block font-normal"
@@ -73,20 +71,20 @@ export default function AboutPage() {
                       letterSpacing: "-0.02em",
                     }}
                   >
-                    that choose us
+                    that trust us
                   </span>
                 </h1>
               </MotionDiv>
 
               <MotionDiv delay={0.1}>
                 <p className="text-white/80 text-base leading-relaxed mb-3 max-w-lg">
-                  Engineered paper solutions crafted for performance, consistency, and
-                  scale—trusted by businesses that demand more from every sheet.
+                  Since 1992, Mahaveer Papers has helped printers, designers, packaging
+                  converters and brands choose the right paper for every idea.
                 </p>
                 <p className="text-white/60 text-sm leading-relaxed mb-10 max-w-lg">
-                  From fine printing to industrial applications, Mahaveer Papers delivers
-                  precision-made paper products designed to elevate quality, efficiency,
-                  and reliability across industries.
+                  Explore curated speciality papers from trusted global mills, backed by
+                  ready stock, our Bengaluru–Ahmedabad presence and 30+ years of practical
+                  print and application guidance.
                 </p>
               </MotionDiv>
 
@@ -111,8 +109,10 @@ export default function AboutPage() {
         {/* ── CTA ── */}
         <CTA />
 
-        {/* ── TESTIMONIALS ── */}
-        <Testimonials />
+        {/* Testimonials intentionally omitted — revision brief: remove the
+            testimonial section until genuine client quotes, projects or
+            approved logos are available (the placeholder copy referenced a
+            home-renovation brand and US locations). */}
 
         {/* ── FAQ ── */}
         <FAQ />

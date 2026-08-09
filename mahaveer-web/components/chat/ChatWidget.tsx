@@ -18,9 +18,28 @@ export function ChatWidget() {
     if (open) inputRef.current?.focus();
   }, [open]);
 
+  // Revision brief: the greeting bubble was reappearing on every page load.
+  // Show it at most once per browser session (sessionStorage survives
+  // client-side navigation and full page reloads within the same tab, but
+  // resets on a new session), rather than once per component mount.
   useEffect(() => {
+    let alreadyGreeted = false;
+    try {
+      alreadyGreeted = sessionStorage.getItem("mpa-greeted") === "1";
+    } catch {
+      // sessionStorage unavailable (e.g. privacy mode) — fall back to showing once per mount
+    }
+    if (alreadyGreeted) return;
+
     const timer = setTimeout(() => {
-      if (!hasOpenedRef.current) setShowTeaser(true);
+      if (!hasOpenedRef.current) {
+        setShowTeaser(true);
+        try {
+          sessionStorage.setItem("mpa-greeted", "1");
+        } catch {
+          // ignore — non-critical
+        }
+      }
     }, 1500);
     return () => clearTimeout(timer);
   }, []);

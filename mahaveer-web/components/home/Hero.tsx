@@ -32,17 +32,21 @@ export function Hero() {
   const prefersReduced = useReducedMotion();
   const [activeSlide, setActiveSlide] = useState(0);
 
+  // Self-resetting timeout (rather than a plain interval) so the timer — and
+  // the progress bar's fill animation, which restarts via the `activeSlide`
+  // key — stay perfectly in sync whether a slide change comes from autoplay
+  // or a manual click on a segment.
   useEffect(() => {
     if (prefersReduced) return;
-    const interval = setInterval(() => {
+    const timer = setTimeout(() => {
       setActiveSlide((i) => (i + 1) % HERO_SLIDES.length);
     }, SLIDE_INTERVAL_MS);
-    return () => clearInterval(interval);
-  }, [prefersReduced]);
+    return () => clearTimeout(timer);
+  }, [activeSlide, prefersReduced]);
 
   return (
     <section
-      className="relative min-h-[600px] lg:aspect-[1920/1037] flex items-center overflow-hidden bg-black"
+      className="relative min-h-screen flex items-center overflow-hidden bg-black"
       aria-label="Hero"
     >
       {/* Background carousel — all slides stay mounted and pre-loaded; only
@@ -67,7 +71,7 @@ export function Hero() {
 
       <div
         className="relative z-10 flex w-full flex-col gap-8 md:gap-16 lg:gap-[128px]
-                   pt-16 sm:pt-24 lg:pt-[230px] pb-10 lg:pb-[60px]
+                   pt-28 sm:pt-32 lg:pt-[230px] pb-10 lg:pb-[60px]
                    px-4 sm:px-8 lg:px-10 lg:mx-auto lg:max-w-[1200px]"
       >
         <motion.div
@@ -76,16 +80,16 @@ export function Hero() {
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="flex w-full max-w-[818px] flex-col"
         >
-          {/* Two-line heading — Newsreader, orange regular + white italic */}
+          {/* Two-line heading — Newsreader, orange regular + white italic (unchanged styling) */}
           <motion.h1
             variants={prefersReduced ? {} : itemVariants}
             className="flex flex-col gap-2 lg:gap-3 font-display text-display-xl tracking-[-0.02em]"
           >
             <span className="not-italic font-normal leading-[1] text-brand-orange">
-              The Foundation
+              Speciality papers.
             </span>
             <span className="italic font-normal leading-[1] text-white">
-              of Exceptional Print
+              Beyond ordinary.
             </span>
           </motion.h1>
         </motion.div>
@@ -99,23 +103,57 @@ export function Hero() {
         >
           <div className="flex w-full max-w-[570px] flex-col gap-[27px] font-sans text-[18px] leading-[27px] text-[#f5f5f5]">
             <p>
-              Engineered paper solutions crafted for performance, consistency, and
-              scale—trusted by businesses that demand more from every sheet.
+              Since 1992, Mahaveer Papers has helped printers, designers, packaging
+              converters and brands choose the right paper for every idea.
             </p>
             <p>
-              From fine printing to industrial applications, Mahaveer Papers delivers
-              precision-made paper products designed to elevate quality, efficiency,
-              and reliability across industries.
+              Explore premium papers from trusted global mills, supported by ready
+              stock and practical print and application guidance.
             </p>
           </div>
 
-          <Link href="/contact" className="btn-primary">
-            Request Free Quote
+          <Link href="/products" className="btn-primary">
+            Explore Papers
             <span className="btn-icon-badge">
               <ArrowRight className="h-5 w-5" />
             </span>
           </Link>
         </motion.div>
+      </div>
+
+      {/* Slide progress — segmented bar doubles as a slide count/position
+          indicator and a click-to-jump control. Filled segments = watched,
+          animating segment = current (fills over one dwell period), empty = upcoming. */}
+      <div
+        className="absolute bottom-6 right-4 z-10 flex items-center gap-2 sm:right-8 lg:right-10"
+        role="tablist"
+        aria-label="Hero slides"
+      >
+        {HERO_SLIDES.map((src, i) => (
+          <button
+            key={src}
+            type="button"
+            role="tab"
+            aria-selected={i === activeSlide}
+            aria-label={`Go to slide ${i + 1} of ${HERO_SLIDES.length}`}
+            onClick={() => setActiveSlide(i)}
+            className="relative h-[3px] w-8 overflow-hidden rounded-full bg-white/25 transition-colors hover:bg-white/40 sm:w-10"
+          >
+            {i < activeSlide && <span className="absolute inset-0 bg-white/80" aria-hidden="true" />}
+            {i === activeSlide && (
+              <span
+                key={activeSlide}
+                className="absolute inset-y-0 left-0 bg-white"
+                style={
+                  prefersReduced
+                    ? { width: "100%" }
+                    : { animation: `hero-progress ${SLIDE_INTERVAL_MS}ms linear forwards` }
+                }
+                aria-hidden="true"
+              />
+            )}
+          </button>
+        ))}
       </div>
     </section>
   );

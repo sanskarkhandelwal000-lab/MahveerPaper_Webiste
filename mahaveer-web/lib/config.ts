@@ -1,8 +1,10 @@
 export const siteConfig = {
   name: "Mahaveer Papers",
-  tagline: "Your trusted partner in paper manufacturing and distribution.",
+  // Positioning per Aug 2026 revision brief: Mahaveer is a speciality-paper
+  // merchant, stockist, curator and distributor — not a manufacturer.
+  tagline: "Your trusted partner in speciality-paper sourcing, stocking and distribution.",
   description:
-    "Mahaveer Papers delivers precision-made paper products designed to elevate quality, efficiency, and reliability across industries.",
+    "Since 1992, Mahaveer Papers has helped printers, designers, packaging converters and brands choose the right paper for every idea — curated global ranges, ready stock and practical print guidance.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://mahaveerpapers.com",
   contact: {
     phones: ["080 49891846", "080 42100469"],
@@ -36,7 +38,7 @@ export const siteConfig = {
     { label: "Blog", href: "/blog" },
   ],
   stats: [
-    { value: "14+", label: "Years of Experience" },
-    { value: "97%", label: "Client Retention Rate" },
+    { value: "1992", label: "Est. — 30+ Years of Speciality-Paper Expertise" },
+    { value: "2", label: "Offices — Bengaluru & Ahmedabad" },
   ],
 } as const;

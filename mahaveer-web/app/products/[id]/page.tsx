@@ -62,7 +62,7 @@ export default async function ProductPage({ params }: Props) {
           aria-label="Products hero"
         >
           <Image
-            src="/images/banners/products-banner.jpg"
+            src="/images/mahaveer/products-hero.jpg"
             alt=""
             fill
             priority

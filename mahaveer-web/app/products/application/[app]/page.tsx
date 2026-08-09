@@ -47,7 +47,7 @@ export default async function ApplicationPage({ params }: Props) {
           aria-label="Products hero"
         >
           <Image
-            src="/images/banners/products-banner.jpg"
+            src="/images/mahaveer/products-hero.jpg"
             alt=""
             fill
             priority
@@ -95,7 +95,7 @@ export default async function ApplicationPage({ params }: Props) {
               {appType}
             </h2>
             <p className="text-gray-400 font-normal mt-1" style={{ fontSize: "clamp(1rem,1.5vw,1.25rem)" }}>
-              {products.length} Product
+              {products.length} {products.length === 1 ? "Product" : "Products"}
             </p>
           </div>
 

@@ -91,7 +91,7 @@ export function Services() {
             </MotionDiv>
             <MotionDiv delay={0.2}>
               <Link href="/contact" className="btn-primary w-fit">
-                Request Free Quote
+                Check Price & Availability
                 <span className="btn-icon-badge">
                   <ArrowRight className="h-5 w-5" />
                 </span>

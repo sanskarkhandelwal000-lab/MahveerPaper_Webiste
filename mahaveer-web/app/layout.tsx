@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   keywords: [
-    "paper manufacturer",
+    "speciality paper stockist",
     "paper distributor",
     "Mahaveer Papers",
     "packaging paper",

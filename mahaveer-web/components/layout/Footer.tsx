@@ -1,7 +1,9 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Phone, Mail, ChevronRight } from "lucide-react";
 import { siteConfig } from "@/lib/config";
 import { MotionSection } from "@/components/ui/MotionSection";
+import { MotionDiv } from "@/components/ui/MotionDiv";
 
 function FacebookIcon({ className }: { className?: string }) {
   return (
@@ -36,62 +38,100 @@ const quickLinks = [
 
 export function Footer() {
   return (
-    <footer className="bg-brand-navy text-white" aria-labelledby="footer-heading">
+    <footer className="relative overflow-hidden bg-brand-navy text-white" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">Footer</h2>
 
-      <MotionSection className="container-max section-padding py-14 lg:py-16">
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
+      {/* Hairline gradient accent at the very top edge, instead of a flat border */}
+      <div
+        className="absolute inset-x-0 top-0 h-px"
+        style={{ background: "linear-gradient(90deg, transparent 0%, rgba(234,88,12,0.5) 50%, transparent 100%)" }}
+        aria-hidden="true"
+      />
+      {/* Soft radial glow — subtle depth instead of a flat solid navy fill */}
+      <div
+        className="pointer-events-none absolute -top-1/2 left-1/4 h-[600px] w-[600px] rounded-full opacity-[0.07]"
+        style={{ background: "radial-gradient(circle, #EA580C 0%, transparent 70%)" }}
+        aria-hidden="true"
+      />
+
+      <MotionSection className="relative container-max section-padding py-16 lg:py-24">
+        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr] lg:gap-8">
           {/* Brand column */}
-          <div className="flex flex-col gap-5 lg:col-span-1">
-            <p className="text-2xl font-normal text-white leading-tight max-w-xs">
+          <div className="flex flex-col gap-6 lg:col-span-1 lg:pr-8">
+            <MotionDiv>
+              <Image
+                src="/logo.png"
+                alt="Mahaveer Papers"
+                width={205}
+                height={112}
+                className="h-9 w-auto object-contain"
+              />
+            </MotionDiv>
+            <p className="font-display text-2xl font-normal italic text-white/90 leading-tight max-w-xs">
               {siteConfig.tagline}
             </p>
-            <Link href="/contact" className="btn-light w-fit">
-              Request Free Quote
+            <Link href="/contact" className="btn-light w-fit shadow-[0_8px_24px_-8px_rgba(0,0,0,0.4)]">
+              Check Price & Availability
               <span className="btn-icon-badge">
                 <ChevronRight className="h-4 w-4" />
               </span>
             </Link>
 
-            {/* Social */}
-            <div className="flex items-center gap-3 mt-1">
-              <a
-                href={siteConfig.social.facebook}
-                aria-label="Facebook"
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-[#404040] text-white/80 hover:bg-brand-orange hover:text-white transition-colors"
-              >
-                <FacebookIcon className="h-4 w-4" />
-              </a>
-              <a
-                href={siteConfig.social.instagram}
-                aria-label="Instagram"
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-[#404040] text-white/80 hover:bg-brand-orange hover:text-white transition-colors"
-              >
-                <InstagramIcon className="h-4 w-4" />
-              </a>
-              <a
-                href={siteConfig.social.linkedin}
-                aria-label="LinkedIn"
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-[#404040] text-white/80 hover:bg-brand-orange hover:text-white transition-colors"
-              >
-                <LinkedinIcon className="h-4 w-4" />
-              </a>
-            </div>
+            {/* Social — revision brief: these icons pointed nowhere ("#"),
+                hide the row until real profile URLs are available rather
+                than ship dead links. */}
+            {(siteConfig.social.facebook !== "#" ||
+              siteConfig.social.instagram !== "#" ||
+              siteConfig.social.linkedin !== "#") && (
+              <div className="flex items-center gap-3 mt-1">
+                {siteConfig.social.facebook !== "#" && (
+                  <a
+                    href={siteConfig.social.facebook}
+                    aria-label="Facebook"
+                    className="flex h-8 w-8 items-center justify-center rounded-full bg-[#404040] text-white/80 transition-all duration-200 hover:bg-brand-orange hover:text-white hover:-translate-y-0.5"
+                  >
+                    <FacebookIcon className="h-4 w-4" />
+                  </a>
+                )}
+                {siteConfig.social.instagram !== "#" && (
+                  <a
+                    href={siteConfig.social.instagram}
+                    aria-label="Instagram"
+                    className="flex h-8 w-8 items-center justify-center rounded-full bg-[#404040] text-white/80 transition-all duration-200 hover:bg-brand-orange hover:text-white hover:-translate-y-0.5"
+                  >
+                    <InstagramIcon className="h-4 w-4" />
+                  </a>
+                )}
+                {siteConfig.social.linkedin !== "#" && (
+                  <a
+                    href={siteConfig.social.linkedin}
+                    aria-label="LinkedIn"
+                    className="flex h-8 w-8 items-center justify-center rounded-full bg-[#404040] text-white/80 transition-all duration-200 hover:bg-brand-orange hover:text-white hover:-translate-y-0.5"
+                  >
+                    <LinkedinIcon className="h-4 w-4" />
+                  </a>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Quick links */}
-          <div>
-            <h3 className="text-lg font-normal text-brand-light mb-6">
+          <div className="lg:border-l lg:border-white/10 lg:pl-8">
+            <h3 className="flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.15em] text-brand-orange mb-6">
               Quick Links
+              <span className="h-px w-8 bg-brand-orange/50" aria-hidden="true" />
             </h3>
             <ul className="flex flex-col gap-4" role="list">
               {quickLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-base text-[#D4D4D4] hover:text-white transition-colors"
+                    className="group inline-flex items-center gap-1.5 text-base text-[#D4D4D4] transition-colors hover:text-white"
                   >
-                    {link.label}
+                    <span className="transition-transform duration-200 group-hover:translate-x-1">
+                      {link.label}
+                    </span>
+                    <ChevronRight className="h-3.5 w-3.5 opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0" />
                   </Link>
                 </li>
               ))}
@@ -99,18 +139,19 @@ export function Footer() {
           </div>
 
           {/* Contact */}
-          <div>
-            <h3 className="text-lg font-normal text-brand-light mb-6">
+          <div className="lg:border-l lg:border-white/10 lg:pl-8">
+            <h3 className="flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.15em] text-brand-orange mb-6">
               Contact Us
+              <span className="h-px w-8 bg-brand-orange/50" aria-hidden="true" />
             </h3>
             <ul className="flex flex-col gap-4" role="list">
               {siteConfig.contact.phones.map((phone) => (
                 <li key={phone}>
                   <a
                     href={`tel:${phone.replace(/\s/g, "")}`}
-                    className="flex items-center gap-2 text-base text-[#D4D4D4] hover:text-white transition-colors"
+                    className="group flex items-center gap-2 text-base text-[#D4D4D4] transition-colors hover:text-white"
                   >
-                    <Phone className="h-3.5 w-3.5 shrink-0" />
+                    <Phone className="h-3.5 w-3.5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
                     {phone}
                   </a>
                 </li>
@@ -119,9 +160,9 @@ export function Footer() {
                 <li key={email}>
                   <a
                     href={`mailto:${email}`}
-                    className="flex items-center gap-2 text-base text-[#D4D4D4] hover:text-white transition-colors break-all"
+                    className="group flex items-center gap-2 text-base text-[#D4D4D4] transition-colors hover:text-white break-all"
                   >
-                    <Mail className="h-3.5 w-3.5 shrink-0" />
+                    <Mail className="h-3.5 w-3.5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
                     {email}
                   </a>
                 </li>
@@ -132,10 +173,10 @@ export function Footer() {
       </MotionSection>
 
       {/* Bottom bar */}
-      <div className="border-t border-brand-orange/20">
-        <div className="container-max section-padding py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-white/40">
+      <div className="relative border-t border-white/10">
+        <div className="container-max section-padding py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-white/40">
           <p>© {new Date().getFullYear()} Mahaveer Papers. All rights reserved.</p>
-          <div className="flex gap-4">
+          <div className="flex gap-6">
             <Link href="/privacy" className="hover:text-white/70 transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-white/70 transition-colors">Terms</Link>
           </div>

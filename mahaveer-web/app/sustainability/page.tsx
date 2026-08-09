@@ -11,41 +11,46 @@ import { MotionSection } from "@/components/ui/MotionSection";
 export const metadata: Metadata = {
   title: "Sustainability",
   description:
-    "Mahaveer Papers is committed to sustainable paper sourcing, eco-friendly manufacturing, and building a greener future for the paper industry.",
+    "How Mahaveer Papers selects responsible mills, verifies FSC and recycled-content claims, and helps printers choose sustainable speciality papers.",
   alternates: { canonical: "/sustainability" },
 };
 
+// Revision brief: remove UPM's Climate Action Roadmap / 2030 targets / EUDR
+// language (copied content, not Mahaveer's own). Rebuild around Mahaveer's
+// actual role — a curator and stockist that selects and verifies ranges from
+// certified mills — and ground every claim in real per-product data rather
+// than unsubstantiated company-wide statements.
 const actions = [
   {
-    id: "climate",
-    title: "Climate",
-    body: "We are dedicated to reducing the carbon footprint of our paper. Our Climate Action Roadmap outlines our commitments and targets, including a significant reduction in CO₂ emissions by 2030.",
-    image: "https://images.unsplash.com/photo-1500049242364-5f500807cdd7?w=900&q=80",
-    imageAlt: "Two hikers pausing to look at a mountain view",
+    id: "sourcing",
+    title: "Responsible Sourcing",
+    body: "As a speciality-paper curator and stockist, we select ranges from established global mills and check each one's certification status before it's stocked. Where a mill publishes FSC or other verified credentials, we carry that documentation through to the product page — so you can confirm it before you buy, rather than take a blanket company-wide claim on faith.",
+    image: "/images/mahaveer/sustainability-sourcing.jpg",
+    imageAlt: "Responsible Sourcing card next to an FSC certificate of registration and swing tags",
     imageLeft: false,
   },
   {
-    id: "nature",
-    title: "Nature & Forestry",
-    body: "Sustainable forestry and biodiversity are integral to our operations. We ensure that our wood sourcing practices are responsible and that we contribute to the preservation of natural habitats. We also comply with the European Union Deforestation Regulation (EUDR).",
-    image: "https://images.unsplash.com/photo-1623612374192-bb28178ed476?w=900&q=80",
-    imageAlt: "Butterfly on a leaf in nature",
+    id: "certified-ranges",
+    title: "Certified & Alternative-Fibre Ranges",
+    body: "Many ranges in our catalogue carry FSC Mix Credit where applicable, and a number stock recycled or alternative-fibre content — for example, our Pure Bamboo Natural range uses renewable bamboo fibre. We show the exact certification and fibre note on every product page instead of a single sustainability badge for the whole catalogue.",
+    image: "/images/mahaveer/sustainability-certified.jpg",
+    imageAlt: "Certified & Alternative-Fibre Ranges card next to FSC Mix and Pure Bamboo Natural swatches",
     imageLeft: true,
   },
   {
-    id: "people",
-    title: "People & Society",
-    body: "We believe in creating a positive impact on society through our business practices. Our focus on social responsibility includes promoting safety, diversity, and community engagement.",
-    image: "https://images.unsplash.com/photo-1758518727477-3885839edee7?w=900&q=80",
-    imageAlt: "Colleagues talking on a sofa in a modern office",
+    id: "recyclability",
+    title: "Recyclability & End-of-Life",
+    body: "Most of our paper and board ranges are recyclable and biodegradable in the same way as conventional uncoated paper. The exceptions are our synthetic media — NT Matt (a BOPP polymeric sheet) and Paperlike Synthetic carry no FSC claim and don't biodegrade like paper — and we flag this clearly on those product pages rather than applying one blanket claim across the whole range.",
+    image: "/images/mahaveer/sustainability-recyclability.jpg",
+    imageAlt: "Recyclability & End-of-Life card next to recyclable paper packaging and synthetic-media swing tags",
     imageLeft: false,
   },
   {
-    id: "resources",
-    title: "Resources & Certification",
-    body: "We leverage extensive data, industry expertise, and recognized certifications to demonstrate our ongoing commitment to sustainability. This offers trusted assurance to all our stakeholders.",
-    image: "https://images.unsplash.com/photo-1728496120908-4fa5eb92ebee?w=900&q=80",
-    imageAlt: "Person writing on a document",
+    id: "guidance",
+    title: "Practical Guidance, Not Guesswork",
+    body: "Choosing a sustainable paper is rarely just one decision — it depends on the fibre, the finish, the certification you need and how the piece will be used or disposed of. Our team helps you weigh those trade-offs for your specific job, and points you to the mill or certificate documentation when you need it for a client or compliance requirement.",
+    image: "/images/mahaveer/sustainability-guidance.jpg",
+    imageAlt: "A paper selection guide sheet being marked up alongside FSC certification documents",
     imageLeft: true,
   },
 ];
@@ -58,11 +63,11 @@ export default function SustainabilityPage() {
 
         {/* ── HERO ── */}
         <section
-          className="relative min-h-[85vh] flex items-end overflow-hidden pb-20 lg:pb-32"
+          className="relative min-h-screen flex items-end overflow-hidden pb-20 lg:pb-32"
           aria-label="Sustainability hero"
         >
           <Image
-            src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1920&q=80"
+            src="/images/mahaveer/sustainability-hero.jpg"
             alt=""
             fill
             priority
@@ -89,7 +94,7 @@ export default function SustainabilityPage() {
                   <br />
                   commitment to
                   <br />
-                  sustainablity
+                  sustainability
                 </h1>
               </MotionDiv>
               <MotionDiv delay={0.1}>
@@ -106,7 +111,7 @@ export default function SustainabilityPage() {
               </MotionDiv>
               <MotionDiv delay={0.2}>
                 <Link href="/contact" className="btn-primary">
-                  Request Free Quote
+                  Check Price & Availability
                   <span className="btn-icon-badge">
                     <ArrowRight className="h-5 w-5" />
                   </span>
@@ -136,8 +141,8 @@ export default function SustainabilityPage() {
                   <div className="flex flex-col gap-3 h-full">
                     <div className="relative rounded-2xl overflow-hidden flex-1">
                       <Image
-                        src="/figma/hero-bg.jpg"
-                        alt="Colorful paper rolls"
+                        src="/images/hero/slide-4.jpg"
+                        alt="Folded speciality paper sheets in warm tones"
                         fill
                         sizes="25vw"
                         className="object-cover"
@@ -184,20 +189,18 @@ export default function SustainabilityPage() {
                 <MotionDiv delay={0.2}>
                   <div className="flex flex-col gap-4 text-gray-600 leading-relaxed text-sm">
                     <p>
-                      Paper is a renewable material when sourced from wood harvested in
-                      sustainably managed forests. Healthy forests act as carbon sinks,
-                      absorbing CO₂ from the atmosphere and helping mitigate climate change.
-                      Through responsible sourcing and sustainable manufacturing processes,
-                      paper becomes an invaluable resource that supports the circular economy.
-                      Even as much as 70% of graphic paper produced in Europe is being
-                      recycled and reused.
+                      Paper is a renewable material when it&apos;s sourced from wood harvested
+                      in sustainably managed forests. Healthy, well-managed forests act as
+                      carbon sinks and support the circular economy — paper made this way can
+                      be recycled and reused many times over before it&apos;s finally
+                      biodegraded.
                     </p>
                     <p>
-                      Compared to other industries, paper manufacturing has significant
-                      potential to be truly sustainable. The paper industry is highly
-                      certified, relying on a fully renewable raw material and producing a
-                      recyclable product. By using renewable resources to create recyclable
-                      goods, the industry contributes to a sustainable future.
+                      What separates a genuinely sustainable range from a generic claim is
+                      verification: an FSC or equivalent certificate, a documented recycled or
+                      alternative-fibre content, and clarity on what happens at end of life.
+                      That&apos;s the standard we hold every range we stock to, and the detail
+                      we show on each product page.
                     </p>
                   </div>
                 </MotionDiv>

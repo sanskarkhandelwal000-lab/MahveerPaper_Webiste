@@ -2,6 +2,7 @@ import Image from "next/image";
 import { BadgeCheck } from "lucide-react";
 import { MotionSection } from "@/components/ui/MotionSection";
 import { MotionDiv } from "@/components/ui/MotionDiv";
+import { Counter } from "@/components/ui/Counter";
 import { siteConfig } from "@/lib/config";
 
 // Figma: MP file, node 2001:1231 "Section - About section"
@@ -24,7 +25,7 @@ export function About() {
             <div className="relative h-[160px] overflow-hidden rounded-[10px] sm:h-[153px]">
               <Image
                 src="/figma/about-layers.jpg"
-                alt="Layered teal and coral paper sheets"
+                alt="Fanned stack of textured speciality paper swatches"
                 fill
                 sizes="(max-width: 1024px) 40vw, 240px"
                 className="object-cover"
@@ -33,7 +34,7 @@ export function About() {
             <div className="relative h-[190px] overflow-hidden rounded-[10px] sm:h-[268px]">
               <Image
                 src="/figma/colored-papers.jpg"
-                alt="Vibrant purple and blue paper textures"
+                alt="Rolled sheet of textured paper resting on flat sheets"
                 fill
                 sizes="(max-width: 1024px) 40vw, 240px"
                 className="object-cover"
@@ -79,8 +80,8 @@ export function About() {
           <MotionDiv delay={0.25} className="flex items-start gap-6">
             {siteConfig.stats.map((stat) => (
               <div key={stat.label} className="flex flex-col gap-1">
-                <p className="text-[48px] font-semibold leading-[48px] text-brand-ink">
-                  {stat.value}
+                <p className="text-[48px] font-semibold leading-[48px] text-brand-ink tabular-nums">
+                  <Counter value={stat.value} />
                 </p>
                 <p className="text-[16px] leading-[24px] text-brand-body">{stat.label}</p>
               </div>

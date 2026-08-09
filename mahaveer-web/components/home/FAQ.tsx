@@ -19,7 +19,7 @@ export function FAQ() {
         {/* Header */}
         <div className="text-center mb-12">
           <MotionDiv>
-            <span className="chip mb-4 inline-flex">FAQ&apos;s</span>
+            <span className="chip mb-4 inline-flex">FAQs</span>
           </MotionDiv>
           <MotionDiv delay={0.1}>
             <h2 className="font-sans font-medium text-display-md text-brand-ink leading-tight">

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ContactForm } from "@/components/home/ContactForm";
@@ -20,7 +19,7 @@ const blogPosts = [
     category: "Sustainability",
     title: "How Sustainable Paper Practices Are Reshaping the Industry",
     date: "Nov 25, 2024",
-    image: "https://images.unsplash.com/photo-1500829243541-74b677fecc30?w=800&q=80",
+    image: "/images/mahaveer/kraft-paper.jpg",
     href: "/blog/sustainable-paper",
   },
   {
@@ -28,7 +27,7 @@ const blogPosts = [
     category: "Industry Tips",
     title: "How to Choose the Right Paper Grade for Your Packaging",
     date: "Nov 24, 2024",
-    image: "https://images.unsplash.com/photo-1594041680534-e8c8cdebd659?w=800&q=80",
+    image: "/figma/category-packaging.jpg",
     href: "/blog/choose-right-paper",
   },
   {
@@ -36,7 +35,7 @@ const blogPosts = [
     category: "Industry Tips",
     title: "GSM Guide: Understanding Paper Weight for Print Projects",
     date: "Nov 23, 2024",
-    image: "https://images.unsplash.com/photo-1524678714210-9917a6c619c2?w=800&q=80",
+    image: "/figma/paper-texture.jpg",
     href: "/blog/gsm-guide",
   },
   {
@@ -44,7 +43,7 @@ const blogPosts = [
     category: "Product Guide",
     title: "Kraft vs. Duplex Board: Which Is Right for Your Brand?",
     date: "Nov 22, 2024",
-    image: "https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?w=800&q=80",
+    image: "/images/mahaveer/kraft-board.jpg",
     href: "/blog/kraft-vs-duplex",
   },
   {
@@ -52,7 +51,7 @@ const blogPosts = [
     category: "Product Guide",
     title: "Why DigiLux Papers Elevate Luxury Packaging and Print",
     date: "Nov 21, 2024",
-    image: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&q=80",
+    image: "/figma/digilux-parchment.jpg",
     href: "/blog/digilux-luxury",
   },
   {
@@ -60,7 +59,7 @@ const blogPosts = [
     category: "Sustainability",
     title: "Reducing Carbon Footprint in the Paper Supply Chain",
     date: "Nov 20, 2024",
-    image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80",
+    image: "/figma/paper-roll.jpg",
     href: "/blog/paper-carbon-footprint",
   },
   {
@@ -68,7 +67,7 @@ const blogPosts = [
     category: "Insights",
     title: "5 Things to Consider Before Placing a Bulk Paper Order",
     date: "Nov 19, 2024",
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80",
+    image: "/figma/svc-bulk.jpg",
     href: "/blog/bulk-paper-buying",
   },
   {
@@ -76,7 +75,7 @@ const blogPosts = [
     category: "Product Guide",
     title: "Metallic, Textured, Coated: A Guide to Specialty Paper Finishes",
     date: "Nov 18, 2024",
-    image: "https://images.unsplash.com/photo-1550259979-ed79b48d2a30?w=800&q=80",
+    image: "/figma/colored-papers.jpg",
     href: "/blog/specialty-finishes",
   },
   {
@@ -84,7 +83,7 @@ const blogPosts = [
     category: "Insights",
     title: "Paper Industry Trends to Watch in 2025",
     date: "Nov 17, 2024",
-    image: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+    image: "/figma/hero-bg.jpg",
     href: "/blog/paper-trends-2025",
   },
 ];
@@ -92,18 +91,21 @@ const blogPosts = [
 // Figma badge: plain white pill, dark text — same style for every category
 const badgeClass = "bg-white/90 text-brand-navy";
 
+// Revision brief: don't link to article pages until they're actually published
+// (every /blog/[slug] route currently 404s). These render as non-interactive
+// previews with a "Coming soon" marker instead of dead links.
 function BlogCard({ post, delay }: { post: (typeof blogPosts)[number]; delay: number }) {
   return (
     <MotionDiv delay={delay}>
-      <Link href={post.href} className="group block" aria-label={post.title}>
+      <div className="group block" aria-label={`${post.title} (coming soon)`}>
         {/* Image — landscape, rounded, matches Figma card shape */}
-        <div className="relative rounded-2xl overflow-hidden aspect-[16/10] mb-4">
+        <div className="relative rounded-2xl overflow-hidden aspect-[16/10] mb-4 shadow-[0_1px_3px_rgba(10,10,8,0.06)] transition-shadow duration-300 group-hover:shadow-[0_16px_36px_-14px_rgba(10,10,8,0.25)]">
           <Image
             src={post.image}
             alt={post.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           />
           {/* Category badge — Figma: white pill, dark text, bottom-left */}
           <div className="absolute bottom-3 left-3">
@@ -114,13 +116,16 @@ function BlogCard({ post, delay }: { post: (typeof blogPosts)[number]; delay: nu
         </div>
 
         {/* Title — Figma: medium weight, dark navy */}
-        <h2 className="font-medium text-brand-navy text-[18px] leading-snug mb-2 group-hover:text-brand-orange transition-colors line-clamp-2">
+        <h2 className="font-medium text-brand-navy text-[18px] leading-snug mb-2 line-clamp-2 transition-colors duration-200 group-hover:text-brand-orange">
           {post.title}
         </h2>
 
-        {/* Date */}
-        <p className="text-gray-400 text-sm">{post.date}</p>
-      </Link>
+        {/* Date + coming-soon marker instead of a dead link */}
+        <p className="text-gray-400 text-sm">
+          {post.date} <span className="text-gray-300">·</span>{" "}
+          <span className="text-brand-orange font-medium">Coming soon</span>
+        </p>
+      </div>
     </MotionDiv>
   );
 }

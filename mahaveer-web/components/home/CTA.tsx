@@ -10,21 +10,21 @@ export function CTA() {
     <MotionSection className="relative overflow-hidden py-24 lg:py-32">
       {/* Background photo — premium navy crumpled paper texture */}
       <Image
-        src="/figma/cta-paper-navy.jpg"
+        src="/images/mahaveer/cta-ready-to-elevate.jpg"
         alt=""
         fill
         sizes="100vw"
         className="object-cover object-center"
         aria-hidden="true"
       />
-      {/* Dark overlay — texture is already dark, lighter scrim for legibility */}
-      <div className="absolute inset-0 bg-[#171717]/50" aria-hidden="true" />
+      {/* Dark overlay for text legibility over the warehouse photo */}
+      <div className="absolute inset-0 bg-[#171717]/60" aria-hidden="true" />
 
       <div className="relative z-10 container-max section-padding text-center">
         <MotionDiv>
           <span className="chip mb-4 inline-flex">
             <CalendarCheck className="h-3.5 w-3.5" />
-            Book Now
+            Speak to a Paper Specialist
           </span>
         </MotionDiv>
 

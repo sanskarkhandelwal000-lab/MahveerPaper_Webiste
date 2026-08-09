@@ -17,13 +17,16 @@ export default function ProductsPage() {
     <>
       <Navbar />
       <main id="main-content" tabIndex={-1} className="scroll-mt-[92px]">
-        {/* ── HERO ── Figma: paper-roll photo background, "Bring your / Creativity to life" */}
+        {/* ── HERO ── full-screen paper-roll photo background, "Bring your / Creativity to life".
+            The filter bar (rendered by ProductsCatalog below) is pulled up with a negative
+            margin so it overlaps the bottom of this image as a translucent glass bar,
+            rather than sitting in its own solid-colour band. */}
         <section
-          className="relative min-h-[70vh] flex items-end overflow-hidden"
+          className="relative min-h-screen flex items-end overflow-hidden"
           aria-label="Products hero"
         >
           <Image
-            src="/images/banners/products-banner.jpg"
+            src="/images/mahaveer/products-hero.jpg"
             alt=""
             fill
             priority
@@ -35,12 +38,12 @@ export default function ProductsPage() {
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(to bottom, rgba(10,10,8,0.15) 0%, rgba(10,10,8,0.55) 70%, rgba(10,10,8,0.75) 100%)",
+                "linear-gradient(to bottom, rgba(10,10,8,0.15) 0%, rgba(10,10,8,0.55) 70%, rgba(10,10,8,0.8) 100%)",
             }}
             aria-hidden="true"
           />
 
-          <div className="relative z-10 w-full container-max section-padding pt-36 pb-10">
+          <div className="relative z-10 w-full container-max section-padding pt-36 pb-40 lg:pb-52">
             <MotionDiv className="max-w-3xl mb-6">
               {/* Figma: "Bring your" (orange) + "Creativity to life" (white, italic), Newsreader 400, fs 104/lh 104, ls -2.08px */}
               <h1

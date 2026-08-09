@@ -136,8 +136,12 @@ export function ProductsCatalog() {
 
   return (
     <>
-      {/* ── PILL FILTER BAR ── */}
-      <div className="bg-[#0a1520] py-10 lg:py-14">
+      {/* ── PILL FILTER BAR ── pulled up over the hero photo (negative margin) as a
+          translucent glass bar, blended into the image instead of its own solid band.
+          The tint fades to fully transparent by the end so it never leaves a hard-edged
+          band once it clears the photo — it just dissolves into the white catalog
+          section that follows. */}
+      <div className="relative z-20 -mt-40 lg:-mt-52 bg-gradient-to-b from-black/0 via-black/30 to-transparent pt-20 pb-6 lg:pt-28 lg:pb-8">
         <div className="container-max section-padding">
           <div
             ref={pillRef}
