@@ -10,11 +10,8 @@ export const contactFormSchema = z.object({
     .email("Please enter a valid email address"),
   phone: z
     .string()
-    .optional()
-    .refine(
-      (val) => !val || /^[+\d\s\-()]{7,20}$/.test(val),
-      "Please enter a valid phone number"
-    ),
+    .min(1, "Phone number is required")
+    .regex(/^[+\d\s\-()]{7,20}$/, "Please enter a valid phone number"),
   projectLocation: z
     .string()
     .min(2, "Location is required")

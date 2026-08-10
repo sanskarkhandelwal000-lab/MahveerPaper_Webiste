@@ -24,10 +24,11 @@ const actions = [
   {
     id: "sourcing",
     title: "Responsible Sourcing",
-    body: "As a speciality-paper curator and stockist, we select ranges from established global mills and check each one's certification status before it's stocked. Where a mill publishes FSC or other verified credentials, we carry that documentation through to the product page — so you can confirm it before you buy, rather than take a blanket company-wide claim on faith.",
+    body: "Mahaveer Papers is an FSC-certified company, and a large part of our portfolio carries FSC certification. Not every product does — so we show the certification status on every product page, and you're welcome to browse our FSC-certified range online or call our team to check a specific product before you buy.",
     image: "/images/mahaveer/sustainability-sourcing.jpg",
     imageAlt: "Responsible Sourcing card next to an FSC certificate of registration and swing tags",
     imageLeft: false,
+    cta: { label: "Browse FSC-Certified Products", href: "/products?fsc=1" },
   },
   {
     id: "certified-ranges",
@@ -40,7 +41,7 @@ const actions = [
   {
     id: "recyclability",
     title: "Recyclability & End-of-Life",
-    body: "Most of our paper and board ranges are recyclable and biodegradable in the same way as conventional uncoated paper. The exceptions are our synthetic media — NT Matt (a BOPP polymeric sheet) and Paperlike Synthetic carry no FSC claim and don't biodegrade like paper — and we flag this clearly on those product pages rather than applying one blanket claim across the whole range.",
+    body: "All of our products are both biodegradable and recyclable, with one exception: our Non-Tearable media range is not biodegradable, though it remains fully recyclable. We flag this clearly on the Non-Tearable product page rather than applying one blanket claim across the whole range.",
     image: "/images/mahaveer/sustainability-recyclability.jpg",
     imageAlt: "Recyclability & End-of-Life card next to recyclable paper packaging and synthetic-media swing tags",
     imageLeft: false,
@@ -100,8 +101,8 @@ export default function SustainabilityPage() {
               <MotionDiv delay={0.1}>
                 <p className="text-white/80 text-base leading-relaxed mb-3 max-w-xl">
                   Every decision we make today, from sourcing to final delivery, is a step
-                  toward a more resilient future. Sustainability for us isn't a destination
-                  – it's a daily practice that shapes our future, and the future of paper.
+                  toward a more resilient future. Sustainability for us isn&apos;t a destination
+                  – it&apos;s a daily practice that shapes our future, and the future of paper.
                 </p>
                 <p className="text-white/80 text-base leading-relaxed mb-10 max-w-xl">
                   As a trusted partner, we work to ensure that paper remains a sustainable
@@ -244,6 +245,15 @@ export default function SustainabilityPage() {
                       >
                         {action.body}
                       </p>
+                      {"cta" in action && action.cta && (
+                        <Link
+                          href={action.cta.href}
+                          className="mb-4 inline-flex items-center gap-2 rounded-full bg-brand-navy px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#0d1b2a]"
+                        >
+                          {action.cta.label}
+                          <ArrowRight className="h-3.5 w-3.5" />
+                        </Link>
+                      )}
                       {/* Learn more — icon-left circular badge, matches Figma "Component 2" */}
                       <Link
                         href="/contact"

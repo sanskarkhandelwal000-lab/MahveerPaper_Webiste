@@ -141,6 +141,19 @@ export interface CatalogProduct {
    * colour at a time as photos are processed; colours without their own entry
    * here fall back to a plain hex swatch instead of a mismatched photo. */
   colorImages?: Record<string, string>;
+  /** Per-colour weight, keyed by the exact colorNames entry — only present where a
+   * family's colours genuinely differ (e.g. Burano: most shades are 250 GSM only,
+   * but Cobalt/Nero also come in 320 GSM). Product detail page prefers this over
+   * the family-level `gsm` string when a swatch has an entry here, since showing
+   * every weight on every colour overstates what's actually available in that shade. */
+  colorGsm?: Record<string, string>;
+  /** Colour names for this family that have NO verified source (no exact name match on
+   * the manufacturer's own site, no client-supplied photo) — e.g. Burano's "Burgundy"
+   * vs. Favini's actual "Bordeaux". These are excluded from both colorImages and the
+   * global COLOR_NAME_HEX fallback, so the swatch card shows the "Photo coming soon"
+   * placeholder instead of a guessed image or guessed colour. See
+   * Unmatched_Favini_Colours.xlsx for the full list and reasoning. */
+  unverifiedColors?: string[];
   type: ProductType;
   app: AppType;
   /** Raw "Paper Type" values from the sheet (a family can span more than one) — powers the Products page filter. */
@@ -184,13 +197,13 @@ export const catalogProducts: CatalogProduct[] = [
   {
     id: "colour-paper-wood-free",
     book: "Spectrum",
-    name: "Colour Paper Wood Free",
+    name: "Colour Woodfree",
     gsm: "80 GSM",
     sizes: "63.5 x 91.4 CM",
     colors: 12,
-    colorNames: ["Cream", "Peach", "Pink", "Blue", "Green", "Gold (yellow/tangerine shade)", "Turquoise", "Parrot Green", "Saffron", "Red", "Taro", "Hp Orange"],
+    colorNames: ["Cream", "Peach", "Pink", "Blue", "Green", "Gold", "Turquoise", "Parrot Green", "Saffron", "Red", "Taro", "Hp Orange"],
     image: "/images/mahaveer/colour-paper-wood-free.jpg",
-    colorImages: { "Cream": "/images/mahaveer/colour-paper-wood-free.jpg", "Peach": "/images/mahaveer/colour-paper-wood-free-peach.jpg", "Pink": "/images/mahaveer/colour-paper-wood-free-pink.jpg", "Blue": "/images/mahaveer/colour-paper-wood-free-blue.jpg", "Green": "/images/mahaveer/colour-paper-wood-free-green.jpg", "Gold (yellow/tangerine shade)": "/images/mahaveer/colour-paper-wood-free-gold.jpg", "Turquoise": "/images/mahaveer/colour-paper-wood-free-turquoise.jpg", "Parrot Green": "/images/mahaveer/colour-paper-wood-free-parrot-green.jpg", "Saffron": "/images/mahaveer/colour-paper-wood-free-saffron.jpg", "Red": "/images/mahaveer/colour-paper-wood-free-red.jpg", "Taro": "/images/mahaveer/colour-paper-wood-free-taro.jpg", "Hp Orange": "/images/mahaveer/colour-paper-wood-free-hp-orange.jpg" },
+    colorImages: { "Cream": "/images/mahaveer/colour-paper-wood-free.jpg", "Peach": "/images/mahaveer/colour-paper-wood-free-peach.jpg", "Pink": "/images/mahaveer/colour-paper-wood-free-pink.jpg", "Blue": "/images/mahaveer/colour-paper-wood-free-blue.jpg", "Green": "/images/mahaveer/colour-paper-wood-free-green.jpg", "Gold": "/images/mahaveer/colour-paper-wood-free-gold.jpg", "Turquoise": "/images/mahaveer/colour-paper-wood-free-turquoise.jpg", "Parrot Green": "/images/mahaveer/colour-paper-wood-free-parrot-green.jpg", "Saffron": "/images/mahaveer/colour-paper-wood-free-saffron.jpg", "Red": "/images/mahaveer/colour-paper-wood-free-red.jpg", "Taro": "/images/mahaveer/colour-paper-wood-free-taro.jpg", "Hp Orange": "/images/mahaveer/colour-paper-wood-free-hp-orange.jpg" },
     type: "Color",
     app: "Stationery & Print",
     paperTypes: ["Coloured Woodfree Paper"],
@@ -212,152 +225,45 @@ export const catalogProducts: CatalogProduct[] = [
   },
 
   {
-    id: "dark-green",
+    // Merged per R018 sheet: Dark Green, Dark Red, Red Wine, Dark Blue, Dark Brown
+    // and Mystique all share the sheet's "Dark Colours" Series — one card, six colourways.
+    id: "dark-colours",
     book: "Spectrum",
-    name: "Dark Green",
-    gsm: "110 · 280 GSM",
-    sizes: "63 x 91 CM · 79 x 109 CM",
-    colors: 1,
-    colorNames: ["Dark Green"],
+    name: "Dark Colours",
+    gsm: "110 · 250 · 280 · 300 GSM",
+    sizes: "63 x 91 CM · 70 x 100 CM · 79 x 109 CM",
+    colors: 6,
+    colorNames: ["Dark Green", "Dark Red", "Red Wine", "Dark Blue", "Dark Brown", "Mystique"],
+    colorGsm: {
+      "Dark Green": "110 · 280 GSM", "Dark Red": "110 · 280 GSM", "Red Wine": "110 · 280 GSM",
+      "Dark Blue": "110 · 280 GSM", "Dark Brown": "110 · 280 GSM", "Mystique": "250 · 300 GSM",
+    },
     image: "/images/mahaveer/dark-green.jpg",
-    colorImages: { "Dark Green": "/images/mahaveer/dark-green.jpg" },
+    colorImages: {
+      "Dark Green": "/images/mahaveer/dark-green.jpg",
+      "Dark Red": "/images/mahaveer/dark-red.jpg",
+      "Red Wine": "/images/mahaveer/red-wine.jpg",
+      "Dark Blue": "/images/mahaveer/dark-blue.jpg",
+      "Dark Brown": "/images/mahaveer/dark-brown.jpg",
+      "Mystique": "/images/mahaveer/mystique-black.jpg",
+    },
     type: "Color",
     app: "Packaging",
     paperTypes: ["Commercial Coloured Paper", "Board"],
     applications: ["Commercial Packaging"],
-    colourGroups: ["Green"],
+    colourGroups: ["Green", "Red", "Pink", "Blue", "Brown", "Black"],
     description: "Versatile coloured paper and board with printing and converting performance broadly similar to Burano, positioned as a cost-effective commercial option.",
     aiSummary: "Recommend when the customer needs a value-oriented coloured paper or board suitable for most printing and converting processes. For maximum stiffness, luxury feel or demanding packaging, recommend Burano instead.",
     bestFor: "Commercial Packaging; Invitations / Tags / Stationery",
     customerWarning: "Test the exact GSM, colour and machine before bulk production where compatibility is marked as testing.",
-    seoKeywords: "dark green, commercial packaging, speciality paper, premium packaging",
+    seoKeywords: "dark colours, dark green, dark red, red wine, dark blue, dark brown, mystique, commercial packaging, speciality paper",
     finish: "Matte",
     texture: "Smooth",
     coatedUncoated: "Uncoated",
     strengthRating: 3,
     premiumRating: 3,
     printingCompatibility: { "Offset": "Suitable", "Digital Toner": "Suitable", "HP Indigo": "Suitable with testing", "Screen Printing": "Suitable", "Inkjet": "Suitable with testing", "Laser Printing": "Suitable with testing", "White Toner": "Suitable with testing" },
-    finishingCompatibility: { "Foiling": "Suitable", "Embossing": "Suitable", "Debossing": "Suitable", "UV Printing": "Suitable", "Spot UV": "Not recommended", "Die Cutting": "Suitable", "Laser Cutting": "Suitable with testing", "Scoring": "Recommended for 280 gsm", "Folding": "Suitable with scoring for board" },
-    technicalNotes: "Recommend when the customer needs a value-oriented coloured paper or board suitable for most printing and converting processes. For maximum stiffness, luxury feel or demanding packaging, recommend Burano instead.",
-  },
-
-  {
-    id: "dark-red",
-    book: "Spectrum",
-    name: "Dark Red",
-    gsm: "110 · 280 GSM",
-    sizes: "63 x 91 CM · 79 x 109 CM",
-    colors: 1,
-    colorNames: ["Dark Red"],
-    image: "/images/mahaveer/dark-red.jpg",
-    colorImages: { "Dark Red": "/images/mahaveer/dark-red.jpg" },
-    type: "Color",
-    app: "Packaging",
-    paperTypes: ["Commercial Coloured Paper", "Board"],
-    applications: ["Commercial Packaging"],
-    colourGroups: ["Red", "Pink"],
-    description: "Versatile coloured paper and board with printing and converting performance broadly similar to Burano, positioned as a cost-effective commercial option.",
-    aiSummary: "Recommend when the customer needs a value-oriented coloured paper or board suitable for most printing and converting processes. For maximum stiffness, luxury feel or demanding packaging, recommend Burano instead.",
-    bestFor: "Commercial Packaging; Invitations / Tags / Stationery",
-    customerWarning: "Test the exact GSM, colour and machine before bulk production where compatibility is marked as testing.",
-    seoKeywords: "dark red, commercial packaging, speciality paper, premium packaging",
-    finish: "Matte",
-    texture: "Smooth",
-    coatedUncoated: "Uncoated",
-    strengthRating: 3,
-    premiumRating: 3,
-    printingCompatibility: { "Offset": "Suitable", "Digital Toner": "Suitable", "HP Indigo": "Suitable with testing", "Screen Printing": "Suitable", "Inkjet": "Suitable with testing", "Laser Printing": "Suitable with testing", "White Toner": "Suitable with testing" },
-    finishingCompatibility: { "Foiling": "Suitable", "Embossing": "Suitable", "Debossing": "Suitable", "UV Printing": "Suitable", "Spot UV": "Not recommended", "Die Cutting": "Suitable", "Laser Cutting": "Suitable with testing", "Scoring": "Recommended for 280 gsm", "Folding": "Suitable with scoring for board" },
-    technicalNotes: "Recommend when the customer needs a value-oriented coloured paper or board suitable for most printing and converting processes. For maximum stiffness, luxury feel or demanding packaging, recommend Burano instead.",
-  },
-
-  {
-    id: "red-wine",
-    book: "Spectrum",
-    name: "Red Wine",
-    gsm: "110 · 280 GSM",
-    sizes: "63 x 91 CM · 79 x 109 CM",
-    colors: 1,
-    colorNames: ["Red Wine"],
-    image: "/images/mahaveer/red-wine.jpg",
-    colorImages: { "Red Wine": "/images/mahaveer/red-wine.jpg" },
-    type: "Color",
-    app: "Packaging",
-    paperTypes: ["Commercial Coloured Paper", "Board"],
-    applications: ["Commercial Packaging"],
-    colourGroups: ["Red", "Pink"],
-    description: "Versatile coloured paper and board with printing and converting performance broadly similar to Burano, positioned as a cost-effective commercial option.",
-    aiSummary: "Recommend when the customer needs a value-oriented coloured paper or board suitable for most printing and converting processes. For maximum stiffness, luxury feel or demanding packaging, recommend Burano instead.",
-    bestFor: "Commercial Packaging; Invitations / Tags / Stationery",
-    customerWarning: "Test the exact GSM, colour and machine before bulk production where compatibility is marked as testing.",
-    seoKeywords: "red wine, commercial packaging, speciality paper, premium packaging",
-    finish: "Matte",
-    texture: "Smooth",
-    coatedUncoated: "Uncoated",
-    strengthRating: 3,
-    premiumRating: 3,
-    printingCompatibility: { "Offset": "Suitable", "Digital Toner": "Suitable", "HP Indigo": "Suitable with testing", "Screen Printing": "Suitable", "Inkjet": "Suitable with testing", "Laser Printing": "Suitable with testing", "White Toner": "Suitable with testing" },
-    finishingCompatibility: { "Foiling": "Suitable", "Embossing": "Suitable", "Debossing": "Suitable", "UV Printing": "Suitable", "Spot UV": "Not recommended", "Die Cutting": "Suitable", "Laser Cutting": "Suitable with testing", "Scoring": "Recommended for 280 gsm", "Folding": "Suitable with scoring for board" },
-    technicalNotes: "Recommend when the customer needs a value-oriented coloured paper or board suitable for most printing and converting processes. For maximum stiffness, luxury feel or demanding packaging, recommend Burano instead.",
-  },
-
-  {
-    id: "dark-blue",
-    book: "Spectrum",
-    name: "Dark Blue",
-    gsm: "110 · 280 GSM",
-    sizes: "63 x 91 CM · 79 x 109 CM",
-    colors: 1,
-    colorNames: ["Dark Blue"],
-    image: "/images/mahaveer/dark-blue.jpg",
-    colorImages: { "Dark Blue": "/images/mahaveer/dark-blue.jpg" },
-    type: "Color",
-    app: "Packaging",
-    paperTypes: ["Commercial Coloured Paper", "Board"],
-    applications: ["Commercial Packaging"],
-    colourGroups: ["Blue"],
-    description: "Versatile coloured paper and board with printing and converting performance broadly similar to Burano, positioned as a cost-effective commercial option.",
-    aiSummary: "Recommend when the customer needs a value-oriented coloured paper or board suitable for most printing and converting processes. For maximum stiffness, luxury feel or demanding packaging, recommend Burano instead.",
-    bestFor: "Commercial Packaging; Invitations / Tags / Stationery",
-    customerWarning: "Test the exact GSM, colour and machine before bulk production where compatibility is marked as testing.",
-    seoKeywords: "dark blue, commercial packaging, speciality paper, premium packaging",
-    finish: "Matte",
-    texture: "Smooth",
-    coatedUncoated: "Uncoated",
-    strengthRating: 3,
-    premiumRating: 3,
-    printingCompatibility: { "Offset": "Suitable", "Digital Toner": "Suitable", "HP Indigo": "Suitable with testing", "Screen Printing": "Suitable", "Inkjet": "Suitable with testing", "Laser Printing": "Suitable with testing", "White Toner": "Suitable with testing" },
-    finishingCompatibility: { "Foiling": "Suitable", "Embossing": "Suitable", "Debossing": "Suitable", "UV Printing": "Suitable", "Spot UV": "Not recommended", "Die Cutting": "Suitable", "Laser Cutting": "Suitable with testing", "Scoring": "Recommended for 280 gsm", "Folding": "Suitable with scoring for board" },
-    technicalNotes: "Recommend when the customer needs a value-oriented coloured paper or board suitable for most printing and converting processes. For maximum stiffness, luxury feel or demanding packaging, recommend Burano instead.",
-  },
-
-  {
-    id: "dark-brown",
-    book: "Spectrum",
-    name: "Dark Brown",
-    gsm: "110 · 280 GSM",
-    sizes: "63 x 91 CM · 79 x 109 CM",
-    colors: 1,
-    colorNames: ["Dark Brown"],
-    image: "/images/mahaveer/dark-brown.jpg",
-    colorImages: { "Dark Brown": "/images/mahaveer/dark-brown.jpg" },
-    type: "Color",
-    app: "Packaging",
-    paperTypes: ["Commercial Coloured Paper", "Board"],
-    applications: ["Commercial Packaging"],
-    colourGroups: ["Brown"],
-    description: "Versatile coloured paper and board with printing and converting performance broadly similar to Burano, positioned as a cost-effective commercial option.",
-    aiSummary: "Recommend when the customer needs a value-oriented coloured paper or board suitable for most printing and converting processes. For maximum stiffness, luxury feel or demanding packaging, recommend Burano instead.",
-    bestFor: "Commercial Packaging; Invitations / Tags / Stationery",
-    customerWarning: "Test the exact GSM, colour and machine before bulk production where compatibility is marked as testing.",
-    seoKeywords: "dark brown, commercial packaging, speciality paper, premium packaging",
-    finish: "Matte",
-    texture: "Smooth",
-    coatedUncoated: "Uncoated",
-    strengthRating: 3,
-    premiumRating: 3,
-    printingCompatibility: { "Offset": "Suitable", "Digital Toner": "Suitable", "HP Indigo": "Suitable with testing", "Screen Printing": "Suitable", "Inkjet": "Suitable with testing", "Laser Printing": "Suitable with testing", "White Toner": "Suitable with testing" },
-    finishingCompatibility: { "Foiling": "Suitable", "Embossing": "Suitable", "Debossing": "Suitable", "UV Printing": "Suitable", "Spot UV": "Not recommended", "Die Cutting": "Suitable", "Laser Cutting": "Suitable with testing", "Scoring": "Recommended for 280 gsm", "Folding": "Suitable with scoring for board" },
+    finishingCompatibility: { "Foiling": "Suitable", "Embossing": "Suitable", "Debossing": "Suitable", "UV Printing": "Suitable", "Spot UV": "Not recommended", "Die Cutting": "Suitable", "Laser Cutting": "Suitable with testing", "Scoring": "Recommended for 280 gsm and heavier", "Folding": "Suitable with scoring for board" },
     technicalNotes: "Recommend when the customer needs a value-oriented coloured paper or board suitable for most printing and converting processes. For maximum stiffness, luxury feel or demanding packaging, recommend Burano instead.",
   },
 
@@ -369,7 +275,26 @@ export const catalogProducts: CatalogProduct[] = [
     sizes: "70 x 100 CM",
     colors: 10,
     colorNames: ["Shocking Pink", "English Green", "Orange", "Fire Red", "Graphite Grey", "Tobacco", "Burgundy", "Coffee Brown", "Cobalt", "Nero"],
+    colorGsm: {
+      "Shocking Pink": "250 GSM", "English Green": "250 GSM", "Orange": "250 GSM", "Fire Red": "250 GSM",
+      "Graphite Grey": "250 GSM", "Tobacco": "250 GSM", "Burgundy": "250 GSM", "Coffee Brown": "250 GSM",
+      "Cobalt": "250 · 320 GSM", "Nero": "250 · 320 GSM",
+    },
     image: "/images/favini/burano.jpg",
+    // Real Favini product photography (favini.com/gs/en/products/burano) — ONLY for
+    // colour names that appear on Favini's official list verbatim. "Burgundy", "Coffee
+    // Brown", "Cobalt" and "Nero" have no exact match there (closest are "Bordeaux",
+    // "Brown", "Cobalt Blue", "Black" — different names, not confirmed as the same
+    // shade) and are deliberately left unmapped rather than guessed.
+    colorImages: {
+      "Shocking Pink": "/images/favini/burano-shocking-pink.jpg",
+      "English Green": "/images/favini/burano-english-green.jpg",
+      "Orange": "/images/favini/burano-orange.jpg",
+      "Fire Red": "/images/favini/burano-fire-red.jpg",
+      "Graphite Grey": "/images/favini/burano-graphite-grey.jpg",
+      "Tobacco": "/images/favini/burano-tobacco.jpg",
+    },
+    unverifiedColors: ["Burgundy", "Coffee Brown", "Cobalt", "Nero"],
     type: "Color",
     app: "Packaging",
     paperTypes: ["Premium Coloured Fine Paper and Board"],
@@ -398,12 +323,22 @@ export const catalogProducts: CatalogProduct[] = [
   {
     id: "tube",
     book: "Spectrum",
-    name: "Tube",
+    name: "The Tube",
     gsm: "120 · 260 · 310 · 340 GSM",
     sizes: "70 x 100 CM · 72 x 102 CM",
     colors: 4,
     colorNames: ["Black", "Red", "Brown", "Petrol"],
+    colorGsm: { "Black": "120 · 260 · 310 GSM", "Red": "120 · 310 GSM", "Brown": "120 · 340 GSM", "Petrol": "120 · 340 GSM" },
     image: "/images/favini/tube.jpg",
+    // Real Favini photos (favini.com/gs/en/products/tube) — Black and Petrol only, both
+    // exact matches on Favini's own colour list. "Red" and "Brown" have NO match on that
+    // list at all (Favini's Tube range is Chalk/Mud/Graphite/Petrol/Dust/Toffee/Marrone/
+    // Black/Black Max/Hide-variants) — left unmapped, needs verification, see chat.
+    colorImages: {
+      "Black": "/images/favini/tube-black.jpg",
+      "Petrol": "/images/favini/tube-petrol.jpg",
+    },
+    unverifiedColors: ["Red", "Brown"],
     type: "Color",
     app: "Packaging",
     paperTypes: ["Premium Ultra-Matte Coloured Paper & Board"],
@@ -431,6 +366,17 @@ export const catalogProducts: CatalogProduct[] = [
     colors: 5,
     colorNames: ["White", "Kraft Brown", "Dark Grey", "Red", "Black"],
     image: "/images/favini/sumo.jpg",
+    // Favini's own Sumo page (favini.com/gs/en/products/sumo) has no unique board
+    // photography for these 5 colours — it reuses photos from their other paper lines
+    // (Biancoflash, Burano) as swatch stand-ins. Mirroring that exactly, per instruction,
+    // rather than inventing our own: these are paper photos, not Sumo's actual board texture.
+    colorImages: {
+      "White": "/images/favini/sumo-white.jpg",
+      "Kraft Brown": "/images/favini/sumo-kraft-brown.jpg",
+      "Dark Grey": "/images/favini/sumo-dark-grey.jpg",
+      "Red": "/images/favini/sumo-red.jpg",
+      "Black": "/images/favini/sumo-black.jpg",
+    },
     type: "Color",
     app: "Packaging",
     paperTypes: ["Through-Coloured Solid Board"],
@@ -459,13 +405,52 @@ export const catalogProducts: CatalogProduct[] = [
   {
     id: "textures",
     book: "Textures",
-    name: "Textures",
+    name: "MP Textures",
     gsm: "300 · 350 GSM",
     sizes: "33 x 48 CM · 67 x 98 CM · 70 x 100 CM",
-    colors: 3,
-    colorNames: ["Cream", "White", "Natural"],
-    image: "/images/mahaveer/textures-cream.jpg",
-    colorImages: { "Cream": "/images/mahaveer/textures-cream.jpg", "White": "/images/mahaveer/textures-white.jpg", "Natural": "/images/mahaveer/textures-natural.jpg" },
+    // Was wrongly collapsed to 3 generic colour swatches (Cream/White/Natural) — the
+    // sheet's "Colour Name" field really is just Cream/White/Natural for all 18 SKUs,
+    // but each is a genuinely different embossed pattern (its own "Texture" field value:
+    // Needle Point, Linea, Valentino, Silk Soie, etc.), not a repeat of the same product.
+    // Same root-cause bug as Cotton's 25/35/60% variants — fixed the same way, swatch
+    // name = "{Texture} {Colour}" straight from the sheet, no photos guessed.
+    colors: 18,
+    colorNames: [
+      "Needle Point Cream", "Linea Cream", "Fine Toie Cream", "Valentino Cream", "Toyle Moyne Cream", "Silk Soie Cream", "Design Bag Cream",
+      "Needle Point White", "Design Bag White", "Valentino White", "Classic Linen White", "Linea White", "Toyle Moyne White", "Silk Soie White", "Canvas Linen White", "White Net", "K Linen White",
+      "Natural Rock",
+    ],
+    colorGsm: {
+      "Needle Point Cream": "300 GSM", "Linea Cream": "300 GSM", "Fine Toie Cream": "300 GSM", "Valentino Cream": "300 GSM",
+      "Toyle Moyne Cream": "300 GSM", "Silk Soie Cream": "300 GSM", "Design Bag Cream": "300 GSM",
+      "Needle Point White": "300 GSM", "Design Bag White": "300 GSM", "Valentino White": "300 GSM", "Classic Linen White": "300 GSM",
+      "Linea White": "300 GSM", "Toyle Moyne White": "300 GSM", "Silk Soie White": "300 GSM", "Canvas Linen White": "300 GSM",
+      "White Net": "300 GSM", "K Linen White": "350 GSM",
+      "Natural Rock": "300 GSM",
+    },
+    // Real per-SKU photography from the client's own 4x5_texture_crops set, matched by
+    // exact SKU number (50059–50076) — not guessed, not reused across patterns.
+    colorImages: {
+      "Needle Point Cream": "/images/mahaveer/textures/needle-point-cream.jpg",
+      "Linea Cream": "/images/mahaveer/textures/linea-cream.jpg",
+      "Fine Toie Cream": "/images/mahaveer/textures/fine-toie-cream.jpg",
+      "Valentino Cream": "/images/mahaveer/textures/valentino-cream.jpg",
+      "Toyle Moyne Cream": "/images/mahaveer/textures/toyle-moyne-cream.jpg",
+      "Silk Soie Cream": "/images/mahaveer/textures/silk-soie-cream.jpg",
+      "Design Bag Cream": "/images/mahaveer/textures/design-bag-cream.jpg",
+      "Needle Point White": "/images/mahaveer/textures/needle-point-white.jpg",
+      "Design Bag White": "/images/mahaveer/textures/design-bag-white.jpg",
+      "Valentino White": "/images/mahaveer/textures/valentino-white.jpg",
+      "Classic Linen White": "/images/mahaveer/textures/classic-linen-white.jpg",
+      "Linea White": "/images/mahaveer/textures/linea-white.jpg",
+      "Toyle Moyne White": "/images/mahaveer/textures/toyle-moyne-white.jpg",
+      "Silk Soie White": "/images/mahaveer/textures/silk-soie-white.jpg",
+      "Canvas Linen White": "/images/mahaveer/textures/canvas-linen-white.jpg",
+      "White Net": "/images/mahaveer/textures/white-net.jpg",
+      "K Linen White": "/images/mahaveer/textures/k-linen-white.jpg",
+      "Natural Rock": "/images/mahaveer/textures/natural-rock.jpg",
+    },
+    image: "/images/mahaveer/textures/needle-point-cream.jpg",
     type: "Textured",
     app: "Packaging",
     paperTypes: ["High-Bulk Textured Premium Board"],
@@ -524,6 +509,13 @@ export const catalogProducts: CatalogProduct[] = [
     colors: 2,
     colorNames: ["Bright White", "Ivory"],
     image: "/images/favini/twill.jpg",
+    // Real Favini photos (favini.com/gs/en/products/twill) — both colours are exact
+    // matches on Favini's own list, and both have dedicated Twill photography (not
+    // borrowed from another product line).
+    colorImages: {
+      "Bright White": "/images/favini/twill-bright-white.jpg",
+      "Ivory": "/images/favini/twill-ivory.jpg",
+    },
     type: "Textured",
     app: "Packaging",
     paperTypes: ["Textured Premium Fine Paper"],
@@ -546,11 +538,16 @@ export const catalogProducts: CatalogProduct[] = [
   {
     id: "tradition-valentino",
     book: "Textures",
-    name: "Tradition Valentino",
+    name: "Tradition Valentino Ivory",
     gsm: "120 · 300 GSM",
     sizes: "72 x 102 CM",
     colors: 1,
     colorNames: ["Ivory"],
+    // "Tradition Valentino" doesn't exist as a product on favini.com at all (checked
+    // their site search — no results for "Tradition" or "Valentino"). Likely a classic
+    // embossing-finish name applied across other Favini ranges rather than its own
+    // current product line. No verified source — see Unmatched_Favini_Colours.xlsx.
+    unverifiedColors: ["Ivory"],
     image: "/images/mahaveer/tradition-valentino.jpg",
     type: "Textured",
     app: "Digital Printing",
@@ -577,11 +574,28 @@ export const catalogProducts: CatalogProduct[] = [
   {
     id: "cotton",
     book: "Textures",
-    name: "Cotton",
+    name: "Favini Art",
     gsm: "240 · 300 GSM",
     sizes: "70 x 100 CM",
-    colors: 1,
-    colorNames: ["Natural"],
+    colors: 3,
+    // These are 3 distinct SKUs distinguished by cotton content (25% / 35% / 60%), not by
+    // colour — the sheet's "Colour Name" field is "Natural" for all three (same shade),
+    // which previously collapsed them into a single swatch and hid the real product
+    // variants. Sheet source confirms 25% (not 20%), per SKUs 50091–50093.
+    colorNames: ["25% Cotton", "35% Cotton", "60% Cotton"],
+    colorGsm: { "25% Cotton": "240 GSM", "35% Cotton": "300 GSM", "60% Cotton": "300 GSM" },
+    // Real per-variant Favini Art photos (favini.com/gs/en/products/favini-art), matched
+    // via the sheet's own technical notes ("Watercolour Eco 25%", "Watercolour 35%",
+    // "Watercolour Cloud 60%"). They visibly differ — 60% has a noticeably coarser grain
+    // than 25/35% — so reusing one generic photo for all three (the original approach)
+    // would have been wrong; corrected after being asked to verify. Favini's own site
+    // reuses one photo for both 25% and 35% (same as their Sumo practice elsewhere),
+    // mirrored here rather than guessing a third distinct image.
+    colorImages: {
+      "25% Cotton": "/images/favini/cotton-25.jpg",
+      "35% Cotton": "/images/favini/cotton-25.jpg",
+      "60% Cotton": "/images/favini/cotton-60.jpg",
+    },
     image: "/images/favini/cotton.jpg",
     type: "Color",
     app: "Stationery & Print",
@@ -634,7 +648,7 @@ export const catalogProducts: CatalogProduct[] = [
   {
     id: "vtc",
     book: "Blacks & Krafts",
-    name: "VTC",
+    name: "VTC Black",
     gsm: "120 · 200 · 250 · 300 · 600 · 900 GSM",
     sizes: "70 x 100 CM · 71 x 101 CM · 79 x 109 CM",
     colors: 1,
@@ -664,39 +678,9 @@ export const catalogProducts: CatalogProduct[] = [
   },
 
   {
-    id: "mystique",
-    book: "Blacks & Krafts",
-    name: "Mystique",
-    gsm: "250 · 300 GSM",
-    sizes: "70 x 100 CM",
-    colors: 1,
-    colorNames: ["Black"],
-    image: "/images/mahaveer/mystique-black.jpg",
-    colorImages: { "Black": "/images/mahaveer/mystique-black.jpg" },
-    type: "Color",
-    app: "Packaging",
-    paperTypes: ["Commercial Coloured Paper", "Board"],
-    applications: ["Commercial Packaging"],
-    colourGroups: ["Black"],
-    description: "Versatile coloured paper and board with printing and converting performance broadly similar to Burano, positioned as a cost-effective commercial option.",
-    aiSummary: "Recommend when the customer needs a value-oriented coloured paper or board suitable for most printing and converting processes. For maximum stiffness, luxury feel or demanding packaging, recommend Burano instead.",
-    bestFor: "Commercial Packaging; Invitations / Tags / Stationery",
-    customerWarning: "Test the exact GSM, colour and machine before bulk production where compatibility is marked as testing.",
-    seoKeywords: "mystique, commercial packaging, speciality paper, premium packaging",
-    finish: "Matte",
-    texture: "Smooth",
-    coatedUncoated: "Uncoated",
-    strengthRating: 3,
-    premiumRating: 3,
-    printingCompatibility: { "Offset": "Suitable", "Digital Toner": "Suitable", "HP Indigo": "Suitable with testing", "Screen Printing": "Suitable", "Inkjet": "Suitable with testing", "Laser Printing": "Suitable with testing", "White Toner": "Suitable with testing" },
-    finishingCompatibility: { "Foiling": "Suitable", "Embossing": "Suitable", "Debossing": "Suitable", "UV Printing": "Suitable", "Spot UV": "Not recommended", "Die Cutting": "Suitable", "Laser Cutting": "Suitable with testing", "Scoring": "Suitable", "Folding": "Suitable with scoring for board" },
-    technicalNotes: "Recommend when the customer needs a value-oriented coloured paper or board suitable for most printing and converting processes. For maximum stiffness, luxury feel or demanding packaging, recommend Burano instead.",
-  },
-
-  {
     id: "kraft-paper",
     book: "Blacks & Krafts",
-    name: "Kraft Paper",
+    name: "Natural Kraft Paper",
     gsm: "100 · 170 GSM",
     sizes: "63.5 x 91.4 CM · 76 x 101 CM",
     colors: 1,
@@ -722,7 +706,7 @@ export const catalogProducts: CatalogProduct[] = [
   {
     id: "kraft-board",
     book: "Blacks & Krafts",
-    name: "Kraft Board",
+    name: "Natural Kraft Board",
     gsm: "200 · 250 · 300 · 340 · 400 GSM",
     sizes: "71 x 101 CM",
     colors: 1,
@@ -748,7 +732,7 @@ export const catalogProducts: CatalogProduct[] = [
   {
     id: "eco-klb",
     book: "Blacks & Krafts",
-    name: "Eco KLB",
+    name: "Eco Kraft Liner Board",
     gsm: "125 · 250 · 300 GSM",
     sizes: "63.5 x 90 CM · 63.5 x 91.4 CM · 71 x 101 CM",
     colors: 1,
@@ -835,6 +819,7 @@ export const catalogProducts: CatalogProduct[] = [
     sizes: "64 x 92 CM · 67 x 98 CM · 71 x 101 CM",
     colors: 2,
     colorNames: ["White", "Natura"],
+    colorGsm: { "White": "270 · 300 · 350 GSM", "Natura": "300 · 350 GSM" },
     image: "/images/mahaveer/eco-hb-white.jpg",
     colorImages: { "White": "/images/mahaveer/eco-hb-white.jpg", "Natura": "/images/mahaveer/eco-hb-natura.jpg" },
     type: "Textured",
@@ -934,6 +919,10 @@ export const catalogProducts: CatalogProduct[] = [
     colors: 1,
     colorNames: ["Bright White"],
     image: "/images/favini/shiro-echo.jpg",
+    // Real Favini photo (favini.com/gs/en/products/shiro-echo) — the plain "Bright White"
+    // swatch has no dedicated photo there (placeholder icon), but its "Bright White
+    // Digital" listing does, same paper/colour, just the digital-press SKU photo.
+    colorImages: { "Bright White": "/images/favini/shiro-echo-bright-white.jpg" },
     type: "Eco",
     app: "Packaging",
     paperTypes: ["100% Recycled Premium Paper"],
@@ -958,8 +947,9 @@ export const catalogProducts: CatalogProduct[] = [
     name: "Bianco Flash",
     gsm: "120 · 250 · 280 · 300 · 320 GSM",
     sizes: "70 x 100 CM · 71 x 101 CM",
-    colors: 2,
-    colorNames: ["Master White", "Bianco"],
+    colors: 3,
+    colorNames: ["Master White", "Bianco", "Natural White"],
+    colorGsm: { "Master White": "120 · 280 · 320 GSM", "Bianco": "120 · 250 · 300 GSM", "Natural White": "120 · 300 GSM" },
     image: "/images/favini/bianco-flash.jpg",
     type: "Color",
     app: "Packaging",
@@ -1024,7 +1014,13 @@ export const catalogProducts: CatalogProduct[] = [
     sizes: "72 x 102 CM",
     colors: 2,
     colorNames: ["Bianco", "Ivory"],
+    colorGsm: { "Bianco": "250 · 300 · 450 GSM", "Ivory": "300 GSM" },
     image: "/images/favini/contact-pack.jpg",
+    // Real Favini photo (favini.com/gs/en/products/contact-pack) — "Ivory" is an exact
+    // match with a direct dedicated photo. "Bianco" has no exact match (Favini calls it
+    // "White") and is intentionally left unmapped — see unverifiedColors below.
+    colorImages: { "Ivory": "/images/favini/contact-pack-ivory.jpg" },
+    unverifiedColors: ["Bianco"],
     type: "Color",
     app: "Packaging",
     paperTypes: ["Folding Box and Packaging Board"],
@@ -1058,6 +1054,9 @@ export const catalogProducts: CatalogProduct[] = [
     colors: 1,
     colorNames: ["Corn"],
     image: "/images/favini/crush.jpg",
+    // Real Favini photo (favini.com/gs/en/products/crush) — plain "Corn" has no dedicated
+    // photo there (placeholder icon), but "Corn Digital" does, same paper/colour.
+    colorImages: { "Corn": "/images/favini/crush-corn.jpg" },
     type: "Eco",
     app: "Packaging",
     paperTypes: ["Eco-Friendly Recycled Fine Paper"],
@@ -1102,8 +1101,13 @@ export const catalogProducts: CatalogProduct[] = [
     sizes: "70 x 100 CM",
     colors: 2,
     colorNames: ["White", "Ivory"],
-    image: "/images/favini/influence-white.jpg",
-    colorImages: { "White": "/images/favini/influence-white.jpg", "Ivory": "/images/favini/influence-ivory.jpg" },
+    image: "/images/favini/influence-white-real.jpg",
+    // "Influence" is Mahaveer's own trade name for what Favini sells as "Dolce Vita"
+    // (sheet's Series column: "Influence (Dolce Vita equivalent reference)", remarks cite
+    // Dolce-Vita_TDS_12052020.pdf). Real Favini photos from favini.com/gs/en/products/
+    // dolce-vita — both colours are exact matches there. Replaces the previous pair of
+    // images whose origin couldn't be verified against Favini's site under either name.
+    colorImages: { "White": "/images/favini/influence-white-real.jpg", "Ivory": "/images/favini/influence-ivory-real.jpg" },
     type: "Color",
     app: "Digital Printing",
     paperTypes: ["Premium High-Definition Uncoated Paper"],
@@ -1147,6 +1151,7 @@ export const catalogProducts: CatalogProduct[] = [
     sizes: "70 x 100 CM",
     colors: 2,
     colorNames: ["Ice Gold", "White Gold"],
+    colorGsm: { "Ice Gold": "240 · 290 GSM", "White Gold": "120 · 160 GSM" },
     type: "Metallic",
     app: "Digital Printing",
     colourGroups: ["Metallic", "White", "Clear"],
@@ -1159,9 +1164,20 @@ export const catalogProducts: CatalogProduct[] = [
     name: "Majestic",
     gsm: "120 · 250 · 290 GSM",
     sizes: "70 x 100 CM",
-    colors: 3,
-    colorNames: ["Marble White", "Candle Light Cream", "Real Gold"],
+    colors: 4,
+    colorNames: ["Marble White", "Candle Light Cream", "Real Copper", "Real Gold"],
+    colorGsm: {
+      "Marble White": "120 · 290 GSM", "Candle Light Cream": "120 · 250 GSM",
+      "Real Copper": "120 · 250 GSM", "Real Gold": "120 · 250 GSM",
+    },
     image: "/images/favini/majestic.jpg",
+    // Real Favini photo (favini.com/gs/en/products/majestic) — plain "Marble White" has no
+    // dedicated photo there (placeholder icon), but its Digital HP Indigo/Dry Toner
+    // listings do, same paper/colour. Candle Light Cream/Real Copper/Real Gold have no
+    // exact name match (Favini: "Candlelight Cream", no "Copper" at all, "Luxus Real
+    // Gold") and are intentionally left unmapped.
+    colorImages: { "Marble White": "/images/favini/majestic-marble-white.jpg" },
+    unverifiedColors: ["Candle Light Cream", "Real Copper", "Real Gold"],
     type: "Metallic",
     app: "Packaging",
     paperTypes: ["Metallic", "Pearlescent Paper and Board"],
@@ -1209,6 +1225,7 @@ export const catalogProducts: CatalogProduct[] = [
     sizes: "78.7 x 109.2 CM",
     colors: 5,
     colorNames: ["Black", "Aqua Blue", "Navy Blue", "Green", "Wood Palm"],
+    colorGsm: { "Black": "120 · 240 GSM", "Aqua Blue": "120 GSM", "Navy Blue": "120 GSM", "Green": "120 GSM", "Wood Palm": "120 GSM" },
     image: "/images/mahaveer/cloud-black.jpg",
     colorImages: { "Black": "/images/mahaveer/cloud-black.jpg", "Aqua Blue": "/images/mahaveer/cloud-aqua-blue.jpg", "Navy Blue": "/images/mahaveer/cloud-navy-blue.jpg", "Green": "/images/mahaveer/cloud-green.jpg", "Wood Palm": "/images/mahaveer/cloud-wood-palm.jpg" },
     type: "Textured",
@@ -1373,7 +1390,7 @@ export const catalogProducts: CatalogProduct[] = [
   {
     id: "classy-cover",
     book: "Coverings",
-    name: "Classy Cover",
+    name: "Classy Covers",
     gsm: "120 GSM",
     sizes: "72 x 102 CM",
     colors: 8,
@@ -1402,7 +1419,7 @@ export const catalogProducts: CatalogProduct[] = [
   {
     id: "tyvek",
     book: "Speciality",
-    name: "Tyvek",
+    name: "Tyvek 1073B",
     gsm: "56 · 105 GSM",
     sizes: "51 x 76 CM",
     colors: 1,
@@ -1426,39 +1443,47 @@ export const catalogProducts: CatalogProduct[] = [
   },
 
   {
-    id: "nt-matt",
+    // Merged per R018 sheet: NT Matt and Paperlike Synthetic share the sheet's
+    // "Non - Tearable" Series, despite being technically different synthetic
+    // media (BOPP polymeric vs. paper-film-paper composite) with materially
+    // different digital-press compatibility — spelled out below rather than
+    // averaged, since the two variants genuinely disagree on several processes.
+    id: "non-tearable",
     book: "Speciality",
-    name: "NT Matt",
-    gsm: "180 · 275 · 330 · 430 GSM",
-    sizes: "56 x 71 CM",
-    colors: 1,
+    name: "Non-Tearable",
+    gsm: "180 · 210 · 275 · 330 · 430 GSM",
+    sizes: "56 x 71 CM · 75 x 100 CM",
+    colors: 2,
+    colorNames: ["NT Matt", "Paperlike Synthetic"],
+    colorGsm: { "NT Matt": "180 · 275 · 330 · 430 GSM", "Paperlike Synthetic": "210 GSM" },
     image: "/images/mahaveer/nt-matt.jpg",
-    colorImages: { "NT Matt": "/images/mahaveer/nt-matt.jpg" },
+    colorImages: { "NT Matt": "/images/mahaveer/nt-matt.jpg", "Paperlike Synthetic": "/images/mahaveer/paperlike-synthetic.jpg" },
     type: "Specialty",
     app: "Digital Printing",
-    paperTypes: ["BOPP Polymeric Synthetic Paper"],
-    description: "NT Matt is a durable non-tearable BOPP polymeric sheet resistant to water, oil and chemicals.",
-    aiSummary: "Recommend for menus, maps, manuals, ID cards and durable printing; never recommend for toner-based digital presses.",
-    bestFor: "Menus; Maps; Manuals; ID Cards",
+    paperTypes: ["BOPP Polymeric Synthetic Paper", "Paper-Film-Paper Synthetic Composite"],
+    applications: ["Exhibition Badges"],
+    description: "Two non-tearable synthetic media: NT Matt, a durable BOPP polymeric sheet resistant to water, oil and chemicals, and Paperlike Synthetic, a film-core composite that keeps a paper-like feel. Their digital-press compatibility differs — check the variant before production.",
+    aiSummary: "Recommend NT Matt for menus, maps, manuals, ID cards and durable printing (never for toner-based digital presses). Recommend Paperlike Synthetic for exhibition badges, conference passes, visitor IDs and durable tags, where digital toner printing is needed.",
+    bestFor: "Menus; Maps; Manuals; ID Cards; Exhibition Badges",
     sustainabilityNote: "Synthetic; no FSC",
-    customerWarning: "Digital toner, HP Indigo, inkjet, laser and Spot UV are not recommended.",
-    seoKeywords: "NT matt, non tear paper, BOPP synthetic paper, durable menus",
+    customerWarning: "NT Matt (BOPP): digital toner, HP Indigo, inkjet, laser and Spot UV are not recommended — offset and screen only. Paperlike Synthetic (film composite): digital toner, offset, screen and inkjet are suitable, but HP Indigo and laser are not. Confirm which variant you have before production.",
+    seoKeywords: "NT matt, non tear paper, BOPP synthetic paper, paperlike synthetic, durable menus, exhibition badges",
     brand: "Mahaveer Papers",
-    finish: "Matt",
+    finish: "Matt / Paper-like finish",
     texture: "Smooth",
     coatedUncoated: "Synthetic",
     strengthRating: 5,
     premiumRating: 3,
-    printingCompatibility: { "Offset": "Suitable with testing", "Digital Toner": "Not recommended", "HP Indigo": "Not recommended", "Screen Printing": "Suitable", "Inkjet": "Not recommended", "Laser Printing": "Not recommended", "White Toner": "Not recommended" },
-    finishingCompatibility: { "Foiling": "Suitable with testing", "Embossing": "Suitable with testing", "Debossing": "Suitable with testing", "UV Printing": "Suitable with testing", "Spot UV": "Not recommended", "Die Cutting": "Suitable", "Laser Cutting": "Suitable with testing", "Scoring": "Suitable", "Folding": "Suitable with testing" },
-    applicationSuitability: [{ application: "Menus", suitability: "Excellent" }, { application: "Maps", suitability: "Excellent" }, { application: "Manuals", suitability: "Excellent" }, { application: "ID Cards", suitability: "Good" }, { application: "Durable Tags", suitability: "Good" }],
-    technicalNotes: "AI must not recommend NT Matt for toner-based digital presses. Suitable for die cutting, creasing and punching. Foiling and embossing require trials.",
+    printingCompatibility: { "Offset": "Suitable with testing", "Digital Toner": "Not recommended (NT Matt) / Suitable (Paperlike Synthetic)", "HP Indigo": "Not recommended", "Screen Printing": "Suitable", "Inkjet": "Not recommended (NT Matt) / Suitable (Paperlike Synthetic)", "Laser Printing": "Not recommended", "White Toner": "Not recommended" },
+    finishingCompatibility: { "Foiling": "Suitable with testing", "Embossing": "Suitable with testing", "Debossing": "Suitable with testing", "UV Printing": "Suitable with testing", "Spot UV": "Not recommended", "Die Cutting": "Suitable", "Laser Cutting": "Suitable with testing", "Scoring": "Suitable with testing", "Folding": "Suitable with testing" },
+    applicationSuitability: [{ application: "Menus", suitability: "Excellent" }, { application: "Maps", suitability: "Excellent" }, { application: "Manuals", suitability: "Excellent" }, { application: "Exhibition Badges", suitability: "Excellent" }, { application: "ID Cards", suitability: "Good" }, { application: "Durable Tags", suitability: "Good" }],
+    technicalNotes: "AI must not recommend NT Matt for toner-based digital presses; Paperlike Synthetic is the digital-toner-suitable alternative for badge/ID work. Both suitable for die cutting, creasing and punching; foiling and embossing require trials.",
   },
 
   {
     id: "translucent",
     book: "Speciality",
-    name: "Translucent",
+    name: "Natural Tracing Paper",
     gsm: "60 · 90 · 110 · 142 · 180 GSM",
     sizes: "63.5 x 91.4 CM",
     colors: 1,
@@ -1479,26 +1504,6 @@ export const catalogProducts: CatalogProduct[] = [
     finishingCompatibility: { "Foiling": "Suitable", "Embossing": "Suitable with testing", "Debossing": "Suitable with testing", "UV Printing": "Suitable with testing", "Spot UV": "Not recommended", "Die Cutting": "Suitable", "Laser Cutting": "Suitable with testing", "Scoring": "As required", "Folding": "Suitable with testing" },
     applicationSuitability: [{ application: "Wedding Invitation Overlays", suitability: "Excellent" }, { application: "Creative Inserts", suitability: "Excellent" }, { application: "Tracing & Drafting", suitability: "Excellent" }, { application: "Premium Packaging Windows", suitability: "Good" }],
     technicalNotes: "Transparency decreases as GSM increases. Test ink drying, toner adhesion and curl for the selected GSM. Suitable for decorative converting subject to trial. Natural tracing paper",
-  },
-
-  {
-    id: "paperlike-synthetic",
-    book: "Speciality",
-    name: "Paperlike Synthetic",
-    gsm: "210 GSM",
-    sizes: "75 x 100 CM",
-    colors: 1,
-    image: "/images/mahaveer/paperlike-synthetic.jpg",
-    colorImages: { "Paperlike Synthetic": "/images/mahaveer/paperlike-synthetic.jpg" },
-    type: "Specialty",
-    app: "Digital Printing",
-    paperTypes: ["Paper-Film-Paper Synthetic Composite"],
-    applications: ["Exhibition Badges"],
-    description: "Paper-like synthetic composite with a film core, providing non-tear durability while retaining a paper feel.",
-    aiSummary: "Recommended mainly for exhibition badges, conference passes, visitor IDs and durable tags.",
-    finish: "Paper-like finish",
-    printingCompatibility: { "Offset": "Suitable", "Digital Toner": "Suitable", "HP Indigo": "Not recommended", "Screen Printing": "Suitable", "Inkjet": "Suitable", "Laser Printing": "Not recommended" },
-    finishingCompatibility: { "Foiling": "Suitable", "Embossing": "Suitable with testing", "Debossing": "Suitable with testing", "UV Printing": "Suitable with testing", "Spot UV": "Not recommended", "Die Cutting": "Suitable", "Scoring": "Suitable with testing" },
   },
 
   {
@@ -1534,6 +1539,7 @@ export const catalogProducts: CatalogProduct[] = [
     sizes: "13x19 Inch",
     colors: 5,
     colorNames: ["Crystal Ice", "Pure Pearl", "Black Velvet", "Snow Sand", "Linen Touch"],
+    colorGsm: { "Crystal Ice": "120/90", "Pure Pearl": "110/90", "Black Velvet": "120/90", "Snow Sand": "130/90", "Linen Touch": "120/90" },
     image: "/images/mahaveer/digilux-crystal-ice.jpg",
     colorImages: { "Crystal Ice": "/images/mahaveer/digilux-crystal-ice.jpg", "Pure Pearl": "/images/mahaveer/digilux-pure-pearl.jpg", "Black Velvet": "/images/mahaveer/digilux-black-velvet.jpg", "Snow Sand": "/images/mahaveer/digilux-snow-sand.jpg", "Linen Touch": "/images/mahaveer/digilux-linen-touch.jpg" },
     type: "Specialty",
@@ -1550,68 +1556,46 @@ export const catalogProducts: CatalogProduct[] = [
 
   // ── CORE BOARD ────────────────────────────────────────────────────────────
   {
+    // Merged per R018 sheet: Grey, Black Top and White Top Binding Board all
+    // share the sheet's "Grey Binding Board" Series — one card, three variants.
     id: "grey-binding-board",
     book: "Core Board",
     name: "Grey Binding Board",
-    gsm: "1.0 · 1.2 · 1.5 · 1.8 · 2.0 · 2.5 · 3.0 MM",
+    gsm: "1.0 · 1.2 · 1.4 · 1.5 · 1.8 · 2.0 · 2.5 · 3.0 MM",
     sizes: "79 x 104 CM",
-    colors: 1,
-    colorNames: ["Grey"],
+    colors: 3,
+    colorNames: ["Grey", "Black Top", "White Top"],
+    colorGsm: {
+      "Grey": "1.0 · 1.2 · 1.5 · 1.8 · 2.0 · 2.5 · 3.0 MM",
+      "Black Top": "1.2 · 1.4 · 1.8 MM",
+      "White Top": "1.5 · 1.8 MM",
+    },
     image: "/images/mahaveer/grey-binding-board.jpg",
-    colorImages: { "Grey": "/images/mahaveer/grey-binding-board.jpg" },
+    colorImages: {
+      "Grey": "/images/mahaveer/grey-binding-board.jpg",
+      "Black Top": "/images/mahaveer/black-top-binding-board.jpg",
+      "White Top": "/images/mahaveer/white-top-binding-board.jpg",
+    },
     type: "Board",
     app: "Covering & Binding",
     paperTypes: ["Binding", "Structural Core Board"],
     applications: ["Rigid Boxes"],
-    colourGroups: ["Grey"],
-    description: "Thick structural core board used beneath covering paper for rigid boxes and hardbound book covers.",
-    aiSummary: "Recommend as the structural underlay/core for rigid boxes and hardbound book covers.",
-    printingCompatibility: { "Offset": "Not recommended", "Digital Toner": "Not recommended", "HP Indigo": "Not recommended", "Screen Printing": "Not recommended", "Inkjet": "Not recommended", "Laser Printing": "Not recommended" },
-    finishingCompatibility: { "Foiling": "Not recommended directly", "UV Printing": "Not recommended", "Spot UV": "Not recommended", "Die Cutting": "Suitable", "Laser Cutting": "Suitable with testing", "Scoring": "Suitable", "Folding": "Not applicable" },
-  },
-
-  {
-    id: "black-top-binding-board",
-    book: "Core Board",
-    name: "Black Top Binding Board",
-    gsm: "1.2 · 1.4 · 1.8 MM",
-    sizes: "79 x 104 CM",
-    colors: 1,
-    colorNames: ["Black"],
-    image: "/images/mahaveer/black-top-binding-board.jpg",
-    colorImages: { "Black": "/images/mahaveer/black-top-binding-board.jpg" },
-    type: "Board",
-    app: "Covering & Binding",
-    paperTypes: ["Binding", "Structural Core Board"],
-    applications: ["Rigid Boxes"],
-    colourGroups: ["Black"],
-    description: "Thick structural core board used beneath covering paper for rigid boxes and hardbound book covers. Black paper is pasted on one side.",
-    aiSummary: "Recommend as the structural underlay/core for rigid boxes and hardbound book covers.",
-    printingCompatibility: { "Offset": "Not recommended", "Digital Toner": "Not recommended", "HP Indigo": "Not recommended", "Screen Printing": "Not recommended", "Inkjet": "Not recommended", "Laser Printing": "Not recommended" },
-    finishingCompatibility: { "Foiling": "Not recommended directly", "UV Printing": "Not recommended", "Spot UV": "Not recommended", "Die Cutting": "Suitable", "Laser Cutting": "Suitable with testing", "Scoring": "Suitable", "Folding": "Not applicable" },
-  },
-
-  {
-    id: "white-top-binding-board",
-    book: "Core Board",
-    name: "White Top Binding Board",
-    gsm: "1.5 · 1.8 MM",
-    sizes: "79 x 104 CM",
-    colors: 1,
-    colorNames: ["White"],
-    image: "/images/mahaveer/white-top-binding-board.jpg",
-    colorImages: { "White": "/images/mahaveer/white-top-binding-board.jpg" },
-    type: "Board",
-    app: "Covering & Binding",
-    paperTypes: ["Binding", "Structural Core Board"],
-    applications: ["Rigid Boxes"],
-    colourGroups: ["White", "Clear"],
-    description: "Thick structural core board used beneath covering paper for rigid boxes and hardbound book covers. White paper is pasted on one side.",
-    aiSummary: "Recommend as the structural underlay/core for rigid boxes and hardbound book covers.",
+    colourGroups: ["Grey", "Black", "White", "Clear"],
+    description: "Thick structural core board used beneath covering paper for rigid boxes and hardbound book covers, in plain grey or with black or white paper pasted on one side.",
+    aiSummary: "Recommend as the structural underlay/core for rigid boxes and hardbound book covers. Select Black Top or White Top when the exposed inner face should match the covering colour.",
     printingCompatibility: { "Offset": "Not recommended", "Digital Toner": "Not recommended", "HP Indigo": "Not recommended", "Screen Printing": "Not recommended", "Inkjet": "Not recommended", "Laser Printing": "Not recommended" },
     finishingCompatibility: { "Foiling": "Not recommended directly", "UV Printing": "Not recommended", "Spot UV": "Not recommended", "Die Cutting": "Suitable", "Laser Cutting": "Suitable with testing", "Scoring": "Suitable", "Folding": "Not applicable" },
   },
 ];
+
+/** True when a family carries some form of FSC certification (full, Mix Credit, etc.) rather than none/not-applicable. */
+export function isFscCertified(p: CatalogProduct): boolean {
+  const text = `${p.fscCertified ?? ""} ${p.sustainabilityNote ?? ""}`;
+  if (!/fsc/i.test(text)) return false;
+  if (/no fsc/i.test(text)) return false;
+  if (p.fscCertified === "Not applicable") return false;
+  return true;
+}
 
 export const COLOR_NAME_HEX: Record<string, string> = {
   "Aqua Blue": "#00B4D8", Beige: "#F5F0E1", Bianco: "#FFFFFF",
@@ -1622,7 +1606,7 @@ export const COLOR_NAME_HEX: Record<string, string> = {
   Corn: "#E8C547", Cream: "#F5EBDD", "Crystal Ice": "#E8F4F8",
   "Dark Blue": "#16305C", "Dark Brown": "#3D2817", "Dark Green": "#1B3D2B",
   "Dark Grey": "#4A4A4A", "Dark Red": "#5E161A", "English Green": "#205C37",
-  "Fire Red": "#C1272D", Gold: "#D4AF37", "Graphite Grey": "#4B4B4B",
+  "Fire Red": "#652D20", Gold: "#D4AF37", "Graphite Grey": "#4B4B4B",
   Green: "#2E7D4F", Grey: "#8A8A8A", Grigio: "#8A8A8A",
   "Hp Orange": "#E8590C", "Ice Gold": "#D9C79A", "Ice White": "#F2F6F7",
   Ivory: "#F3EDDD", "Kraft Brown": "#A9723A", "Light Cream": "#FAF3E4",
@@ -1630,11 +1614,11 @@ export const COLOR_NAME_HEX: Record<string, string> = {
   Maroon: "#6E1423", "Master White": "#FAFAFA", Marrone: "#6B4226",
   "Natural White": "#F7F5EF", Natura: "#E4D9C2", Natural: "#E8DFC8",
   Navy: "#16234A", "Navy Blue": "#1B2A52", Nero: "#1A1A1A",
-  Orange: "#E8590C", "Parrot Green": "#4C9A2A", Peach: "#F3B893",
+  Orange: "#AA6F39", "Parrot Green": "#4C9A2A", Peach: "#F3B893",
   "Pearl White": "#F4F2ED", Petrol: "#124559", Pink: "#E88AA8",
-  "Pure Pearl": "#F5F0EA", Purple: "#6A3E9A", "Real Gold": "#C99A2E",
+  "Pure Pearl": "#F5F0EA", Purple: "#6A3E9A", "Real Copper": "#B87333", "Real Gold": "#C99A2E",
   Red: "#C1272D", "Red Wine": "#5E161A", Rosso: "#C1272D",
-  Saffron: "#F4A11A", "Shimmer White": "#F6F6F2", "Shocking Pink": "#E6007E",
+  Saffron: "#F4A11A", "Shimmer White": "#F6F6F2", "Shocking Pink": "#7F3C68",
   "Snow Sand": "#EDE3D0", Sunshine: "#FBC02D", Taro: "#8E7CC3",
   Tobacco: "#6B4A2E", Turquoise: "#2FA5A0", Verde: "#2E7D4F",
   White: "#FFFFFF", "White Gold": "#E9DFC3", Wine: "#5E161A",

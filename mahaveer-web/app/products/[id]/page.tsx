@@ -43,13 +43,26 @@ export default async function ProductPage({ params }: Props) {
   const product = catalogProducts.find(p => p.id === id);
   if (!product) notFound();
 
-  const gsmLabel = formatGsm(product.gsm);
   const sizesLabel = product.sizes ? formatSizes(product.sizes) : null;
   // One card per real named colour when we have that data — falls back to repeating
   // the family name/image for the handful of products with no colour breakdown.
+  // GSM is per-colour where the family's weights genuinely differ by shade (e.g.
+  // Burano: most colours are 250 GSM only, Cobalt/Nero also come in 320 GSM) —
+  // falls back to the family-wide gsm string when every colour shares the same weights.
   const swatches = product.colorNames?.length
-    ? product.colorNames.map((name) => ({ name, hex: COLOR_NAME_HEX[name] }))
-    : Array.from({ length: Math.max(1, product.colors) }, () => ({ name: product.name, hex: undefined }));
+    ? product.colorNames.map((name) => ({
+        name,
+        // unverifiedColors (no confirmed source — see Unmatched_Favini_Colours.xlsx)
+        // deliberately get no hex either, so they fall through to the "Photo coming
+        // soon" placeholder instead of a guessed colour block.
+        hex: product.unverifiedColors?.includes(name) ? undefined : COLOR_NAME_HEX[name],
+        gsmLabel: formatGsm(product.colorGsm?.[name] ?? product.gsm),
+      }))
+    : Array.from({ length: Math.max(1, product.colors) }, () => ({
+        name: product.name,
+        hex: undefined as string | undefined,
+        gsmLabel: formatGsm(product.gsm),
+      }));
 
   return (
     <>
@@ -120,14 +133,16 @@ export default async function ProductPage({ params }: Props) {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-12">
             {swatches.map((swatch, i) => {
               // A real per-colour photo (client-provided, already the true
-              // colour) always wins and is never tinted. The family `image` +
-              // CSS tint fallback is ONLY valid for Favini's plain texture
-              // shots — those have no colour name printed on them, unlike
-              // Mahaveer's own label photos, which would show the wrong
-              // colour's name baked into every other swatch if reused this way.
+              // colour) always wins. Everything else without one falls back to
+              // a flat hex swatch — NOT a CSS-tinted photo. `mix-blend-mode:
+              // color` keeps the *backdrop photo's* luminosity and only swaps
+              // in the tint's hue/saturation, so dark/saturated true colours
+              // (e.g. Burano's Burgundy #6D071A, Fire Red #C1272D) get dragged
+              // up to the light tan backdrop's brightness and render as pale
+              // pink/salmon — visibly the wrong colour. A plain hex block is
+              // less "photographic" but is never wrong.
               const colorImage = product.colorImages?.[swatch.name];
-              const useTintedFamilyImage = !colorImage && !!product.image && !!product.isFavini && !!swatch.hex;
-              const plainHexBlock = !colorImage && !useTintedFamilyImage && !!swatch.hex;
+              const plainHexBlock = !colorImage && !!swatch.hex;
 
               return (
               <MotionDiv key={`${swatch.name}-${i}`} delay={0.04 + (i % 4) * 0.05}>
@@ -147,22 +162,6 @@ export default async function ProductPage({ params }: Props) {
                       sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                       className="object-cover"
                     />
-                  ) : useTintedFamilyImage ? (
-                    <>
-                      <Image
-                        src={product.image!}
-                        alt={`${product.name} — ${swatch.name}`}
-                        fill
-                        unoptimized
-                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                        className="object-cover"
-                      />
-                      <div
-                        className="absolute inset-0"
-                        style={{ backgroundColor: swatch.hex, mixBlendMode: "color" }}
-                        aria-hidden="true"
-                      />
-                    </>
                   ) : !plainHexBlock ? (
                     <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-gray-100 text-gray-400">
                       <ImageOff className="h-7 w-7" strokeWidth={1.5} />
@@ -178,7 +177,7 @@ export default async function ProductPage({ params }: Props) {
                     className="inline-flex items-center border text-[13px] font-medium px-3 py-1 rounded-full"
                     style={{ color: "#00449A", borderColor: "#00449A" }}
                   >
-                    {gsmLabel}
+                    {swatch.gsmLabel}
                   </span>
                   {sizesLabel && (
                     <span

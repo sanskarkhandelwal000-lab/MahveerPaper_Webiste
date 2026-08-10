@@ -110,12 +110,16 @@ export function WhyDigiluxTabs() {
 
           <div>
             <p className="mb-4 text-[17px] leading-relaxed text-white/80">
-              DIGILUX began with a focused range of premium textured papers for digital printing. As customer
-              requirements evolved, so did our portfolio.
+              Since 2023, DIGILUX has grown from serving 50 digital printers in Bengaluru to nearly 200—and from 30
+              products in Volume 1 to 55 in Volume 3, arriving in 2027.
+            </p>
+            <p className="mb-4 text-[17px] leading-relaxed text-white/80">
+              Our growth is built on consistent quality and dependable availability: materials that print
+              beautifully, cut cleanly, and elevate every output.
             </p>
             <p className="mb-8 text-[17px] leading-relaxed text-white/80">
-              Today, DIGILUX offers over 40 carefully selected specialty products, helping digital printers deliver
-              premium results across a wide range of applications.
+              Now, delivering across South India—with a selected range of DIGILUX items also available in
+              Ahmedabad.
             </p>
 
             <div className="rounded-3xl p-8 lg:p-10 mb-8 bg-white">

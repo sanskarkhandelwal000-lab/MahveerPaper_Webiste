@@ -227,7 +227,8 @@ export function ContactForm() {
             </Field>
 
             <Field
-              label="Phone Number (optional)"
+              label="Phone Number"
+              required
               error={errors.phone?.message}
               htmlFor="phone"
             >

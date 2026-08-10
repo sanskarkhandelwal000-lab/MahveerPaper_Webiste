@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useRef, useEffect } from "react";
+import { Suspense, useState, useRef, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { ArrowRight, Search } from "lucide-react";
 import { ProductCard } from "@/components/products/ProductCard";
-import { catalogProducts, BOOKS, PAPER_TYPE_OPTIONS, APPLICATION_OPTIONS, COLOUR_GROUP_OPTIONS } from "@/data/products";
+import { catalogProducts, isFscCertified, BOOKS, PAPER_TYPE_OPTIONS, APPLICATION_OPTIONS, COLOUR_GROUP_OPTIONS } from "@/data/products";
 
 type DropdownKey = "type" | "app" | "color";
 
@@ -66,7 +67,10 @@ function CheckboxDropdown({
   );
 }
 
-export function ProductsCatalog() {
+function ProductsCatalogInner() {
+  const searchParams = useSearchParams();
+  const [fscOnly, setFscOnly] = useState(() => searchParams.get("fsc") === "1");
+
   const [appliedTypes,  setAppliedTypes]  = useState<string[]>([]);
   const [appliedApps,   setAppliedApps]   = useState<string[]>([]);
   const [appliedColors, setAppliedColors] = useState<string[]>([]);
@@ -112,7 +116,8 @@ export function ProductsCatalog() {
     const matchType  = appliedTypes.length  === 0 || (p.paperTypes ?? []).some(t => appliedTypes.includes(t));
     const matchApp   = appliedApps.length   === 0 || (p.applications ?? []).some(a => appliedApps.includes(a));
     const matchColor = appliedColors.length === 0 || (p.colourGroups ?? []).some(c => appliedColors.includes(c));
-    return matchType && matchApp && matchColor;
+    const matchFsc   = !fscOnly || isFscCertified(p);
+    return matchType && matchApp && matchColor && matchFsc;
   });
 
   const grouped = BOOKS.map(book => ({
@@ -120,7 +125,7 @@ export function ProductsCatalog() {
     items: filtered.filter(p => p.book === book),
   })).filter(g => g.items.length > 0);
 
-  const hasActiveFilters = appliedTypes.length > 0 || appliedApps.length > 0 || appliedColors.length > 0;
+  const hasActiveFilters = appliedTypes.length > 0 || appliedApps.length > 0 || appliedColors.length > 0 || fscOnly;
 
   function pillLabel(applied: string[], placeholder: string) {
     if (applied.length === 0) return placeholder;
@@ -236,6 +241,19 @@ export function ProductsCatalog() {
           {/* Active filter tags */}
           {hasActiveFilters && (
             <div className="flex flex-wrap items-center gap-2 mt-4">
+              {fscOnly && (
+                <span className="inline-flex items-center gap-1.5 bg-white/10 text-white text-xs font-medium px-3 py-1.5 rounded-full">
+                  FSC Certified
+                  <button
+                    type="button"
+                    onClick={() => setFscOnly(false)}
+                    aria-label="Remove FSC Certified filter"
+                    className="hover:text-brand-orange"
+                  >
+                    ×
+                  </button>
+                </span>
+              )}
               {[...appliedTypes, ...appliedApps, ...appliedColors].map(tag => (
                 <span
                   key={tag}
@@ -249,6 +267,7 @@ export function ProductsCatalog() {
                 onClick={() => {
                   setAppliedTypes([]); setAppliedApps([]); setAppliedColors([]);
                   setPendingTypes([]); setPendingApps([]); setPendingColors([]);
+                  setFscOnly(false);
                 }}
                 className="text-brand-orange text-xs font-semibold hover:underline ml-1"
               >
@@ -294,5 +313,13 @@ export function ProductsCatalog() {
         ))}
       </div>
     </>
+  );
+}
+
+export function ProductsCatalog() {
+  return (
+    <Suspense>
+      <ProductsCatalogInner />
+    </Suspense>
   );
 }

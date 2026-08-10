@@ -57,15 +57,17 @@ export function Footer() {
       <MotionSection className="relative container-max section-padding py-16 lg:py-24">
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr] lg:gap-8">
           {/* Brand column */}
-          <div className="flex flex-col gap-6 lg:col-span-1 lg:pr-8">
+          <div className="flex flex-col items-center gap-6 text-center lg:col-span-1 lg:pr-8">
             <MotionDiv>
-              <Image
-                src="/logo.png"
-                alt="Mahaveer Papers"
-                width={205}
-                height={112}
-                className="h-9 w-auto object-contain"
-              />
+              <div className="inline-flex items-center rounded-xl bg-white px-5 py-3 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.4)]">
+                <Image
+                  src="/logo.png"
+                  alt="Mahaveer Papers"
+                  width={205}
+                  height={112}
+                  className="h-11 w-auto object-contain"
+                />
+              </div>
             </MotionDiv>
             <p className="font-display text-2xl font-normal italic text-white/90 leading-tight max-w-xs">
               {siteConfig.tagline}

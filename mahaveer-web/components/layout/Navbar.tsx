@@ -69,14 +69,20 @@ export function Navbar() {
                 priority
               />
             ) : (
-              <Image
-                src="/logo.png"
-                alt="Mahaveer Papers"
-                width={205}
-                height={112}
-                className="h-8 w-auto lg:h-9 object-contain"
-                priority
-              />
+              <>
+                <Image
+                  src="/logo-icon.png"
+                  alt=""
+                  width={86}
+                  height={85}
+                  className="h-8 w-auto lg:h-9 object-contain"
+                  aria-hidden="true"
+                  priority
+                />
+                <span className="font-sans text-base lg:text-lg font-semibold text-white leading-none tracking-tight">
+                  Mahaveer Papers
+                </span>
+              </>
             )}
           </Link>
 

@@ -169,11 +169,9 @@ export default function DigiLuxPage() {
               </MotionDiv>
               <MotionDiv delay={0.1}>
                 <p className="font-display text-white/90" style={{ fontSize: "clamp(1.1rem,1.7vw,1.4rem)", lineHeight: 1.6 }}>
-                  DIGILUX is a premium range of digital print media and self-adhesive solutions for printers,
-                  designers, converters, and brands. Since 2023, we have been delivering premium-quality materials
-                  for short-run and low MOQ printing projects. Every range ships ready-cut in the industry-preferred
-                  13 × 19 inch format, in 100-sheet packs, built for toner-based digital printing — with a low MOQ
-                  of just one packet and ready stock across our 55-SKU range.
+                  DIGILUX is a signature collection of premium digital print media and self-adhesive
+                  solutions—crafted for those who expect more from every print. Precision-cut to 13 × 19 inches
+                  and available across 55 distinctive SKUs.
                 </p>
               </MotionDiv>
             </div>

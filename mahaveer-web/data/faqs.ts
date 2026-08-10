@@ -23,7 +23,7 @@ export const faqs: FAQ[] = [
     id: "moq",
     question: "What is your minimum order quantity?",
     answer:
-      "Minimum order quantities vary by product type. For standard grades we typically start at 100 reams, while specialty and custom papers may have different MOQs. Please contact us for specific details on your preferred product.",
+      "There's no MOQ on our ready-stock papers — our only minimum is a ₹500 purchase. Our DigiLux brand has a minimum of 1 packet. Custom or bespoke speciality requirements vary paper to paper, so contact us for specifics on your preferred product.",
   },
   {
     id: "estimates",
