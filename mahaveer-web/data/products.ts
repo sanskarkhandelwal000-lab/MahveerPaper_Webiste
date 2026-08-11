@@ -481,6 +481,12 @@ export const catalogProducts: CatalogProduct[] = [
     colors: 2,
     colorNames: ["White", "Ivory"],
     image: "/images/favini/prisma.jpg",
+    // Favini's site (favini.com/gs/en/products/prisma) — both "03 White" and "05 Ivory"
+    // have real dedicated photos (Prisma-White / Prisma-05-Ivory).
+    colorImages: {
+      "White": "/images/favini/prisma-white.jpg",
+      "Ivory": "/images/favini/prisma-ivory.jpg",
+    },
     type: "Textured",
     app: "Packaging",
     paperTypes: ["Felt-Marked Premium Fine Paper"],
@@ -951,6 +957,15 @@ export const catalogProducts: CatalogProduct[] = [
     colorNames: ["Master White", "Bianco", "Natural White"],
     colorGsm: { "Master White": "120 · 280 · 320 GSM", "Bianco": "120 · 250 · 300 GSM", "Natural White": "120 · 300 GSM" },
     image: "/images/favini/bianco-flash.jpg",
+    // Favini's site (favini.com/gs/en/products/biancoflash) lists 4 real colours —
+    // Premium, Master, Natural, Ivory — each with a dedicated photo. Mapped here per
+    // confirmed pairing: our "Bianco" = Favini's "Premium", "Master White" = "Master",
+    // "Natural White" = "Natural".
+    colorImages: {
+      "Master White": "/images/favini/biancoflash-master.jpg",
+      "Bianco": "/images/favini/biancoflash-premium.jpg",
+      "Natural White": "/images/favini/biancoflash-natural.jpg",
+    },
     type: "Color",
     app: "Packaging",
     paperTypes: ["Premium White", "Ivory Fine Paper and Board"],
@@ -981,7 +996,11 @@ export const catalogProducts: CatalogProduct[] = [
     sizes: "70 x 100 CM",
     colors: 1,
     colorNames: ["Natural White"],
-    image: "/images/favini/bianco-flash.jpg",
+    image: "/images/favini/contact-pack-ivory.jpg",
+    // Per instruction: Contact Natural has no dedicated Favini page/photo of its own —
+    // reusing Contact Pack's verified "Ivory" photo (closest available real Favini
+    // product shot) rather than the previous unrelated Bianco Flash placeholder.
+    colorImages: { "Natural White": "/images/favini/contact-pack-ivory.jpg" },
     type: "Color",
     app: "Packaging",
     paperTypes: ["Premium Natural White Fine Paper and Board"],
@@ -1171,13 +1190,17 @@ export const catalogProducts: CatalogProduct[] = [
       "Real Copper": "120 · 250 GSM", "Real Gold": "120 · 250 GSM",
     },
     image: "/images/favini/majestic.jpg",
-    // Real Favini photo (favini.com/gs/en/products/majestic) — plain "Marble White" has no
-    // dedicated photo there (placeholder icon), but its Digital HP Indigo/Dry Toner
-    // listings do, same paper/colour. Candle Light Cream/Real Copper/Real Gold have no
-    // exact name match (Favini: "Candlelight Cream", no "Copper" at all, "Luxus Real
-    // Gold") and are intentionally left unmapped.
-    colorImages: { "Marble White": "/images/favini/majestic-marble-white.jpg" },
-    unverifiedColors: ["Candle Light Cream", "Real Copper", "Real Gold"],
+    // Real Favini photos (favini.com/gs/en/products/majestic). "Candle Light Cream" and
+    // "Real Gold" aren't exact string matches (Favini: "Candlelight Cream" one word,
+    // "Luxus Real Gold") but are confirmed the same product — mapped per approval.
+    // "Real Copper" has zero mentions anywhere on Favini's Majestic page — no photo
+    // exists at all, stays unverified.
+    colorImages: {
+      "Marble White": "/images/favini/majestic-marble-white.jpg",
+      "Candle Light Cream": "/images/favini/majestic-candlelight-cream.jpg",
+      "Real Gold": "/images/favini/majestic-real-gold.jpg",
+    },
+    unverifiedColors: ["Real Copper"],
     type: "Metallic",
     app: "Packaging",
     paperTypes: ["Metallic", "Pearlescent Paper and Board"],
@@ -1396,6 +1419,19 @@ export const catalogProducts: CatalogProduct[] = [
     colors: 8,
     colorNames: ["Bianco", "Grey", "Green", "Brown", "Coffee", "Navy", "Cobalt", "Nero"],
     image: "/images/favini/classy-cover.jpg",
+    // Real Favini photos (favini.com/gs/en/products/classycovers), matched by core colour
+    // word with the TT/MN/LN texture-code suffix ignored (per instruction). "Bianco" and
+    // "Nero" are not suffix differences — Favini's own names are the English "White"/
+    // "Black", a full-word translation — so those stay unmapped/unverified.
+    colorImages: {
+      "Grey": "/images/favini/classy-cover-grey.jpg",
+      "Green": "/images/favini/classy-cover-green.jpg",
+      "Brown": "/images/favini/classy-cover-brown.jpg",
+      "Coffee": "/images/favini/classy-cover-coffee.jpg",
+      "Navy": "/images/favini/classy-cover-navy.jpg",
+      "Cobalt": "/images/favini/classy-cover-cobalt.jpg",
+    },
+    unverifiedColors: ["Bianco", "Nero"],
     type: "Textured",
     app: "Covering & Binding",
     paperTypes: ["Embossed Covering Paper"],
