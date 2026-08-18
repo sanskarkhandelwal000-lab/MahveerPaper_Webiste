@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/home/Hero";
 import { About } from "@/components/home/About";
 import { Categories } from "@/components/home/Categories";
+import { FaviniBanner } from "@/components/home/FaviniBanner";
 import { Services } from "@/components/home/Services";
 import { DigiluxBanner } from "@/components/home/DigiluxBanner";
 import { CTA } from "@/components/home/CTA";
@@ -25,6 +26,7 @@ export default function HomePage() {
         <Hero />
         <About />
         <Categories />
+        <FaviniBanner />
         <Services />
         <CTA />
         <FAQ />

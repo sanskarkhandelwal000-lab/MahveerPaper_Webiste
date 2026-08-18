@@ -71,7 +71,7 @@ export function Categories() {
         ref={trackRef}
         onMouseEnter={pauseAutoScroll}
         onTouchStart={pauseAutoScroll}
-        className="flex gap-8 lg:gap-10 overflow-x-auto scrollbar-none pb-4 pl-4 sm:pl-6 lg:pl-[max(2rem,calc((100vw-1280px)/2))] pr-0">
+        className="flex gap-8 lg:gap-10 overflow-x-auto scrollbar-none pb-4 pl-4 sm:pl-6 lg:pl-10 pr-0">
         {categories.map((cat, i) => (
           <motion.div
             key={cat.id}

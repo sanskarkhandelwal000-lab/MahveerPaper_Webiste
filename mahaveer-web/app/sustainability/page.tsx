@@ -11,48 +11,53 @@ import { MotionSection } from "@/components/ui/MotionSection";
 export const metadata: Metadata = {
   title: "Sustainability",
   description:
-    "How Mahaveer Papers selects responsible mills, verifies FSC and recycled-content claims, and helps printers choose sustainable speciality papers.",
+    "Mahaveer Papers is an FSC-certified company committed to responsibly sourced, biodegradable and recyclable paper for premium printing and packaging.",
   alternates: { canonical: "/sustainability" },
 };
 
-// Revision brief: remove UPM's Climate Action Roadmap / 2030 targets / EUDR
-// language (copied content, not Mahaveer's own). Rebuild around Mahaveer's
-// actual role — a curator and stockist that selects and verifies ranges from
-// certified mills — and ground every claim in real per-product data rather
-// than unsubstantiated company-wide statements.
+// Revision brief (per client feedback): keep the original design (2×2 image
+// grid intro + four alternating image/text cards) intact — only the copy
+// changes, to the client's own simpler "Paper With a Better Purpose" text.
 const actions = [
   {
-    id: "sourcing",
-    title: "Responsible Sourcing",
-    body: "Mahaveer Papers is an FSC-certified company, and a large part of our portfolio carries FSC certification. Not every product does — so we show the certification status on every product page, and you're welcome to browse our FSC-certified range online or call our team to check a specific product before you buy.",
+    id: "fsc",
+    title: "FSC-Certified Company",
+    body: "Mahaveer Papers is an FSC-certified company. FSC certification supports responsible forest management and provides greater transparency in the paper supply chain.",
     image: "/images/mahaveer/sustainability-sourcing.jpg",
-    imageAlt: "Responsible Sourcing card next to an FSC certificate of registration and swing tags",
+    imageAlt: "FSC-Certified Company card next to an FSC certificate of registration and swing tags",
     imageLeft: false,
+    // Links straight to the pre-filtered FSC view (ProductsCatalog reads ?fsc=1) rather
+    // than a generic browse link, since this card is specifically about certification.
     cta: { label: "Browse FSC-Certified Products", href: "/products?fsc=1" },
   },
   {
-    id: "certified-ranges",
-    title: "Certified & Alternative-Fibre Ranges",
-    body: "Many ranges in our catalogue carry FSC Mix Credit where applicable, and a number stock recycled or alternative-fibre content — for example, our Pure Bamboo Natural range uses renewable bamboo fibre. We show the exact certification and fibre note on every product page instead of a single sustainability badge for the whole catalogue.",
+    id: "biodegradable",
+    title: "Biodegradable",
+    body: "Paper naturally breaks down over time, unlike many conventional plastic-based materials. This makes it a responsible choice for print, communication and packaging.",
     image: "/images/mahaveer/sustainability-certified.jpg",
-    imageAlt: "Certified & Alternative-Fibre Ranges card next to FSC Mix and Pure Bamboo Natural swatches",
+    imageAlt: "Biodegradable card next to natural fibre paper stock",
     imageLeft: true,
+    cta: { label: "Browse Biodegradable Papers", href: "/products?biodegradable=1" },
   },
   {
-    id: "recyclability",
-    title: "Recyclability & End-of-Life",
-    body: "All of our products are both biodegradable and recyclable, with one exception: our Non-Tearable media range is not biodegradable, though it remains fully recyclable. We flag this clearly on the Non-Tearable product page rather than applying one blanket claim across the whole range.",
+    id: "recyclable",
+    title: "Recyclable",
+    body: "Paper can be collected, recycled and converted into new paper products, helping reduce waste and keeping valuable fibres in use for longer.",
     image: "/images/mahaveer/sustainability-recyclability.jpg",
-    imageAlt: "Recyclability & End-of-Life card next to recyclable paper packaging and synthetic-media swing tags",
+    imageAlt: "Recyclable card next to recyclable paper packaging",
     imageLeft: false,
+    cta: { label: "Browse Recyclable Papers", href: "/products?recyclable=1" },
   },
   {
-    id: "guidance",
-    title: "Practical Guidance, Not Guesswork",
-    body: "Choosing a sustainable paper is rarely just one decision — it depends on the fibre, the finish, the certification you need and how the piece will be used or disposed of. Our team helps you weigh those trade-offs for your specific job, and points you to the mill or certificate documentation when you need it for a client or compliance requirement.",
+    id: "standards",
+    title: "High Environmental Standards",
+    body: "We carefully select papers from trusted mills and responsible sources. Many of our ranges include FSC-certified, recycled and alternative-fibre options designed to meet modern environmental expectations.",
     image: "/images/mahaveer/sustainability-guidance.jpg",
-    imageAlt: "A paper selection guide sheet being marked up alongside FSC certification documents",
+    imageAlt: "High Environmental Standards card next to FSC certification documents",
     imageLeft: true,
+    // This card is about picking the right responsible option, not a single filter — so
+    // it CTAs to the team rather than a product link, matching its "guidance" role.
+    cta: { label: "Get Expert Guidance", href: "/contact" },
   },
 ];
 
@@ -122,7 +127,7 @@ export default function SustainabilityPage() {
           </div>
         </section>
 
-        {/* ── WHAT MAKES PAPER SUSTAINABLE? ── */}
+        {/* ── PAPER WITH A BETTER PURPOSE ── (same 2×2 image grid + text layout as before) */}
         <MotionSection className="section-padding py-14 lg:py-20 bg-white">
           <div className="container-max">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -170,7 +175,7 @@ export default function SustainabilityPage() {
                     className="inline-flex items-center gap-1.5 text-sm font-medium uppercase tracking-[0.035em] rounded-full px-3 py-1.5 bg-white border"
                     style={{ color: "#00449A", borderColor: "#00449A" }}
                   >
-                    About Mahaveer Papers
+                    Sustainability
                   </span>
                 </MotionDiv>
                 <MotionDiv delay={0.15}>
@@ -183,25 +188,25 @@ export default function SustainabilityPage() {
                       color: "#262626",
                     }}
                   >
-                    What makes paper{" "}
-                    <span className="text-brand-orange">sustainable?</span>
+                    Paper With a{" "}
+                    <span className="text-brand-orange">Better Purpose</span>
                   </h2>
                 </MotionDiv>
                 <MotionDiv delay={0.2}>
                   <div className="flex flex-col gap-4 text-gray-600 leading-relaxed text-sm">
                     <p>
-                      Paper is a renewable material when it&apos;s sourced from wood harvested
-                      in sustainably managed forests. Healthy, well-managed forests act as
-                      carbon sinks and support the circular economy — paper made this way can
-                      be recycled and reused many times over before it&apos;s finally
-                      biodegraded.
+                      At Mahaveer Papers, sustainability begins with responsible sourcing. As an
+                      FSC-certified company, we are committed to supplying high-quality papers
+                      from responsible and trusted sources. Our papers are selected to meet high
+                      environmental standards while delivering the performance required for
+                      premium printing and packaging.
                     </p>
                     <p>
-                      What separates a genuinely sustainable range from a generic claim is
-                      verification: an FSC or equivalent certificate, a documented recycled or
-                      alternative-fibre content, and clarity on what happens at end of life.
-                      That&apos;s the standard we hold every range we stock to, and the detail
-                      we show on each product page.
+                      Paper is made from renewable natural fibres. It is biodegradable and
+                      recyclable, making it one of the most environmentally responsible mediums
+                      for communication, printing and packaging. When sourced responsibly and
+                      recycled correctly, paper can be reused and returned to the natural cycle
+                      with minimal environmental impact.
                     </p>
                   </div>
                 </MotionDiv>
@@ -210,7 +215,7 @@ export default function SustainabilityPage() {
           </div>
         </MotionSection>
 
-        {/* ── EXPLORE OUR ACTIONS ── alternating image + text rows */}
+        {/* ── OUR COMMITMENT ── alternating image + text rows (same layout as before) */}
         <MotionSection className="bg-white pb-16 lg:pb-20">
           <div className="container-max section-padding">
             <MotionDiv className="text-center mb-10 lg:mb-14">
@@ -222,7 +227,7 @@ export default function SustainabilityPage() {
                   color: "#202020",
                 }}
               >
-                Explore our actions:
+                Our commitment:
               </h2>
             </MotionDiv>
 
@@ -268,7 +273,7 @@ export default function SustainabilityPage() {
                             <path d="M1 9L9 1M9 1H2.5M9 1V7.5" stroke="#2E2E2E" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
                         </span>
-                        Learn more
+                        Speak to a Paper Specialist
                       </Link>
                     </div>
 
@@ -289,6 +294,21 @@ export default function SustainabilityPage() {
                 </MotionDiv>
               ))}
             </div>
+
+            {/* Choose Paper Responsibly — closing note, same simple text style as the rest of the page */}
+            <MotionDiv delay={0.3}>
+              <p className="text-center text-gray-600 leading-relaxed text-sm max-w-2xl mx-auto mt-4">
+                Every paper has different characteristics, certifications and applications. Our
+                team can help you select the right paper based on your printing process,
+                packaging requirement and sustainability preference.
+              </p>
+              <p className="text-center text-gray-500 text-xs italic leading-relaxed max-w-2xl mx-auto mt-4">
+                <span className="font-semibold not-italic">Good to know:</span> Some speciality
+                synthetic and non-tearable media have different biodegradability and recycling
+                properties. Please refer to the individual product information or contact our
+                team for guidance.
+              </p>
+            </MotionDiv>
           </div>
         </MotionSection>
 

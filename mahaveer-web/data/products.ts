@@ -147,6 +147,12 @@ export interface CatalogProduct {
    * the family-level `gsm` string when a swatch has an entry here, since showing
    * every weight on every colour overstates what's actually available in that shade. */
   colorGsm?: Record<string, string>;
+  /** Per-colour sheet size, keyed by the exact colorNames entry — only present where a
+   * family's colours genuinely differ (e.g. Tube: Red is 70 x 100 CM only, while Black/
+   * Brown/Petrol are 72 x 102 CM only). Product detail page prefers this over the
+   * family-level `sizes` string when a swatch has an entry here, since showing every
+   * size on every colour overstates what's actually available in that shade. */
+  colorSizes?: Record<string, string>;
   /** Colour names for this family that have NO verified source (no exact name match on
    * the manufacturer's own site, no client-supplied photo) — e.g. Burano's "Burgundy"
    * vs. Favini's actual "Bordeaux". These are excluded from both colorImages and the
@@ -281,11 +287,11 @@ export const catalogProducts: CatalogProduct[] = [
       "Cobalt": "250 · 320 GSM", "Nero": "250 · 320 GSM",
     },
     image: "/images/favini/burano.jpg",
-    // Real Favini product photography (favini.com/gs/en/products/burano) — ONLY for
-    // colour names that appear on Favini's official list verbatim. "Burgundy", "Coffee
-    // Brown", "Cobalt" and "Nero" have no exact match there (closest are "Bordeaux",
-    // "Brown", "Cobalt Blue", "Black" — different names, not confirmed as the same
-    // shade) and are deliberately left unmapped rather than guessed.
+    // Real Favini product photography (favini.com/gs/en/products/burano) for colour
+    // names that appear on Favini's official list verbatim, PLUS client-supplied real
+    // photos (Pending Images/MP_500x500) for "Burgundy", "Coffee Brown", "Cobalt" and
+    // "Nero" — these have no exact name match on Favini's own site, but the client's
+    // own photo of the physical product is a direct source and always wins.
     colorImages: {
       "Shocking Pink": "/images/favini/burano-shocking-pink.jpg",
       "English Green": "/images/favini/burano-english-green.jpg",
@@ -293,8 +299,11 @@ export const catalogProducts: CatalogProduct[] = [
       "Fire Red": "/images/favini/burano-fire-red.jpg",
       "Graphite Grey": "/images/favini/burano-graphite-grey.jpg",
       "Tobacco": "/images/favini/burano-tobacco.jpg",
+      "Burgundy": "/images/favini/burano-burgundy.jpg",
+      "Coffee Brown": "/images/favini/burano-coffee-brown.jpg",
+      "Cobalt": "/images/favini/burano-cobalt.jpg",
+      "Nero": "/images/favini/burano-nero.jpg",
     },
-    unverifiedColors: ["Burgundy", "Coffee Brown", "Cobalt", "Nero"],
     type: "Color",
     app: "Packaging",
     paperTypes: ["Premium Coloured Fine Paper and Board"],
@@ -329,16 +338,21 @@ export const catalogProducts: CatalogProduct[] = [
     colors: 4,
     colorNames: ["Black", "Red", "Brown", "Petrol"],
     colorGsm: { "Black": "120 · 260 · 310 GSM", "Red": "120 · 310 GSM", "Brown": "120 · 340 GSM", "Petrol": "120 · 340 GSM" },
+    // Each colour ships in exactly one sheet size, not both — Red is 70 x 100 CM only,
+    // Black/Brown/Petrol are 72 x 102 CM only (source: R018 master sheet SKUs 50045-50053).
+    colorSizes: { "Black": "72 x 102 CM", "Red": "70 x 100 CM", "Brown": "72 x 102 CM", "Petrol": "72 x 102 CM" },
     image: "/images/favini/tube.jpg",
     // Real Favini photos (favini.com/gs/en/products/tube) — Black and Petrol only, both
     // exact matches on Favini's own colour list. "Red" and "Brown" have NO match on that
     // list at all (Favini's Tube range is Chalk/Mud/Graphite/Petrol/Dust/Toffee/Marrone/
-    // Black/Black Max/Hide-variants) — left unmapped, needs verification, see chat.
+    // Black/Black Max/Hide-variants), but both now have client-supplied real photos of
+    // the actual product (Pending Images/MP_500x500), which are a direct source.
     colorImages: {
       "Black": "/images/favini/tube-black.jpg",
+      "Red": "/images/favini/tube-red.jpg",
+      "Brown": "/images/favini/tube-brown.jpg",
       "Petrol": "/images/favini/tube-petrol.jpg",
     },
-    unverifiedColors: ["Red", "Brown"],
     type: "Color",
     app: "Packaging",
     paperTypes: ["Premium Ultra-Matte Coloured Paper & Board"],
@@ -552,8 +566,9 @@ export const catalogProducts: CatalogProduct[] = [
     // "Tradition Valentino" doesn't exist as a product on favini.com at all (checked
     // their site search — no results for "Tradition" or "Valentino"). Likely a classic
     // embossing-finish name applied across other Favini ranges rather than its own
-    // current product line. No verified source — see Unmatched_Favini_Colours.xlsx.
-    unverifiedColors: ["Ivory"],
+    // current product line. No Favini-site source, but now has a client-supplied real
+    // photo of the actual product (Pending Images/MP_500x500), which is a direct source.
+    colorImages: { "Ivory": "/images/favini/tradition-valentino-ivory.jpg" },
     image: "/images/mahaveer/tradition-valentino.jpg",
     type: "Textured",
     app: "Digital Printing",
@@ -953,18 +968,23 @@ export const catalogProducts: CatalogProduct[] = [
     name: "Bianco Flash",
     gsm: "120 · 250 · 280 · 300 · 320 GSM",
     sizes: "70 x 100 CM · 71 x 101 CM",
-    colors: 3,
-    colorNames: ["Master White", "Bianco", "Natural White"],
-    colorGsm: { "Master White": "120 · 280 · 320 GSM", "Bianco": "120 · 250 · 300 GSM", "Natural White": "120 · 300 GSM" },
+    colors: 2,
+    // Per source sheet (R018): SKUs 50138-50140 "Bianco Flash Master White" and
+    // 50141-50143 "Bianco Flash Ivory" (that row's Colour Name field literally says
+    // "Bianco", a data-entry quirk — the Product Name confirms it's Ivory). The sheet's
+    // "Natural White" (120/300 GSM, 70x100 CM) is actually SKUs 50144-50145 "Contact
+    // Natural White" — a different product entirely — so it's dropped from here rather
+    // than duplicated; see the "contact-natural" family for that colour.
+    colorNames: ["Master White", "Ivory"],
+    colorGsm: { "Master White": "120 · 280 · 320 GSM", "Ivory": "120 · 250 · 300 GSM" },
+    colorSizes: { "Master White": "71 x 101 CM", "Ivory": "70 x 100 CM" },
     image: "/images/favini/bianco-flash.jpg",
-    // Favini's site (favini.com/gs/en/products/biancoflash) lists 4 real colours —
-    // Premium, Master, Natural, Ivory — each with a dedicated photo. Mapped here per
-    // confirmed pairing: our "Bianco" = Favini's "Premium", "Master White" = "Master",
-    // "Natural White" = "Natural".
+    // Real Favini photos (favini.com/gs/en/products/biancoflash) — "Master White" =
+    // Favini's "Master", "Ivory" = Favini's own "Ivory" (dedicated photo, not borrowed
+    // from "Premium").
     colorImages: {
       "Master White": "/images/favini/biancoflash-master.jpg",
-      "Bianco": "/images/favini/biancoflash-premium.jpg",
-      "Natural White": "/images/favini/biancoflash-natural.jpg",
+      "Ivory": "/images/favini/biancoflash-ivory.jpg",
     },
     type: "Color",
     app: "Packaging",
@@ -1036,10 +1056,13 @@ export const catalogProducts: CatalogProduct[] = [
     colorGsm: { "Bianco": "250 · 300 · 450 GSM", "Ivory": "300 GSM" },
     image: "/images/favini/contact-pack.jpg",
     // Real Favini photo (favini.com/gs/en/products/contact-pack) — "Ivory" is an exact
-    // match with a direct dedicated photo. "Bianco" has no exact match (Favini calls it
-    // "White") and is intentionally left unmapped — see unverifiedColors below.
-    colorImages: { "Ivory": "/images/favini/contact-pack-ivory.jpg" },
-    unverifiedColors: ["Bianco"],
+    // match with a direct dedicated photo. "Bianco" has no exact match on Favini's site
+    // (Favini calls it "White") but now has a client-supplied real photo of the actual
+    // product (Pending Images/MP_500x500), which is a direct source and always wins.
+    colorImages: {
+      "Ivory": "/images/favini/contact-pack-ivory.jpg",
+      "Bianco": "/images/favini/contact-pack-bianco.jpg",
+    },
     type: "Color",
     app: "Packaging",
     paperTypes: ["Folding Box and Packaging Board"],
@@ -1171,6 +1194,13 @@ export const catalogProducts: CatalogProduct[] = [
     colors: 2,
     colorNames: ["Ice Gold", "White Gold"],
     colorGsm: { "Ice Gold": "240 · 290 GSM", "White Gold": "120 · 160 GSM" },
+    image: "/images/favini/in-metal-white-gold.jpg",
+    // Client-supplied real photos of the actual product (MP_Images_500x500) — the only
+    // source available; both colours were previously video-only (no still frame).
+    colorImages: {
+      "Ice Gold": "/images/favini/in-metal-ice-gold.jpg",
+      "White Gold": "/images/favini/in-metal-white-gold.jpg",
+    },
     type: "Metallic",
     app: "Digital Printing",
     colourGroups: ["Metallic", "White", "Clear"],
@@ -1193,14 +1223,14 @@ export const catalogProducts: CatalogProduct[] = [
     // Real Favini photos (favini.com/gs/en/products/majestic). "Candle Light Cream" and
     // "Real Gold" aren't exact string matches (Favini: "Candlelight Cream" one word,
     // "Luxus Real Gold") but are confirmed the same product — mapped per approval.
-    // "Real Copper" has zero mentions anywhere on Favini's Majestic page — no photo
-    // exists at all, stays unverified.
+    // "Real Copper" has zero mentions anywhere on Favini's Majestic page, but now has a
+    // client-supplied real photo of the actual product (Pending Images/MP_500x500).
     colorImages: {
       "Marble White": "/images/favini/majestic-marble-white.jpg",
       "Candle Light Cream": "/images/favini/majestic-candlelight-cream.jpg",
       "Real Gold": "/images/favini/majestic-real-gold.jpg",
+      "Real Copper": "/images/favini/majestic-real-copper.jpg",
     },
-    unverifiedColors: ["Real Copper"],
     type: "Metallic",
     app: "Packaging",
     paperTypes: ["Metallic", "Pearlescent Paper and Board"],
@@ -1422,16 +1452,18 @@ export const catalogProducts: CatalogProduct[] = [
     // Real Favini photos (favini.com/gs/en/products/classycovers), matched by core colour
     // word with the TT/MN/LN texture-code suffix ignored (per instruction). "Bianco" and
     // "Nero" are not suffix differences — Favini's own names are the English "White"/
-    // "Black", a full-word translation — so those stay unmapped/unverified.
+    // "Black", a full-word translation — but both now have client-supplied real photos
+    // of the actual product (Pending Images/MP_500x500), which are a direct source.
     colorImages: {
+      "Bianco": "/images/favini/classy-cover-bianco.jpg",
       "Grey": "/images/favini/classy-cover-grey.jpg",
       "Green": "/images/favini/classy-cover-green.jpg",
       "Brown": "/images/favini/classy-cover-brown.jpg",
       "Coffee": "/images/favini/classy-cover-coffee.jpg",
       "Navy": "/images/favini/classy-cover-navy.jpg",
       "Cobalt": "/images/favini/classy-cover-cobalt.jpg",
+      "Nero": "/images/favini/classy-cover-nero.jpg",
     },
-    unverifiedColors: ["Bianco", "Nero"],
     type: "Textured",
     app: "Covering & Binding",
     paperTypes: ["Embossed Covering Paper"],
@@ -1631,6 +1663,31 @@ export function isFscCertified(p: CatalogProduct): boolean {
   if (/no fsc/i.test(text)) return false;
   if (p.fscCertified === "Not applicable") return false;
   return true;
+}
+
+/** Synthetic / plastic-based stocks that are neither biodegradable nor conventionally recyclable as paper. */
+const SYNTHETIC_PAPER_TYPES = new Set<string>([
+  "BOPP Polymeric Synthetic Paper",
+  "Paper-Film-Paper Synthetic Composite",
+  "Spunbonded HDPE Synthetic Sheet",
+]);
+
+export function isSynthetic(p: CatalogProduct): boolean {
+  if ((p.paperTypes ?? []).some(t => SYNTHETIC_PAPER_TYPES.has(t))) return true;
+  if (/synthetic/i.test(p.sustainabilityNote ?? "")) return true;
+  // Safety net: explicit synthetic brand aliases
+  if (p.id === "tyvek" || p.id === "non-tearable") return true;
+  return false;
+}
+
+/** Biodegradable = natural fibre papers (everything except synthetic stocks). */
+export function isBiodegradable(p: CatalogProduct): boolean {
+  return !isSynthetic(p);
+}
+
+/** Recyclable via the paper stream = same exclusion — synthetic / HDPE stocks need a different stream. */
+export function isRecyclable(p: CatalogProduct): boolean {
+  return !isSynthetic(p);
 }
 
 export const COLOR_NAME_HEX: Record<string, string> = {

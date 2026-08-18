@@ -43,12 +43,13 @@ export default async function ProductPage({ params }: Props) {
   const product = catalogProducts.find(p => p.id === id);
   if (!product) notFound();
 
-  const sizesLabel = product.sizes ? formatSizes(product.sizes) : null;
+  const familySizesLabel = product.sizes ? formatSizes(product.sizes) : null;
   // One card per real named colour when we have that data — falls back to repeating
   // the family name/image for the handful of products with no colour breakdown.
-  // GSM is per-colour where the family's weights genuinely differ by shade (e.g.
-  // Burano: most colours are 250 GSM only, Cobalt/Nero also come in 320 GSM) —
-  // falls back to the family-wide gsm string when every colour shares the same weights.
+  // GSM and size are per-colour where the family's values genuinely differ by shade
+  // (e.g. Burano: most colours are 250 GSM only, Cobalt/Nero also come in 320 GSM;
+  // Tube: Red is 70 x 100 CM only, Black/Brown/Petrol are 72 x 102 CM only) — falls
+  // back to the family-wide gsm/sizes string when every colour shares the same values.
   const swatches = product.colorNames?.length
     ? product.colorNames.map((name) => ({
         name,
@@ -57,11 +58,15 @@ export default async function ProductPage({ params }: Props) {
         // soon" placeholder instead of a guessed colour block.
         hex: product.unverifiedColors?.includes(name) ? undefined : COLOR_NAME_HEX[name],
         gsmLabel: formatGsm(product.colorGsm?.[name] ?? product.gsm),
+        sizesLabel: product.colorSizes?.[name]
+          ? formatSizes(product.colorSizes[name])
+          : familySizesLabel,
       }))
     : Array.from({ length: Math.max(1, product.colors) }, () => ({
         name: product.name,
         hex: undefined as string | undefined,
         gsmLabel: formatGsm(product.gsm),
+        sizesLabel: familySizesLabel,
       }));
 
   return (
@@ -120,13 +125,22 @@ export default async function ProductPage({ params }: Props) {
           </nav>
 
           {/* Heading — Figma: application name + product count */}
-          <div className="mb-10 lg:mb-14">
-            <h2 className="font-sans font-semibold" style={{ fontSize: "clamp(1.75rem,3.5vw,2.5rem)", color: "#202020" }}>
-              {product.app}
-            </h2>
-            <p className="text-gray-400 font-normal mt-1" style={{ fontSize: "clamp(1rem,1.5vw,1.25rem)" }}>
-              {swatches.length} Product
-            </p>
+          <div className="mb-10 lg:mb-14 flex items-start justify-between gap-4">
+            <div>
+              <h2 className="font-sans font-semibold" style={{ fontSize: "clamp(1.75rem,3.5vw,2.5rem)", color: "#202020" }}>
+                {product.app}
+              </h2>
+              <p className="text-gray-400 font-normal mt-1" style={{ fontSize: "clamp(1rem,1.5vw,1.25rem)" }}>
+                {swatches.length} Product
+              </p>
+            </div>
+            {product.isFavini && (
+              <span className="inline-flex items-center gap-2 rounded-full bg-white border border-gray-200 shadow-sm px-3.5 py-2 shrink-0">
+                <span className="text-[10px] font-semibold tracking-[0.14em] text-gray-400 leading-none">BY</span>
+                <Image src="/images/favini-logo.svg" alt="Favini" width={64} height={14} className="h-4 w-auto" unoptimized />
+                <span className="ml-1 inline-flex items-center rounded-full bg-[#0A1930] text-white text-[10px] font-semibold tracking-wide px-2 py-0.5">Premium Collection</span>
+              </span>
+            )}
           </div>
 
           {/* Swatch grid — Figma: square texture, envelope chip, blue GSM pill, name */}
@@ -171,6 +185,13 @@ export default async function ProductPage({ params }: Props) {
                   <span className="absolute bottom-2 right-2 flex h-6 w-7 items-center justify-center rounded-[4px] bg-white shadow-sm">
                     <Mail className="h-3.5 w-3.5 text-gray-700" />
                   </span>
+                  {/* Favini mark on each swatch image — bottom-right frosted pill */}
+                  {product.isFavini && colorImage && (
+                    <span className="pointer-events-none absolute bottom-2 left-2 inline-flex items-center gap-1 rounded-full bg-white/95 backdrop-blur px-2 py-1 shadow-md border border-white/60">
+                      <span className="text-[7px] font-semibold tracking-[0.12em] text-gray-400 leading-none">BY</span>
+                      <Image src="/images/favini-logo.svg" alt="Favini" width={40} height={10} className="h-2.5 w-auto" unoptimized />
+                    </span>
+                  )}
                 </div>
                 <div className="mt-4 flex flex-wrap items-center gap-2">
                   <span
@@ -179,12 +200,12 @@ export default async function ProductPage({ params }: Props) {
                   >
                     {swatch.gsmLabel}
                   </span>
-                  {sizesLabel && (
+                  {swatch.sizesLabel && (
                     <span
                       className="inline-flex items-center border text-[13px] font-medium px-3 py-1 rounded-full"
                       style={{ color: "#6B7280", borderColor: "#D1D5DB" }}
                     >
-                      {sizesLabel}
+                      {swatch.sizesLabel}
                     </span>
                   )}
                 </div>

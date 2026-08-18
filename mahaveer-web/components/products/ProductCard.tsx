@@ -28,6 +28,20 @@ export function ProductCard({ product, delay = 0 }: { product: CatalogProduct; d
               <span className="text-xs font-medium">Photo coming soon</span>
             </div>
           )}
+          {/* Premium Favini mark — bottom-right frosted pill with wordmark */}
+          {product.isFavini && product.image && (
+            <span className="pointer-events-none absolute bottom-3 right-3 inline-flex items-center gap-1 rounded-full bg-white/95 backdrop-blur-md px-2.5 py-1 shadow-[0_4px_16px_rgba(0,0,0,0.14)] border border-white/60">
+              <span className="text-[8px] font-semibold tracking-[0.14em] text-gray-400 leading-none">BY</span>
+              <Image
+                src="/images/favini-logo.svg"
+                alt="Favini"
+                width={52}
+                height={12}
+                className="h-3 w-auto"
+                unoptimized
+              />
+            </span>
+          )}
         </div>
 
         {/* Colour / variant badge — Figma: blue outline pill */}

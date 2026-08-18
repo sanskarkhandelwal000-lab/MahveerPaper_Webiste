@@ -5,7 +5,7 @@ import { Suspense, useState, useRef, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { ArrowRight, Search } from "lucide-react";
 import { ProductCard } from "@/components/products/ProductCard";
-import { catalogProducts, isFscCertified, BOOKS, PAPER_TYPE_OPTIONS, APPLICATION_OPTIONS, COLOUR_GROUP_OPTIONS } from "@/data/products";
+import { catalogProducts, isFscCertified, isBiodegradable, isRecyclable, BOOKS, PAPER_TYPE_OPTIONS, APPLICATION_OPTIONS, COLOUR_GROUP_OPTIONS } from "@/data/products";
 
 type DropdownKey = "type" | "app" | "color";
 
@@ -70,6 +70,9 @@ function CheckboxDropdown({
 function ProductsCatalogInner() {
   const searchParams = useSearchParams();
   const [fscOnly, setFscOnly] = useState(() => searchParams.get("fsc") === "1");
+  const [brandOnly, setBrandOnly] = useState(() => searchParams.get("brand") === "favini");
+  const [biodegradableOnly, setBiodegradableOnly] = useState(() => searchParams.get("biodegradable") === "1");
+  const [recyclableOnly, setRecyclableOnly] = useState(() => searchParams.get("recyclable") === "1");
 
   const [appliedTypes,  setAppliedTypes]  = useState<string[]>([]);
   const [appliedApps,   setAppliedApps]   = useState<string[]>([]);
@@ -117,7 +120,10 @@ function ProductsCatalogInner() {
     const matchApp   = appliedApps.length   === 0 || (p.applications ?? []).some(a => appliedApps.includes(a));
     const matchColor = appliedColors.length === 0 || (p.colourGroups ?? []).some(c => appliedColors.includes(c));
     const matchFsc   = !fscOnly || isFscCertified(p);
-    return matchType && matchApp && matchColor && matchFsc;
+    const matchBrand = !brandOnly || p.isFavini;
+    const matchBio   = !biodegradableOnly || isBiodegradable(p);
+    const matchRec   = !recyclableOnly || isRecyclable(p);
+    return matchType && matchApp && matchColor && matchFsc && matchBrand && matchBio && matchRec;
   });
 
   const grouped = BOOKS.map(book => ({
@@ -125,7 +131,7 @@ function ProductsCatalogInner() {
     items: filtered.filter(p => p.book === book),
   })).filter(g => g.items.length > 0);
 
-  const hasActiveFilters = appliedTypes.length > 0 || appliedApps.length > 0 || appliedColors.length > 0 || fscOnly;
+  const hasActiveFilters = appliedTypes.length > 0 || appliedApps.length > 0 || appliedColors.length > 0 || fscOnly || brandOnly || biodegradableOnly || recyclableOnly;
 
   function pillLabel(applied: string[], placeholder: string) {
     if (applied.length === 0) return placeholder;
@@ -254,6 +260,31 @@ function ProductsCatalogInner() {
                   </button>
                 </span>
               )}
+              {brandOnly && (
+                <span className="inline-flex items-center gap-1.5 bg-white/10 text-white text-xs font-medium px-3 py-1.5 rounded-full">
+                  Favini
+                  <button
+                    type="button"
+                    onClick={() => setBrandOnly(false)}
+                    aria-label="Remove Favini filter"
+                    className="hover:text-brand-orange"
+                  >
+                    ×
+                  </button>
+                </span>
+              )}
+              {biodegradableOnly && (
+                <span className="inline-flex items-center gap-1.5 bg-white/10 text-white text-xs font-medium px-3 py-1.5 rounded-full">
+                  Biodegradable
+                  <button type="button" onClick={() => setBiodegradableOnly(false)} aria-label="Remove Biodegradable filter" className="hover:text-brand-orange">×</button>
+                </span>
+              )}
+              {recyclableOnly && (
+                <span className="inline-flex items-center gap-1.5 bg-white/10 text-white text-xs font-medium px-3 py-1.5 rounded-full">
+                  Recyclable
+                  <button type="button" onClick={() => setRecyclableOnly(false)} aria-label="Remove Recyclable filter" className="hover:text-brand-orange">×</button>
+                </span>
+              )}
               {[...appliedTypes, ...appliedApps, ...appliedColors].map(tag => (
                 <span
                   key={tag}
@@ -267,7 +298,8 @@ function ProductsCatalogInner() {
                 onClick={() => {
                   setAppliedTypes([]); setAppliedApps([]); setAppliedColors([]);
                   setPendingTypes([]); setPendingApps([]); setPendingColors([]);
-                  setFscOnly(false);
+                  setFscOnly(false); setBrandOnly(false);
+                  setBiodegradableOnly(false); setRecyclableOnly(false);
                 }}
                 className="text-brand-orange text-xs font-semibold hover:underline ml-1"
               >

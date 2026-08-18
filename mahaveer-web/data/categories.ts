@@ -20,18 +20,23 @@ const BOOK_DESCRIPTIONS: Record<BookName, string> = {
 };
 
 // Preferred representative image per book — a real Favini photo where this
-// book has one, for a more premium card image than a generic swatch.
+// book has one, for a more premium card image than a generic swatch. The
+// three books with no Favini member (Blacks & Krafts, Speciality, Core
+// Board) previously had no image at all here and fell through to the
+// "Photo coming soon" placeholder on the homepage carousel — filled in with
+// curated studio photography chosen to match each book's character.
 const BOOK_IMAGE_OVERRIDE: Partial<Record<BookName, string>> = {
   Spectrum: "/images/favini/burano.jpg",
   Textures: "/images/favini/twill.jpg",
+  "Blacks & Krafts": "/images/mahaveer/category-blacks-krafts.jpg",
   Earth: "/images/favini/shiro-echo.jpg",
   "Gloss & Metallic": "/images/favini/majestic.jpg",
   Coverings: "/images/favini/classy-cover.jpg",
+  Speciality: "/images/mahaveer/category-speciality.jpg",
+  "Core Board": "/images/mahaveer/category-core-board.jpg",
 };
 
-// Only Favini families have a real photo now — some books (Blacks & Krafts,
-// Speciality, Core Board) have no Favini member at all, so this legitimately
-// returns undefined for those; Categories.tsx renders a placeholder instead.
+// Every book now has a representative image via the override above.
 function representativeImage(book: BookName): string | undefined {
   if (BOOK_IMAGE_OVERRIDE[book]) return BOOK_IMAGE_OVERRIDE[book];
   return catalogProducts.find((p) => p.book === book && p.image)?.image;
