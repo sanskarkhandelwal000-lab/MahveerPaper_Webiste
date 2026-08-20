@@ -21,7 +21,6 @@ export const metadata: Metadata = {
 const OLIVE = "#7C7844";
 const RUST = "#A63D12";
 const ELEVATE_BROWN = "#6E5A36";
-const GOLD = "#D09F61";
 const NAVY_DARK = "#1D2939";
 
 const portfolioItems = [
@@ -95,14 +94,6 @@ export default function DigiLuxPage() {
             className="object-cover object-right"
             aria-hidden="true"
           />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(90deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.55) 42%, rgba(0,0,0,0.15) 65%, rgba(0,0,0,0.05) 100%)",
-            }}
-            aria-hidden="true"
-          />
 
           <div className="relative z-10 container-max section-padding w-full">
             <MotionDiv>
@@ -110,26 +101,26 @@ export default function DigiLuxPage() {
                 className="font-display font-normal mb-4"
                 style={{ fontSize: "clamp(2.5rem,5.5vw,4.75rem)", lineHeight: 1.05 }}
               >
-                <span className="block text-white">Crafted for</span>
-                <span className="block" style={{ color: GOLD }}>Extraordinary Prints</span>
+                <span className="block" style={{ color: NAVY_DARK }}>Crafted for</span>
+                <span className="block" style={{ color: RUST }}>Extraordinary Prints</span>
               </h1>
-              <p className="text-white/85 text-base lg:text-xl mb-8">
+              <p className="text-base lg:text-xl mb-8" style={{ color: "rgba(29,41,57,0.75)" }}>
                 Premium Digital Print Media by Mahaveer Papers
               </p>
             </MotionDiv>
             <MotionDiv delay={0.1} className="flex flex-wrap items-center gap-4">
               <Link
                 href="/products"
-                className="inline-flex items-center gap-2 rounded-full px-6 py-3.5 font-semibold text-[#241505] transition-transform hover:-translate-y-0.5"
-                style={{ backgroundColor: GOLD }}
+                className="inline-flex items-center gap-2 rounded-full px-6 py-3.5 font-semibold text-white transition-transform hover:-translate-y-0.5"
+                style={{ backgroundColor: NAVY_DARK }}
               >
                 Explore Products
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 rounded-full border px-6 py-3.5 font-semibold transition-colors hover:bg-white/10"
-                style={{ borderColor: GOLD, color: GOLD }}
+                className="inline-flex items-center gap-2 rounded-full border-2 px-6 py-3.5 font-semibold transition-colors hover:bg-black/5"
+                style={{ borderColor: NAVY_DARK, color: NAVY_DARK }}
               >
                 Request a Sample
               </Link>

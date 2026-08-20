@@ -81,19 +81,11 @@ export default function SustainabilityPage() {
             className="object-cover object-center"
             aria-hidden="true"
           />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(to bottom, rgba(15,25,35,0.35) 0%, rgba(15,25,35,0.8) 60%, rgba(15,25,35,0.95) 100%)",
-            }}
-            aria-hidden="true"
-          />
           <div className="relative z-10 container-max section-padding pt-32 w-full">
             <div className="max-w-3xl">
               <MotionDiv>
                 <h1
-                  className="font-display italic font-normal text-white leading-[1.0] mb-7"
+                  className="font-display italic font-normal text-brand-navy leading-[1.0] mb-7"
                   style={{ fontSize: "clamp(2.5rem,7vw,6.5rem)", letterSpacing: "-0.02em" }}
                 >
                   <span className="text-brand-orange not-italic">A lasting</span>
@@ -104,12 +96,12 @@ export default function SustainabilityPage() {
                 </h1>
               </MotionDiv>
               <MotionDiv delay={0.1}>
-                <p className="text-white/80 text-base leading-relaxed mb-3 max-w-xl">
+                <p className="text-brand-navy/80 text-base leading-relaxed mb-3 max-w-xl">
                   Every decision we make today, from sourcing to final delivery, is a step
                   toward a more resilient future. Sustainability for us isn&apos;t a destination
                   – it&apos;s a daily practice that shapes our future, and the future of paper.
                 </p>
-                <p className="text-white/80 text-base leading-relaxed mb-10 max-w-xl">
+                <p className="text-brand-navy/80 text-base leading-relaxed mb-10 max-w-xl">
                   As a trusted partner, we work to ensure that paper remains a sustainable
                   choice for generations to come – for our customers, for society, for the
                   planet.

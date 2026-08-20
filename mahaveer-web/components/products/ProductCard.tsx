@@ -8,10 +8,10 @@ export function ProductCard({ product, delay = 0 }: { product: CatalogProduct; d
   return (
     <MotionDiv delay={delay}>
       <Link href={`/products/${product.id}`} className="group block" aria-label={`View ${product.name}`}>
-        {/* Image container — no padding so image fills edge-to-edge */}
+        {/* Image container — increased height */}
         <div
-          className="relative rounded-2xl overflow-hidden mb-5 transition-transform duration-500 group-hover:scale-[1.02]"
-          style={{ aspectRatio: "4/5" }}
+          className="relative rounded-xl overflow-hidden mb-4 transition-transform duration-500 group-hover:scale-[1.015]"
+          style={{ aspectRatio: "4 / 4.2" }}
         >
           {product.image ? (
             <Image
@@ -45,9 +45,9 @@ export function ProductCard({ product, delay = 0 }: { product: CatalogProduct; d
         </div>
 
         {/* Colour / variant badge — Figma: blue outline pill */}
-        <div className="mb-3">
+        <div className="mb-2.5">
           <span
-            className="inline-flex items-center border text-[11px] font-semibold tracking-widest px-3 py-1 rounded-full uppercase"
+            className="inline-flex items-center border text-[10px] font-semibold tracking-widest px-2.5 py-1 rounded-full uppercase"
             style={{ color: "#00449A", borderColor: "#00449A" }}
           >
             {product.colors} {product.colors === 1 ? "COLOUR" : "COLOURS"}
@@ -56,20 +56,20 @@ export function ProductCard({ product, delay = 0 }: { product: CatalogProduct; d
 
         {/* Product name — Figma: near-black, semibold */}
         <h3
-          className="font-sans font-semibold mb-2 group-hover:text-brand-orange transition-colors"
-          style={{ fontSize: "clamp(1.5rem,2.2vw,2rem)", color: "#202020" }}
+          className="font-sans font-semibold mb-1.5 group-hover:text-brand-orange transition-colors leading-tight"
+          style={{ fontSize: "clamp(1.1rem,1.5vw,1.35rem)", color: "#202020" }}
         >
           {product.name}
         </h3>
 
         {/* Description */}
-        <p className="text-sm text-gray-500 leading-relaxed mb-5">{product.description}</p>
+        <p className="text-[13px] text-gray-500 leading-relaxed mb-4 line-clamp-2">{product.description}</p>
 
         {/* Explore pill */}
-        <div className="inline-flex items-center gap-3 border border-gray-200 group-hover:border-brand-orange rounded-full pl-5 pr-1.5 py-1.5 transition-colors">
-          <span className="text-sm font-medium text-brand-navy">Explore</span>
-          <span className="bg-brand-orange text-white rounded-full w-7 h-7 flex items-center justify-center flex-shrink-0">
-            <ArrowRight className="w-3.5 h-3.5" />
+        <div className="inline-flex items-center gap-2.5 border border-gray-200 group-hover:border-brand-orange rounded-full pl-4 pr-1 py-1 transition-colors">
+          <span className="text-[13px] font-medium text-brand-navy">Explore</span>
+          <span className="bg-brand-orange text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">
+            <ArrowRight className="w-3 h-3" />
           </span>
         </div>
       </Link>
