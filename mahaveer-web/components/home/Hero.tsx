@@ -1,73 +1,71 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useReducedMotion, motion, type Variants } from "framer-motion";
-
-const containerVariants: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.15 } },
-};
 
 const itemVariants: Variants = {
   hidden: { opacity: 0, y: 28 },
   visible: { opacity: 1, y: 0 },
 };
 
-// Licensed Adobe Stock photography — premium colour-paper photography for a
-// cohesive, high-end rotation rather than a single static banner.
-const HERO_SLIDES = [
-  "/images/hero/slide-1.jpg",
-  "/images/hero/slide-2.jpg",
-  "/images/hero/slide-3.jpg",
-  "/images/hero/slide-4.jpg",
-];
-
-const SLIDE_INTERVAL_MS = 6000;
+// Cinematic paper/texture reel — replaces the earlier Ken-Burns still-photo
+// carousel with a single continuous looping video for a more premium, "in
+// motion" first impression. Autoplay is muted + inline so it satisfies every
+// major browser's autoplay policy without a play button; `prefers-reduced-
+// motion` users get the poster frame only (no autoplaying video at all).
+const HERO_VIDEO_SRC = "/videos/hero.mp4";
+const HERO_VIDEO_POSTER = "/images/hero/hero-video-poster.jpg";
 
 // Figma: MP file, node 2001:1215 "Section - Hero section"
 export function Hero() {
   const prefersReduced = useReducedMotion();
-  const [activeSlide, setActiveSlide] = useState(0);
-
-  // Self-resetting timeout (rather than a plain interval) so the timer — and
-  // the progress bar's fill animation, which restarts via the `activeSlide`
-  // key — stay perfectly in sync whether a slide change comes from autoplay
-  // or a manual click on a segment.
-  useEffect(() => {
-    if (prefersReduced) return;
-    const timer = setTimeout(() => {
-      setActiveSlide((i) => (i + 1) % HERO_SLIDES.length);
-    }, SLIDE_INTERVAL_MS);
-    return () => clearTimeout(timer);
-  }, [activeSlide, prefersReduced]);
 
   return (
     <section
       className="relative min-h-screen flex items-center overflow-hidden bg-black"
       aria-label="Hero"
     >
-      {/* Background carousel — all slides stay mounted and pre-loaded; only
-          opacity crosses over, so there's never a pop-in delay on transition.
-          Each slide drifts slowly and continuously (Ken Burns), independent
-          of the crossfade, so nothing ever "resets" abruptly. */}
-      {HERO_SLIDES.map((src, i) => (
+      {/* Background video — muted/looped/inline so autoplay is allowed everywhere.
+          Reduced-motion users get a static poster frame instead (no <video> at
+          all), matching the same object-cover framing so nothing shifts. */}
+      {prefersReduced ? (
         <Image
-          key={src}
-          src={src}
+          src={HERO_VIDEO_POSTER}
           alt=""
           fill
-          priority={i === 0}
+          priority
           sizes="100vw"
-          className="object-cover object-center animate-hero-zoom transition-opacity duration-[1500ms] ease-in-out"
-          style={{ opacity: i === activeSlide ? 1 : 0 }}
+          className="object-cover object-center"
           aria-hidden="true"
         />
-      ))}
-      {/* Dark overlay — Figma "Overlay", black @ 65% opacity */}
+      ) : (
+        <video
+          className="absolute inset-0 h-full w-full object-cover object-center"
+          src={HERO_VIDEO_SRC}
+          poster={HERO_VIDEO_POSTER}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+        />
+      )}
+      {/* Dark overlay — Figma "Overlay", black @ 65% opacity. Slightly heavier
+          in the bottom-right corner (radial add-on below) to keep the video's
+          own bottom-right sparkle/light flare from competing with the slide
+          area now unused for progress dots. */}
       <div className="absolute inset-0 bg-black/65" aria-hidden="true" />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 480px 320px at 100% 100%, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 70%)",
+        }}
+        aria-hidden="true"
+      />
 
       <div
         className="relative z-10 flex w-full flex-col gap-8 md:gap-16 lg:gap-[128px]
@@ -119,41 +117,6 @@ export function Hero() {
             </span>
           </Link>
         </motion.div>
-      </div>
-
-      {/* Slide progress — segmented bar doubles as a slide count/position
-          indicator and a click-to-jump control. Filled segments = watched,
-          animating segment = current (fills over one dwell period), empty = upcoming. */}
-      <div
-        className="absolute bottom-6 right-4 z-10 flex items-center gap-2 sm:right-8 lg:right-10"
-        role="tablist"
-        aria-label="Hero slides"
-      >
-        {HERO_SLIDES.map((src, i) => (
-          <button
-            key={src}
-            type="button"
-            role="tab"
-            aria-selected={i === activeSlide}
-            aria-label={`Go to slide ${i + 1} of ${HERO_SLIDES.length}`}
-            onClick={() => setActiveSlide(i)}
-            className="relative h-[3px] w-8 overflow-hidden rounded-full bg-white/25 transition-colors hover:bg-white/40 sm:w-10"
-          >
-            {i < activeSlide && <span className="absolute inset-0 bg-white/80" aria-hidden="true" />}
-            {i === activeSlide && (
-              <span
-                key={activeSlide}
-                className="absolute inset-y-0 left-0 bg-white"
-                style={
-                  prefersReduced
-                    ? { width: "100%" }
-                    : { animation: `hero-progress ${SLIDE_INTERVAL_MS}ms linear forwards` }
-                }
-                aria-hidden="true"
-              />
-            )}
-          </button>
-        ))}
       </div>
     </section>
   );
