@@ -15,7 +15,7 @@ const BOOK_DESCRIPTIONS: Record<BookName, string> = {
   Earth: "Recycled and natural-fibre papers with a soft, organic character for sustainable, premium projects.",
   "Gloss & Metallic": "Shimmering pearlescent and metallic finishes that add instant luxury to any print or pack.",
   Coverings: "Decorative covering papers for rigid boxes, binders and premium book covers with real texture.",
-  Speciality: "Synthetic, absorbent and pressure-sensitive specialty stocks for demanding, non-standard applications.",
+  Speciality: "Synthetic, absorbent and pressure-sensitive speciality stocks for demanding, non-standard applications.",
   "Core Board": "Sturdy binding and structural boards in a range of thicknesses for book covers and rigid cases.",
 };
 

@@ -79,7 +79,7 @@ const inputClass = cn(
 
 const errorInputClass = "border-red-400 focus:border-red-400 focus:ring-red-400/20";
 
-export function ContactForm() {
+export function ContactForm({ headingLevel = "h2" }: { headingLevel?: "h1" | "h2" } = {}) {
   const {
     register,
     handleSubmit,
@@ -120,13 +120,18 @@ export function ContactForm() {
         {/* Section header */}
         <div className="mb-10">
           <span className="chip inline-flex mb-4">Request a Quote</span>
-          <h2
-            id="contact-heading"
-            className="font-sans font-medium text-display-md text-brand-ink leading-tight"
-          >
-            Let&apos;s{" "}
-            <span className="text-brand-orange">Talk</span>
-          </h2>
+          {(() => {
+            const Heading = headingLevel;
+            return (
+              <Heading
+                id="contact-heading"
+                className="font-sans font-medium text-display-md text-brand-ink leading-tight"
+              >
+                Let&apos;s{" "}
+                <span className="text-brand-orange">Talk</span>
+              </Heading>
+            );
+          })()}
           <p className="mt-2 text-brand-body text-lg">
             Let&apos;s Build Better Supply Chains Together!
           </p>

@@ -73,7 +73,7 @@ const blogPosts = [
   {
     id: "specialty-finishes",
     category: "Product Guide",
-    title: "Metallic, Textured, Coated: A Guide to Specialty Paper Finishes",
+    title: "Metallic, Textured, Coated: A Guide to Speciality Paper Finishes",
     date: "Nov 18, 2024",
     image: "/figma/colored-papers.jpg",
     href: "/blog/specialty-finishes",

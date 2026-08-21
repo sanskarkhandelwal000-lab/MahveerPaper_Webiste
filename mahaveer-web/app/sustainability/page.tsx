@@ -295,10 +295,10 @@ export default function SustainabilityPage() {
                 packaging requirement and sustainability preference.
               </p>
               <p className="text-center text-gray-500 text-xs italic leading-relaxed max-w-2xl mx-auto mt-4">
-                <span className="font-semibold not-italic">Good to know:</span> Some speciality
-                synthetic and non-tearable media have different biodegradability and recycling
-                properties. Please refer to the individual product information or contact our
-                team for guidance.
+                <span className="font-semibold not-italic">Good to know:</span> NT Matt and
+                Paperlike Synthetic are non-biodegradable but recyclable — please refer to the
+                individual product information or contact our team for guidance on any other
+                speciality synthetic media.
               </p>
             </MotionDiv>
           </div>

@@ -69,12 +69,12 @@ export default async function ApplicationPage({ params }: Props) {
                 className="font-display italic font-normal text-white leading-[1.0] mb-5"
                 style={{ fontSize: "clamp(2.5rem,7vw,6.5rem)", letterSpacing: "-0.02em" }}
               >
-                <span className="text-brand-orange not-italic">Bring your</span>
+                <span className="text-brand-orange not-italic">Perfect for</span>
                 <br />
-                Creativity to life
+                {appType}
               </h1>
               <p className="text-white/75 text-lg lg:text-2xl font-medium leading-snug">
-                Choose the Perfect Paper for your Project!
+                Browse every Mahaveer Papers product suited to {appType}.
               </p>
             </MotionDiv>
           </div>

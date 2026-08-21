@@ -1615,7 +1615,7 @@ export const catalogProducts: CatalogProduct[] = [
     paperTypes: ["Pressure-Sensitive Specialty Label"],
     applications: ["Premium Product Labels"],
     colourGroups: ["White", "Clear", "Metallic", "Black", "Natural", "Ivory", "Other"],
-    description: "FSC-certified label sheets with a specialty paper face stock, adhesive layer and glassine release liner.",
+    description: "FSC-certified label sheets with a speciality paper face stock, adhesive layer and glassine release liner.",
     aiSummary: "Designed primarily for digital toner and screen printing for cosmetic, candle, chocolate and premium packaging labels.",
     finish: "Varies by face stock",
     printingCompatibility: { "Offset": "Suitable with testing", "Digital Toner": "Suitable", "HP Indigo": "Not recommended unless qualified", "Screen Printing": "Suitable", "Inkjet": "Suitable with testing", "Laser Printing": "Suitable with testing" },
@@ -1685,8 +1685,11 @@ export function isBiodegradable(p: CatalogProduct): boolean {
   return !isSynthetic(p);
 }
 
-/** Recyclable via the paper stream = same exclusion — synthetic / HDPE stocks need a different stream. */
+/** Recyclable via the paper stream = same exclusion — synthetic / HDPE stocks need a different stream,
+ *  except NT Matt / Paperlike Synthetic (id "non-tearable"), which per verified master data are
+ *  non-biodegradable but still recyclable. */
 export function isRecyclable(p: CatalogProduct): boolean {
+  if (p.id === "non-tearable") return true;
   return !isSynthetic(p);
 }
 

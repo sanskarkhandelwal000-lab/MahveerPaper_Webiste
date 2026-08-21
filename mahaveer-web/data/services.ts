@@ -20,7 +20,7 @@ export const services: Service[] = [
     id: "quality-assurance",
     title: "Quality Assurance",
     description:
-      "ISO-compliant testing and grading for every batch, ensuring consistent performance across print, packaging, and specialty applications.",
+      "ISO-compliant testing and grading for every batch, ensuring consistent performance across print, packaging, and speciality applications.",
     icon: "BadgeCheck",
   },
   {
@@ -34,7 +34,7 @@ export const services: Service[] = [
     id: "logistics",
     title: "Pan-India Logistics",
     description:
-      "Warehousing and distribution from our Bangalore and Ahmedabad hubs ensure timely delivery across India.",
+      "Warehousing and distribution from our Bengaluru and Ahmedabad hubs ensure timely delivery across India.",
     icon: "Truck",
   },
   {

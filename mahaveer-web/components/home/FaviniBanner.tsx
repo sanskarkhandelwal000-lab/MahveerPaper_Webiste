@@ -23,7 +23,7 @@ export function FaviniBanner() {
                 className="text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] mb-5"
                 style={{ color: GOLD }}
               >
-                Official Stockist in India · Made in Italy Since 1736
+                Since 1992 · Ready Stock · Bengaluru &amp; Ahmedabad · Samples Available
               </p>
             </MotionDiv>
             <MotionDiv delay={0.05}>
@@ -41,14 +41,19 @@ export function FaviniBanner() {
                 className="font-display font-normal text-white mb-6"
                 style={{ fontSize: "clamp(1.75rem,3vw,2.5rem)", lineHeight: 1.2 }}
               >
-                Graphic speciality papers,
+                Premium Papers from
                 <br />
-                <span className="italic" style={{ color: GOLD }}>crafted in Italy.</span>
+                <span className="italic" style={{ color: GOLD }}>Favini, Italy.</span>
               </h2>
             </MotionDiv>
             <MotionDiv delay={0.15}>
-              <p className="text-white/70 text-base leading-relaxed mb-9 max-w-md">
-                <span className="text-white">Mahaveer Papers is the official stockist of Favini</span> — bringing Italy&apos;s most celebrated through-coloured, textured and metallic papers to India. Ex-stock, FSC® certified and trusted by designers worldwide.
+              <p className="text-white/70 text-base leading-relaxed mb-4 max-w-md">
+                <span className="text-white">Mahaveer Papers offers a curated range of Favini speciality papers</span> — known for expressive colours, refined textures and innovative surfaces, suited to premium packaging, print, publishing and creative communication.
+              </p>
+            </MotionDiv>
+            <MotionDiv delay={0.17}>
+              <p className="text-white/50 text-xs leading-relaxed mb-9 max-w-md">
+                Burano · The Tube · Sumo · Prisma · Twill · Tradition Valentino Ivory · Shiro Echo · Bianco Flash · Crush · Influence · Majestic · Favini Art Cotton
               </p>
             </MotionDiv>
             <MotionDiv delay={0.2}>
@@ -57,7 +62,7 @@ export function FaviniBanner() {
                   href="/products?brand=favini"
                   className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-4 font-semibold text-brand-dark transition-transform hover:-translate-y-0.5"
                 >
-                  Explore the Favini Collection
+                  Explore Favini Papers
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
@@ -65,7 +70,7 @@ export function FaviniBanner() {
                   className="inline-flex items-center gap-2 rounded-full border px-6 py-4 text-sm font-medium text-white/85 transition-colors hover:bg-white/10"
                   style={{ borderColor: "rgba(201,162,75,0.5)" }}
                 >
-                  Talk to Our Team
+                  Request Favini Swatches
                 </Link>
               </div>
             </MotionDiv>

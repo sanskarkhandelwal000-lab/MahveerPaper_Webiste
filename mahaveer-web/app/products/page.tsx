@@ -8,7 +8,7 @@ import { MotionDiv } from "@/components/ui/MotionDiv";
 export const metadata: Metadata = {
   title: "Products",
   description:
-    "Browse Mahaveer Papers' full range of packaging papers, printing & writing papers, specialty boards, and DigiLux premium papers.",
+    "Browse Mahaveer Papers' full range of packaging papers, printing & writing papers, speciality boards, and DigiLux premium papers.",
   alternates: { canonical: "/products" },
 };
 

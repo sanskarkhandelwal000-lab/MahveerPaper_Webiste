@@ -9,7 +9,7 @@ import { MotionSection } from "@/components/ui/MotionSection";
 export const metadata: Metadata = {
   title: "Contact Us",
   description:
-    "Get in touch with Mahaveer Papers for bulk paper enquiries, samples, or a free quote. Two offices: Bangalore and Ahmedabad.",
+    "Get in touch with Mahaveer Papers for bulk paper enquiries, samples, or a free quote. Two offices: Bengaluru and Ahmedabad.",
   alternates: { canonical: "/contact" },
 };
 
@@ -17,7 +17,7 @@ const offices = [
   {
     id: "bangalore",
     badge: "Head Office",
-    name: "Mahaveer Papers – Head Office (Bangalore)",
+    name: "Mahaveer Papers – Head Office (Bengaluru)",
     lines: ["Vasti Mall", "No.10, Cottonpet Main Road", "Bengaluru – 560053"],
     phone: "+91 81052 09002",
     phoneLabel: "Mobile/WhatsApp",
@@ -48,7 +48,7 @@ export default function ContactPage() {
       <main id="main-content" tabIndex={-1} className="scroll-mt-[92px] pt-6">
 
         {/* ── CONTACT FORM ── */}
-        <ContactForm />
+        <ContactForm headingLevel="h1" />
 
         {/* ── OFFICE LOCATIONS ── elevated cards with a section eyebrow, replacing
             the previous bare two-column text block */}

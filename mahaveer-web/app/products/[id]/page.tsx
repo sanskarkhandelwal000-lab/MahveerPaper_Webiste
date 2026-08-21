@@ -102,12 +102,12 @@ export default async function ProductPage({ params }: Props) {
                 className="font-display italic font-normal text-white leading-[1.0] mb-5"
                 style={{ fontSize: "clamp(2.5rem,7vw,6.5rem)", letterSpacing: "-0.02em" }}
               >
-                <span className="text-brand-orange not-italic">Bring your</span>
+                <span className="text-brand-orange not-italic">Explore</span>
                 <br />
-                Creativity to life
+                {product.name}{product.isFavini ? " by Favini" : ""}
               </h1>
               <p className="text-white/75 text-lg lg:text-2xl font-medium leading-snug">
-                Choose the Perfect Paper for your Project!
+                {product.description}
               </p>
             </MotionDiv>
           </div>
@@ -131,14 +131,16 @@ export default async function ProductPage({ params }: Props) {
                 {product.app}
               </h2>
               <p className="text-gray-400 font-normal mt-1" style={{ fontSize: "clamp(1rem,1.5vw,1.25rem)" }}>
-                {swatches.length} Product
+                {swatches.length} {product.colorNames?.length
+                  ? (swatches.length === 1 ? "Shade" : "Shades")
+                  : (swatches.length === 1 ? "Variant" : "Variants")}
               </p>
             </div>
             {product.isFavini && (
               <span className="inline-flex items-center gap-2 rounded-full bg-white border border-gray-200 shadow-sm px-3.5 py-2 shrink-0">
                 <span className="text-[10px] font-semibold tracking-[0.14em] text-gray-400 leading-none">BY</span>
                 <Image src="/images/favini-logo.svg" alt="Favini" width={64} height={14} className="h-4 w-auto" unoptimized />
-                <span className="ml-1 inline-flex items-center rounded-full bg-[#0A1930] text-white text-[10px] font-semibold tracking-wide px-2 py-0.5">Premium Collection</span>
+                <span className="ml-1 inline-flex items-center rounded-full bg-[#0A1930] text-white text-[10px] font-semibold tracking-wide px-2 py-0.5">FAVINI | ITALY</span>
               </span>
             )}
           </div>

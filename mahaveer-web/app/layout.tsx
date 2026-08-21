@@ -45,6 +45,7 @@ export const metadata: Metadata = {
     "Mahaveer Papers",
     "packaging paper",
     "printing paper",
+    "Bengaluru paper supplier",
     "Bangalore paper supplier",
     "bulk paper supply India",
   ],

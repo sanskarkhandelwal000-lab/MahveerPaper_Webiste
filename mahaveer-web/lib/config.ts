@@ -13,7 +13,7 @@ export const siteConfig = {
   },
   offices: [
     {
-      name: "Mahaveer Papers Head Office (Bangalore)",
+      name: "Mahaveer Papers Head Office (Bengaluru)",
       address: "Vasti Mall, No. 110, Cottonpet Main Road, Bengaluru 560053",
       phone: "+91 81052 09002",
       email: "mppapier@yahoo.co.in",
@@ -38,7 +38,7 @@ export const siteConfig = {
     { label: "Blog", href: "/blog" },
   ],
   stats: [
-    { value: "1992", label: "Est. — 30+ Years of Speciality-Paper Expertise" },
+    { value: "30+", label: "Years of Speciality-Paper Expertise — Est. 1992" },
     { value: "2", label: "Offices — Bengaluru & Ahmedabad" },
   ],
 } as const;

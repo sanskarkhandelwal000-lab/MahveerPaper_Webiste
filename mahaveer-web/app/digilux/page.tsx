@@ -13,7 +13,7 @@ import { MotionSection } from "@/components/ui/MotionSection";
 export const metadata: Metadata = {
   title: "DigiLux Papers",
   description:
-    "DIGILUX is Mahaveer Papers' dedicated brand for premium digital print media — specialty papers and self-adhesive solutions in the industry's most preferred 13 × 19 inch digital size.",
+    "DIGILUX is Mahaveer Papers' dedicated brand for premium digital print media — speciality papers and self-adhesive solutions in the industry's most preferred 13 × 19 inch digital size.",
   alternates: { canonical: "/digilux" },
 };
 
@@ -151,7 +151,7 @@ export default function DigiLuxPage() {
                 <div className="relative mx-auto w-full max-w-md aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
                   <Image
                     src="/figma/digilux2/about-collage.jpg"
-                    alt="Rolled colourful specialty papers"
+                    alt="Rolled colourful speciality papers"
                     fill
                     sizes="(max-width: 1024px) 100vw, 480px"
                     className="object-cover"
@@ -189,8 +189,8 @@ export default function DigiLuxPage() {
               </h2>
               <p className="mb-14 max-w-3xl text-[16px] text-gray-500">
                 Explore a diverse portfolio of premium print media crafted for packaging, labels, stationery,
-                marketing materials, and luxury print applications. With over 10+ specialty products, DIGILUX offers
-                the perfect solution for every creative vision.
+                marketing materials, and luxury print applications. With 55 SKUs across more than 10 product
+                categories, DIGILUX offers the perfect solution for every creative vision.
               </p>
             </MotionDiv>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-6 gap-y-12">
@@ -305,7 +305,7 @@ export default function DigiLuxPage() {
                 <p>The right paper does more than carry ink—it creates an experience.</p>
                 <p>
                   Whether it&apos;s premium packaging, luxury invitations, elegant branding, or high-end labels,
-                  specialty papers add depth, texture, character, and value to every printed piece.
+                  speciality papers add depth, texture, character, and value to every printed piece.
                 </p>
                 <p>When your product is aspirational, your packaging should be too.</p>
                 <p>
@@ -333,9 +333,14 @@ export default function DigiLuxPage() {
                 <p className="font-display mx-auto max-w-3xl mb-2" style={{ fontSize: "clamp(1.1rem,1.6vw,1.4rem)", lineHeight: 1.6, color: OLIVE }}>
                   At DIGILUX, we believe creativity deserves the right foundation.
                 </p>
-                <p className="font-display mx-auto max-w-3xl" style={{ fontSize: "clamp(1.1rem,1.6vw,1.4rem)", lineHeight: 1.6, color: OLIVE }}>
+                <p className="font-display mx-auto max-w-3xl mb-2" style={{ fontSize: "clamp(1.1rem,1.6vw,1.4rem)", lineHeight: 1.6, color: OLIVE }}>
                   By combining premium materials, ready-stock availability, standardized quality, and low MOQ
                   convenience, we enable printers and brands to create exceptional print products—every single time.
+                </p>
+                <p className="mx-auto max-w-3xl text-sm lg:text-base" style={{ lineHeight: 1.6, color: OLIVE, opacity: 0.85 }}>
+                  DIGILUX media is built for toner-based digital printing, tested on Canon and used across Canon,
+                  Konica Minolta, Ricoh and Xerox digital presses. HP Indigo is not recommended, and any unverified
+                  machine should be trialled before a full production run.
                 </p>
               </div>
             </MotionDiv>

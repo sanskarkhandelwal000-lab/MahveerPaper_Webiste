@@ -50,7 +50,7 @@ export default function AboutPage() {
 
           <div className="relative z-10 container-max section-padding pt-32 w-full">
             <div className="max-w-3xl">
-              {/* Revision brief: "Industry that choose us" → "Industries that trust us" (copy only, styling unchanged) */}
+              {/* Revision brief: "Industries that trust us" → "Three Decades of Speciality-Paper Expertise" (copy only, styling unchanged) */}
               <MotionDiv>
                 <h1 className="font-display italic text-white mb-6">
                   <span
@@ -61,7 +61,7 @@ export default function AboutPage() {
                       letterSpacing: "-0.02em",
                     }}
                   >
-                    Industries
+                    Three Decades of
                   </span>
                   <span
                     className="block font-normal"
@@ -71,7 +71,7 @@ export default function AboutPage() {
                       letterSpacing: "-0.02em",
                     }}
                   >
-                    that trust us
+                    Speciality-Paper Expertise
                   </span>
                 </h1>
               </MotionDiv>
