@@ -265,6 +265,9 @@ export function DigiLuxCatalog() {
                     <span className="text-[11px] font-medium">Photo coming soon</span>
                   </div>
                 )}
+                <span className="pointer-events-none absolute bottom-1.5 left-1.5 text-[9px] leading-none text-white/70 bg-black/35 backdrop-blur-sm px-1.5 py-1 rounded">
+                  Image indicative
+                </span>
                 <div className="absolute bottom-2 right-2 flex h-7 w-7 items-center justify-center rounded-md bg-white shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
                     <path d="M1 1h10v7H7l-3 3V8H1V1z" stroke="#0F1923" strokeWidth="1.2" strokeLinejoin="round" />
@@ -306,6 +309,10 @@ export function DigiLuxCatalog() {
           </button>
         </div>
       )}
+      <p className="text-center text-[11px] leading-relaxed text-neutral-400 mt-10 max-w-3xl mx-auto">
+        <span className="font-medium text-neutral-500 not-italic">Please Note:</span>{" "}
+        <span className="italic">Images are indicative. Actual paper colour, texture, and finish may vary slightly due to screen display and photography.</span>
+      </p>
     </>
   );
 }

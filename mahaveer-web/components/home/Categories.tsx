@@ -101,6 +101,9 @@ export function Categories() {
                     <span className="text-xs font-medium">Photo coming soon</span>
                   </div>
                 )}
+                <span className="pointer-events-none absolute bottom-1.5 left-1.5 text-[9px] leading-none text-white/70 bg-black/35 backdrop-blur-sm px-1.5 py-1 rounded">
+                  Image indicative
+                </span>
               </div>
               <div className="pt-6">
                 <h3 className="font-sans font-normal text-brand-orange text-2xl lg:text-[32px] leading-[1.2] lg:leading-[38.4px] tracking-[-0.64px] mb-2">

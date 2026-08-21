@@ -42,6 +42,9 @@ export function ProductCard({ product, delay = 0 }: { product: CatalogProduct; d
               />
             </span>
           )}
+          <span className="pointer-events-none absolute bottom-1.5 left-1.5 text-[9px] leading-none text-white/70 bg-black/35 backdrop-blur-sm px-1.5 py-1 rounded">
+            Image indicative
+          </span>
         </div>
 
         {/* Colour / variant badge — Figma: blue outline pill */}

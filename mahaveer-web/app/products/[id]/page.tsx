@@ -185,6 +185,9 @@ export default async function ProductPage({ params }: Props) {
                   <span className="absolute bottom-2 right-2 flex h-6 w-7 items-center justify-center rounded-[4px] bg-white shadow-sm">
                     <Mail className="h-3.5 w-3.5 text-gray-700" />
                   </span>
+                  <span className="pointer-events-none absolute bottom-1.5 left-1.5 text-[8px] leading-none text-white/75 bg-black/35 backdrop-blur-sm px-1.5 py-1 rounded">
+                    Image indicative
+                  </span>
                   {/* Favini mark on each swatch image — bottom-right frosted pill */}
                   {product.isFavini && colorImage && (
                     <span className="pointer-events-none absolute bottom-2 left-2 inline-flex items-center gap-1 rounded-full bg-white/95 backdrop-blur px-2 py-1 shadow-md border border-white/60">
@@ -219,6 +222,10 @@ export default async function ProductPage({ params }: Props) {
               );
             })}
           </div>
+          <p className="text-center text-[11px] leading-relaxed text-neutral-400 mt-10 max-w-3xl mx-auto">
+            <span className="font-medium text-neutral-500 not-italic">Please Note:</span>{" "}
+            <span className="italic">Images are indicative. Actual paper colour, texture, and finish may vary slightly due to screen display and photography.</span>
+          </p>
         </section>
 
       </main>

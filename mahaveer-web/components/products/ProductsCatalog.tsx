@@ -456,6 +456,10 @@ function ProductsCatalogInner() {
         {grouped.map(group => (
           <BookCarousel key={group.label} label={group.label} items={group.items} />
         ))}
+        <p className="text-center text-[11px] leading-relaxed text-neutral-400 mt-6 max-w-3xl mx-auto">
+          <span className="font-medium text-neutral-500 not-italic">Please Note:</span>{" "}
+          <span className="italic">Images are indicative. Actual paper colour, texture, and finish may vary slightly due to screen display and photography.</span>
+        </p>
       </div>
     </>
   );
