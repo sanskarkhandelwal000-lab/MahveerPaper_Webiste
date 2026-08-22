@@ -53,16 +53,15 @@ export function Hero() {
           aria-hidden="true"
         />
       )}
-      {/* Dark overlay — Figma "Overlay", black @ 65% opacity. Slightly heavier
-          in the bottom-right corner (radial add-on below) to keep the video's
-          own bottom-right sparkle/light flare from competing with the slide
-          area now unused for progress dots. */}
-      <div className="absolute inset-0 bg-black/65" aria-hidden="true" />
+
+      {/* Light left-side scrim — a much softer assist than before. Legibility now
+          mainly comes from the per-glyph text-shadow below, which holds up against
+          any frame of the video, so this only needs to take the edge off. */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 480px 320px at 100% 100%, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 70%)",
+            "linear-gradient(90deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 35%, rgba(0,0,0,0) 65%)",
         }}
         aria-hidden="true"
       />
@@ -82,6 +81,7 @@ export function Hero() {
           <motion.h1
             variants={prefersReduced ? {} : itemVariants}
             className="flex flex-col gap-2 lg:gap-3 font-display text-display-xl tracking-[-0.02em]"
+            style={{ textShadow: "0 2px 16px rgba(0,0,0,0.75), 0 1px 4px rgba(0,0,0,0.9)" }}
           >
             <span className="not-italic font-normal leading-[1] text-brand-orange">
               Speciality papers.
@@ -99,7 +99,10 @@ export function Hero() {
           transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col items-start gap-6 lg:gap-10"
         >
-          <div className="flex w-full max-w-[570px] flex-col gap-[27px] font-sans text-[18px] leading-[27px] text-[#f5f5f5]">
+          <div
+            className="flex w-full max-w-[570px] flex-col gap-[27px] font-sans text-[18px] leading-[27px] text-[#f5f5f5]"
+            style={{ textShadow: "0 1px 8px rgba(0,0,0,0.75), 0 1px 2px rgba(0,0,0,0.9)" }}
+          >
             <p>
               Since 1992, Mahaveer Papers has helped printers, designers, packaging
               converters and brands choose the right paper for every idea.
