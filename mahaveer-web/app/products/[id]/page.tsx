@@ -270,9 +270,10 @@ export default async function ProductPage({ params }: Props) {
                   <span className="pointer-events-none absolute bottom-1.5 left-1.5 text-[8px] leading-none text-white/75 bg-black/35 backdrop-blur-sm px-1.5 py-1 rounded">
                     Image indicative
                   </span>
-                  {/* Favini mark on each swatch image — bottom-right frosted pill */}
+                  {/* Favini mark on each swatch image — top-left frosted pill (bottom-left is
+                      already taken by the "Image indicative" tag, bottom-right by the mail icon) */}
                   {product.isFavini && colorImage && (
-                    <span className="pointer-events-none absolute bottom-2 left-2 inline-flex items-center gap-1 rounded-full bg-white/95 backdrop-blur px-2 py-1 shadow-md border border-white/60">
+                    <span className="pointer-events-none absolute top-2 left-2 inline-flex items-center gap-1 rounded-full bg-white/95 backdrop-blur px-2 py-1 shadow-md border border-white/60">
                       <span className="text-[7px] font-semibold tracking-[0.12em] text-gray-400 leading-none">BY</span>
                       <Image src="/images/favini-logo.svg" alt="Favini" width={40} height={10} className="h-2.5 w-auto" unoptimized />
                     </span>
