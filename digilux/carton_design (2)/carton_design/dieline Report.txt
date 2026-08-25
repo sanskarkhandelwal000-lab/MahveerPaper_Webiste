@@ -1,0 +1,73 @@
+Package Report
+
+-----------------------------------------------------------------------------
+Document:
+Name: dieline.ai
+Color Mode: RGB color
+Color Profile: sRGB IEC61966-2.1
+Ruler Units: inches
+Artboard Dimensions: 19.5 in x 13.5 in
+Show Images in Outline Mode: OFF
+Highlight Substituted Fonts: OFF
+Highlight Substituted Glyphs: OFF
+Preserve Text Editability
+Simulate Colored Paper: OFF
+
+-----------------------------------------------------------------------------
+Spot Color Objects:
+
+-----------------------------------------------------------------------------
+Missing Fonts:NONE
+
+-----------------------------------------------------------------------------
+Protected Fonts that were not packaged:NONE
+
+-----------------------------------------------------------------------------
+Fonts:
+NONE
+
+-----------------------------------------------------------------------------
+Embedded Fonts:
+NONE
+
+-----------------------------------------------------------------------------
+Missing Links:
+NONE
+
+-----------------------------------------------------------------------------
+Linked Images:
+
+C:\Users\gupta\Downloads\Screenshot 2025-11-17 121024.png
+Type: Transparent RGB
+Bits per Pixel: 32
+Channels: 4
+Size: 1044K, 796 by 336 pixels
+Dimensions: 1363.415 by 575.512 points 
+Resolution: 42.036 by 42.036 pixels per inch
+
+
+C:\Users\gupta\Downloads\final DIGILUX LOGO.png
+Type: Transparent RGB
+Bits per Pixel: 32
+Channels: 4
+Size: 670K, 730 by 235 pixels
+Dimensions: 304.126 by 97.903 points 
+Resolution: 172.823 by 172.823 pixels per inch
+
+
+C:\Users\gupta\Downloads\carton_side_left_RIGHT.png
+Type: Transparent RGB
+Bits per Pixel: 32
+Channels: 4
+Size: 1921K, 972 by 506 pixels
+Dimensions: 259.987 by 162.802 points 
+Resolution: 269.183 by 223.78 pixels per inch
+
+
+C:\Users\gupta\Downloads\carton_side_left_RIGHT.png
+Type: Transparent RGB
+Bits per Pixel: 32
+Channels: 4
+Size: 1921K, 972 by 506 pixels
+Dimensions: 256.176 by 162.802 points 
+Resolution: 273.187 by 223.78 pixels per inch
