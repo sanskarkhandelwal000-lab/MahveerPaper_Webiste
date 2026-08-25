@@ -30,10 +30,12 @@ const replySchema = z.object({
 
 const SAMPLE_REQUEST_PATTERN = /\bsamples?\b/i;
 
-/** Builds a /contact link pre-filled with an application type + message brief for a sample request. */
+/** Builds a /contact link pre-filled with an enquiry type + message brief for a sample request. */
 function buildSampleRequestHref(products: CatalogProduct[], requestText: string): string {
   const productNames = products.map((p) => p.name).join(", ");
-  const applicationType: string = products[0]?.app ?? "Other";
+  // "Request Samples" is a fixed Enquiry Type option (lib/contactOptions.ts) — this
+  // function only ever fires on a sample request, so it's always the right value.
+  const applicationType = "Request Samples";
   const message = productNames
     ? `I would like to request a sample of ${productNames}.`
     : `I would like to request a paper sample. Here's what I'm looking for: ${requestText}`;

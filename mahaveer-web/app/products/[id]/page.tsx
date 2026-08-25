@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Mail, ImageOff } from "lucide-react";
+import { Mail, ImageOff, Sparkles, Layers, Ruler, Palette, Tag } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { MotionDiv } from "@/components/ui/MotionDiv";
@@ -107,7 +107,7 @@ export default async function ProductPage({ params }: Props) {
                 {product.name}{product.isFavini ? " by Favini" : ""}
               </h1>
               <p className="text-white/75 text-lg lg:text-2xl font-medium leading-snug">
-                {product.description}
+                Choose the Perfect Paper for your Project!
               </p>
             </MotionDiv>
           </div>
@@ -125,7 +125,7 @@ export default async function ProductPage({ params }: Props) {
           </nav>
 
           {/* Heading — Figma: application name + product count */}
-          <div className="mb-10 lg:mb-14 flex items-start justify-between gap-4">
+          <div className="mb-6 flex items-start justify-between gap-4">
             <div>
               <h2 className="font-sans font-semibold" style={{ fontSize: "clamp(1.75rem,3.5vw,2.5rem)", color: "#202020" }}>
                 {product.app}
@@ -143,6 +143,86 @@ export default async function ProductPage({ params }: Props) {
                 <span className="ml-1 inline-flex items-center rounded-full bg-[#0A1930] text-white text-[10px] font-semibold tracking-wide px-2 py-0.5">FAVINI | ITALY</span>
               </span>
             )}
+          </div>
+
+          {/* About this paper — family description + suggested end applications on the
+              left, a compact spec panel on the right so the section uses the full
+              content width on desktop instead of a narrow card stranded on the left
+              with dead space beside it. Orange rail + warm tint on the left card ties
+              to the brand accent used in chips/buttons across the rest of the site;
+              the right panel reuses the same neutral card language as the swatch grid
+              below it, so the two sit together as one coherent block. */}
+          <div className="mb-10 lg:mb-14 grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-5">
+            <div
+              className="rounded-2xl border border-orange-100/80 bg-gradient-to-br from-orange-50/60 via-white to-white p-6 lg:p-8 shadow-sm"
+              style={{ borderLeftWidth: 3, borderLeftColor: "#EA580C" }}
+            >
+              <p className="text-gray-700 leading-relaxed" style={{ fontSize: "clamp(0.95rem,1.1vw,1.05rem)" }}>
+                {product.description}
+              </p>
+              {product.bestFor && (
+                <div className="mt-5 pt-5 border-t border-orange-100">
+                  <div className="mb-3 flex items-center gap-2">
+                    <Sparkles className="h-4 w-4 text-brand-orange" strokeWidth={2} />
+                    <span className="text-[13px] font-semibold uppercase tracking-[0.1em] text-brand-orange">
+                      Best For
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {product.bestFor.split(";").map((use) => (
+                      <span
+                        key={use}
+                        className="inline-flex items-center rounded-full border border-orange-200 bg-white px-3.5 py-1.5 text-[13px] font-medium text-gray-700 shadow-sm"
+                      >
+                        {use.trim()}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* At a Glance — the same GSM/size facts already shown per swatch below,
+                surfaced once up top for anyone who wants the spec before scrolling. */}
+            <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm h-fit">
+              <span className="text-[13px] font-semibold uppercase tracking-[0.1em] text-gray-400">
+                At a Glance
+              </span>
+              <dl className="mt-4 flex flex-col gap-3.5">
+                {product.brand && (
+                  <div className="flex items-center justify-between gap-3 border-b border-gray-100 pb-3.5">
+                    <dt className="flex items-center gap-2 text-[13px] text-gray-500">
+                      <Tag className="h-3.5 w-3.5 text-gray-400" strokeWidth={2} />
+                      Brand
+                    </dt>
+                    <dd className="text-[13px] font-semibold text-gray-800 text-right">{product.brand}</dd>
+                  </div>
+                )}
+                <div className="flex items-center justify-between gap-3 border-b border-gray-100 pb-3.5">
+                  <dt className="flex items-center gap-2 text-[13px] text-gray-500">
+                    <Layers className="h-3.5 w-3.5 text-gray-400" strokeWidth={2} />
+                    GSM
+                  </dt>
+                  <dd className="text-[13px] font-semibold text-gray-800 text-right">{product.gsm}</dd>
+                </div>
+                {familySizesLabel && (
+                  <div className="flex items-center justify-between gap-3 border-b border-gray-100 pb-3.5">
+                    <dt className="flex items-center gap-2 text-[13px] text-gray-500">
+                      <Ruler className="h-3.5 w-3.5 text-gray-400" strokeWidth={2} />
+                      Sizes
+                    </dt>
+                    <dd className="text-[13px] font-semibold text-gray-800 text-right">{familySizesLabel}</dd>
+                  </div>
+                )}
+                <div className="flex items-center justify-between gap-3">
+                  <dt className="flex items-center gap-2 text-[13px] text-gray-500">
+                    <Palette className="h-3.5 w-3.5 text-gray-400" strokeWidth={2} />
+                    {product.colorNames?.length ? "Shades" : "Variants"}
+                  </dt>
+                  <dd className="text-[13px] font-semibold text-gray-800 text-right">{swatches.length}</dd>
+                </div>
+              </dl>
+            </div>
           </div>
 
           {/* Swatch grid — Figma: square texture, envelope chip, blue GSM pill, name */}

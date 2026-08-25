@@ -185,7 +185,7 @@ export function DigiLuxCatalog() {
           >
             <p className="font-semibold text-brand-navy text-[15px] leading-tight">Application</p>
             <p className="text-gray-400 text-[13px] mt-0.5">
-              {activeApplication === "All" ? "What's your Project?" : activeApplication}
+              {activeApplication === "All" ? "Select an application" : activeApplication}
             </p>
           </button>
           {openKey === "application" && dropdownList(applicationOptions, activeApplication, selectAndCollapse(setActiveApplication))}
@@ -199,9 +199,9 @@ export function DigiLuxCatalog() {
             onClick={() => toggle("category")}
             className="w-full h-full text-left px-6 py-4 transition-colors hover:bg-gray-50 rounded-full"
           >
-            <p className="font-semibold text-brand-navy text-[15px] leading-tight">Categories</p>
+            <p className="font-semibold text-brand-navy text-[15px] leading-tight">Category</p>
             <p className="text-gray-400 text-[13px] mt-0.5">
-              {activeCategory === "All" ? "What's your Category?" : activeCategory}
+              {activeCategory === "All" ? "Select a category" : activeCategory}
             </p>
           </button>
           {openKey === "category" && dropdownList(categoryOptions, activeCategory, selectAndCollapse(setActiveCategory))}
@@ -217,7 +217,7 @@ export function DigiLuxCatalog() {
           >
             <p className="font-semibold text-brand-navy text-[15px] leading-tight">Colour</p>
             <p className="text-gray-400 text-[13px] mt-0.5">
-              {activeColour === "All" ? "What's your Shade?" : activeColour}
+              {activeColour === "All" ? "Select a colour" : activeColour}
             </p>
           </button>
           {openKey === "colour" && dropdownList(colourOptions, activeColour, selectAndCollapse(setActiveColour))}

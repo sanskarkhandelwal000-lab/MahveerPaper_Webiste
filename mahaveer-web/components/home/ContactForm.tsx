@@ -10,7 +10,7 @@ import { useSearchParams } from "next/navigation";
 import { contactFormSchema, type ContactFormValues } from "@/lib/validations";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
-import { APPLICATION_TYPES } from "@/lib/contactOptions";
+import { ENQUIRY_TYPES } from "@/lib/contactOptions";
 
 function ProductBanner() {
   const searchParams = useSearchParams();
@@ -127,13 +127,14 @@ export function ContactForm({ headingLevel = "h2" }: { headingLevel?: "h1" | "h2
                 id="contact-heading"
                 className="font-sans font-medium text-display-md text-brand-ink leading-tight"
               >
-                Let&apos;s{" "}
-                <span className="text-brand-orange">Talk</span>
+                Tell Us What You&apos;re{" "}
+                <span className="text-brand-orange">Looking For</span>
               </Heading>
             );
           })()}
           <p className="mt-2 text-brand-body text-lg">
-            Let&apos;s Build Better Supply Chains Together!
+            Share your paper requirement, quantity and location. Our team will help you
+            identify suitable options and confirm samples, pricing and current availability.
           </p>
         </div>
 
@@ -215,19 +216,18 @@ export function ContactForm({ headingLevel = "h2" }: { headingLevel?: "h1" | "h2
             </Field>
 
             <Field
-              label="Email Address"
-              required
-              error={errors.email?.message}
-              htmlFor="email"
+              label="Company Name"
+              error={errors.companyName?.message}
+              htmlFor="companyName"
             >
               <input
-                id="email"
-                type="email"
-                placeholder="rahul@yourcompany.com"
-                autoComplete="email"
-                className={cn(inputClass, errors.email && errorInputClass)}
+                id="companyName"
+                type="text"
+                placeholder="Your company (optional)"
+                autoComplete="organization"
+                className={cn(inputClass, errors.companyName && errorInputClass)}
                 disabled={isSubmitting}
-                {...register("email")}
+                {...register("companyName")}
               />
             </Field>
 
@@ -249,28 +249,47 @@ export function ContactForm({ headingLevel = "h2" }: { headingLevel?: "h1" | "h2
             </Field>
 
             <Field
-              label="City"
+              label="Email Address"
               required
-              error={errors.projectLocation?.message}
-              htmlFor="projectLocation"
+              error={errors.email?.message}
+              htmlFor="email"
             >
               <input
-                id="projectLocation"
-                type="text"
-                placeholder="Bengaluru"
-                autoComplete="address-level2"
-                className={cn(
-                  inputClass,
-                  errors.projectLocation && errorInputClass
-                )}
+                id="email"
+                type="email"
+                placeholder="rahul@yourcompany.com"
+                autoComplete="email"
+                className={cn(inputClass, errors.email && errorInputClass)}
                 disabled={isSubmitting}
-                {...register("projectLocation")}
+                {...register("email")}
               />
             </Field>
 
             <div className="sm:col-span-2">
               <Field
-                label="Application"
+                label="City"
+                required
+                error={errors.projectLocation?.message}
+                htmlFor="projectLocation"
+              >
+                <input
+                  id="projectLocation"
+                  type="text"
+                  placeholder="Bengaluru"
+                  autoComplete="address-level2"
+                  className={cn(
+                    inputClass,
+                    errors.projectLocation && errorInputClass
+                  )}
+                  disabled={isSubmitting}
+                  {...register("projectLocation")}
+                />
+              </Field>
+            </div>
+
+            <div className="sm:col-span-2">
+              <Field
+                label="Enquiry Type"
                 required
                 error={errors.applicationType?.message}
                 htmlFor="applicationType"
@@ -289,7 +308,7 @@ export function ContactForm({ headingLevel = "h2" }: { headingLevel?: "h1" | "h2
                   <option value="" disabled>
                     Select…
                   </option>
-                  {APPLICATION_TYPES.map((t) => (
+                  {ENQUIRY_TYPES.map((t) => (
                     <option key={t} value={t}>
                       {t}
                     </option>
@@ -300,7 +319,7 @@ export function ContactForm({ headingLevel = "h2" }: { headingLevel?: "h1" | "h2
 
             <div className="sm:col-span-2">
               <Field
-                label="Message / Project Brief"
+                label="Requirement"
                 required
                 error={errors.message?.message}
                 htmlFor="message"
@@ -336,7 +355,7 @@ export function ContactForm({ headingLevel = "h2" }: { headingLevel?: "h1" | "h2
                   </>
                 ) : (
                   <>
-                    <span>Check Price & Availability</span>
+                    <span>Send Your Requirement</span>
                     <span className="btn-icon-badge h-8 w-8">
                       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                         <path d="M2 7h10M8 3l4 4-4 4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

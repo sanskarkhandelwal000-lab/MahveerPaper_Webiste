@@ -4,7 +4,6 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { ContactForm } from "@/components/home/ContactForm";
 import { DigiLuxCatalog } from "@/components/products/DigiLuxCatalog";
 import { WhyDigiluxTabs } from "@/components/digilux/WhyDigiluxTabs";
 import { MotionDiv } from "@/components/ui/MotionDiv";
@@ -20,7 +19,6 @@ export const metadata: Metadata = {
 // Figma palette — DigiLux brand microsite (redesign, Aug 2026)
 const OLIVE = "#7C7844";
 const RUST = "#A63D12";
-const ELEVATE_BROWN = "#6E5A36";
 const NAVY_DARK = "#1D2939";
 
 const portfolioItems = [
@@ -62,7 +60,10 @@ const applications = [
   },
 ];
 
-// Figma: 4-point sparkle outline used on the "Built for Exceptional Printing" card
+// Revision brief (section C): the proof strip under the intro — never more than four figures.
+const proofStrip = ["55 SKUs", "13 × 19 Inches", "Low MOQ", "Ready Stock"];
+
+// Figma: 4-point sparkle outline used on the merged "Prints Well. Cuts Well." card
 function Sparkle({ className }: { className?: string }) {
   return (
     <svg
@@ -110,25 +111,25 @@ export default function DigiLuxPage() {
             </MotionDiv>
             <MotionDiv delay={0.1} className="flex flex-wrap items-center gap-4">
               <Link
-                href="/products"
+                href="/digilux#products"
                 className="inline-flex items-center gap-2 rounded-full px-6 py-3.5 font-semibold text-white transition-transform hover:-translate-y-0.5"
                 style={{ backgroundColor: NAVY_DARK }}
               >
-                Explore Products
+                Explore DigiLux Media
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
-                href="/contact"
+                href="/contact?applicationType=DigiLux+Sample+Pack"
                 className="inline-flex items-center gap-2 rounded-full border-2 px-6 py-3.5 font-semibold transition-colors hover:bg-black/5"
                 style={{ borderColor: NAVY_DARK, color: NAVY_DARK }}
               >
-                Request a Sample
+                Request a Sample Pack
               </Link>
             </MotionDiv>
           </div>
         </section>
 
-        {/* ── ABOUT DIGILUX ── navy-to-blue gradient, collage image + copy, wave into white */}
+        {/* ── WHAT IS DIGILUX? ── navy-to-blue gradient, collage image + copy, proof strip, wave into white */}
         <section
           className="relative overflow-hidden pt-20 pb-40 lg:pt-28 lg:pb-56"
           style={{ background: "linear-gradient(180deg, #0A131F 0%, #3D79C4 100%)" }}
@@ -136,7 +137,7 @@ export default function DigiLuxPage() {
           <div className="container-max section-padding relative z-10">
             <MotionDiv>
               <h2 className="font-sans font-semibold text-2xl sm:text-3xl mb-10 flex items-center gap-3 flex-wrap text-white">
-                About
+                What is
                 <Image
                   src="/images/digilux-logo.png"
                   alt="DigiLux"
@@ -144,6 +145,7 @@ export default function DigiLuxPage() {
                   height={47}
                   className="h-8 w-auto lg:h-9"
                 />
+                ?
               </h2>
             </MotionDiv>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -159,11 +161,20 @@ export default function DigiLuxPage() {
                 </div>
               </MotionDiv>
               <MotionDiv delay={0.1}>
-                <p className="font-display text-white/90" style={{ fontSize: "clamp(1.1rem,1.7vw,1.4rem)", lineHeight: 1.6 }}>
-                  DIGILUX is a signature collection of premium digital print media and self-adhesive
-                  solutions—crafted for those who expect more from every print. Precision-cut to 13 × 19 inches
-                  and available across 55 distinctive SKUs.
+                <p className="font-display text-white/90 mb-10" style={{ fontSize: "clamp(1.1rem,1.7vw,1.4rem)", lineHeight: 1.6 }}>
+                  DigiLux is Mahaveer Papers&apos; premium collection of cut-size media for toner-based
+                  digital printing. Available primarily in the popular 13 × 19 inch format, the
+                  collection includes textured boards, metallic boards, premium white boards,
+                  self-adhesive sheets and selected speciality media.
                 </p>
+                {/* Proof strip — max four figures (revision brief, section C) */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+                  {proofStrip.map((fact) => (
+                    <div key={fact} className="border-l-2 pl-3" style={{ borderColor: "#00C8B3" }}>
+                      <p className="font-sans font-bold text-white text-lg lg:text-xl leading-tight">{fact}</p>
+                    </div>
+                  ))}
+                </div>
               </MotionDiv>
             </div>
           </div>
@@ -180,8 +191,28 @@ export default function DigiLuxPage() {
           </svg>
         </section>
 
-        {/* ── OUR PORTFOLIO ── */}
-        <MotionSection className="bg-white section-padding pb-20 lg:pb-28 -mt-px">
+        {/* ── MACHINE COMPATIBILITY ── moved near the top per revision brief (section D),
+            ahead of Applications and the product listing. */}
+        <MotionSection className="bg-white section-padding py-14 lg:py-20">
+          <div className="container-max">
+            <div
+              className="rounded-2xl border-2 px-6 py-8 lg:px-10 lg:py-10"
+              style={{ borderColor: "#00C8B3", backgroundColor: "#F0FBFA" }}
+            >
+              <h2 className="font-sans font-bold mb-3" style={{ fontSize: "clamp(1.35rem,2.2vw,1.75rem)", color: NAVY_DARK }}>
+                Designed for Toner-Based Digital Printing
+              </h2>
+              <p className="text-[15px] lg:text-base leading-relaxed text-gray-600 max-w-3xl">
+                Tested on selected Canon machines and used by customers operating Canon, Konica
+                Minolta, Ricoh and Xerox digital presses. HP Indigo is not recommended. A trial is
+                advised before production on any unverified machine.
+              </p>
+            </div>
+          </div>
+        </MotionSection>
+
+        {/* ── PORTFOLIO CATEGORIES ── */}
+        <MotionSection className="bg-white section-padding pb-20 lg:pb-28">
           <div className="container-max">
             <MotionDiv>
               <h2 className="font-sans font-bold tracking-tight mb-4 text-brand-navy" style={{ fontSize: "clamp(2.25rem,4vw,3.5rem)" }}>
@@ -213,7 +244,7 @@ export default function DigiLuxPage() {
           </div>
         </MotionSection>
 
-        {/* ── APPLICATION ── */}
+        {/* ── APPLICATIONS ── */}
         <MotionSection className="section-padding py-20 lg:py-28" style={{ backgroundColor: NAVY_DARK }}>
           <div className="container-max">
             <MotionDiv>
@@ -249,8 +280,8 @@ export default function DigiLuxPage() {
           </div>
         </MotionSection>
 
-        {/* ── PRODUCT ── */}
-        <MotionSection className="bg-white section-padding py-20 lg:py-28">
+        {/* ── DIGILUX PRODUCT LISTING ── */}
+        <MotionSection id="products" className="bg-white section-padding py-20 lg:py-28 scroll-mt-[92px]">
           <div className="container-max">
             <MotionDiv>
               <h2 className="font-sans font-bold tracking-tight mb-4 text-brand-navy" style={{ fontSize: "clamp(2.25rem,4vw,3.5rem)" }}>
@@ -266,14 +297,15 @@ export default function DigiLuxPage() {
           </div>
         </MotionSection>
 
-        {/* ── WHY DIGILUX? / OUR JOURNEY ── */}
+        {/* ── WHY DIGILUX? / OUR JOURNEY ── two stacked sections, no tab interaction (section I) */}
         <MotionSection className="section-padding py-20 lg:py-28" style={{ backgroundColor: NAVY_DARK }}>
           <div className="container-max">
             <WhyDigiluxTabs />
           </div>
         </MotionSection>
 
-        {/* ── ELEVATE EVERY PRINT ── parchment texture + pen */}
+        {/* ── PRINTS WELL. CUTS WELL. ── merged "Elevate Every Print" + "Built for Exceptional
+            Printing" into one section (revision brief, section J) — parchment texture + pen. */}
         <MotionSection
           className="relative overflow-hidden py-20 lg:py-28"
           style={{
@@ -294,84 +326,49 @@ export default function DigiLuxPage() {
               aria-hidden="true"
             />
           </div>
+          <Sparkle className="pointer-events-none absolute left-10 top-10 h-10 w-10 lg:h-14 lg:w-14 opacity-70" />
           <div className="relative z-10 container-max section-padding">
             <MotionDiv>
-              <h2 className="font-display font-normal mb-8" style={{ fontSize: "clamp(2rem,3.5vw,3rem)", color: ELEVATE_BROWN }}>
-                Elevate Every Print
+              <h2 className="font-display font-normal mb-6 max-w-2xl" style={{ fontSize: "clamp(2rem,3.5vw,3rem)", color: RUST }}>
+                Prints Well. Cuts Well. Your Outputs Look Better.
               </h2>
             </MotionDiv>
             <MotionDiv delay={0.1}>
-              <div className="flex flex-col gap-5 max-w-2xl text-[17px] leading-relaxed" style={{ color: OLIVE }}>
-                <p>The right paper does more than carry ink—it creates an experience.</p>
-                <p>
-                  Whether it&apos;s premium packaging, luxury invitations, elegant branding, or high-end labels,
-                  speciality papers add depth, texture, character, and value to every printed piece.
-                </p>
-                <p>When your product is aspirational, your packaging should be too.</p>
-                <p>
-                  DIGILUX helps transform ordinary prints into memorable experiences that leave a lasting
-                  impression.
-                </p>
-              </div>
+              <p className="max-w-2xl text-[17px] leading-relaxed" style={{ color: OLIVE }}>
+                DigiLux combines selected media, ready-stock availability and convenient quantities
+                to help digital printers produce premium short-run work with confidence.
+              </p>
             </MotionDiv>
           </div>
         </MotionSection>
 
-        {/* ── BUILT FOR EXCEPTIONAL PRINTING ── */}
-        <MotionSection className="bg-white section-padding py-14 lg:py-20">
-          <div className="container-max">
-            <MotionDiv>
-              <div
-                className="relative rounded-[32px] px-6 py-14 lg:px-20 lg:py-20 text-center shadow-xl"
-                style={{ background: "linear-gradient(135deg, #FFFDF4 0%, #FFF8E4 100%)" }}
-              >
-                <Sparkle className="absolute left-10 top-8 h-12 w-12 lg:h-16 lg:w-16" />
-                <Sparkle className="absolute bottom-8 right-12 h-10 w-10 lg:h-14 lg:w-14 rotate-45" />
-                <h2 className="font-display font-normal mb-8" style={{ fontSize: "clamp(1.75rem,2.8vw,2.5rem)", color: RUST }}>
-                  Built for Exceptional Printing
-                </h2>
-                <p className="font-display mx-auto max-w-3xl mb-2" style={{ fontSize: "clamp(1.1rem,1.6vw,1.4rem)", lineHeight: 1.6, color: OLIVE }}>
-                  At DIGILUX, we believe creativity deserves the right foundation.
-                </p>
-                <p className="font-display mx-auto max-w-3xl mb-2" style={{ fontSize: "clamp(1.1rem,1.6vw,1.4rem)", lineHeight: 1.6, color: OLIVE }}>
-                  By combining premium materials, ready-stock availability, standardized quality, and low MOQ
-                  convenience, we enable printers and brands to create exceptional print products—every single time.
-                </p>
-                <p className="mx-auto max-w-3xl text-sm lg:text-base" style={{ lineHeight: 1.6, color: OLIVE, opacity: 0.85 }}>
-                  DIGILUX media is built for toner-based digital printing, tested on Canon and used across Canon,
-                  Konica Minolta, Ricoh and Xerox digital presses. HP Indigo is not recommended, and any unverified
-                  machine should be trialled before a full production run.
-                </p>
-              </div>
-            </MotionDiv>
-          </div>
-        </MotionSection>
-
-        {/* ── NEED SAMPLES? ── */}
-        <MotionSection className="section-padding pb-14 lg:pb-20 bg-white">
+        {/* ── SAMPLE-PACK CTA ── "Experience DigiLux" (revision brief, section K).
+            This replaces the full general enquiry form — no ContactForm on this page. */}
+        <MotionSection className="section-padding py-14 lg:py-20 bg-white">
           <div
-            className="container-max flex flex-col sm:flex-row items-center justify-between gap-6 rounded-2xl px-8 py-6 lg:px-12 lg:py-7"
+            className="container-max flex flex-col sm:flex-row items-center justify-between gap-6 rounded-2xl px-8 py-10 lg:px-12 lg:py-12"
             style={{ backgroundColor: "#1A2B3C" }}
           >
-            <MotionDiv>
-              <h2 className="font-display italic font-normal text-2xl lg:text-3xl" style={{ color: "#E9EEF5" }}>
-                Need Samples?
+            <MotionDiv className="max-w-xl">
+              <h2 className="font-display italic font-normal text-2xl lg:text-3xl mb-2" style={{ color: "#E9EEF5" }}>
+                Experience DigiLux
               </h2>
+              <p className="text-white/70 text-base border-l-2 pl-3" style={{ borderColor: "#00C8B3" }}>
+                Request a sample pack containing selected textures, metallics, premium boards and speciality
+                digital media.
+              </p>
             </MotionDiv>
-            <MotionDiv delay={0.1}>
+            <MotionDiv delay={0.1} className="shrink-0">
               <Link
-                href="/contact"
+                href="/contact?applicationType=DigiLux+Sample+Pack"
                 className="inline-flex items-center rounded-full px-7 py-3.5 font-semibold text-white transition-opacity hover:opacity-90"
                 style={{ backgroundColor: "#00449A" }}
               >
-                Request DigiLux Sample pack
+                Request DigiLux Sample Pack
               </Link>
             </MotionDiv>
           </div>
         </MotionSection>
-
-        {/* ── CONTACT FORM ── */}
-        <ContactForm />
       </main>
       <Footer />
     </>

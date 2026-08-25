@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { ContactForm } from "@/components/home/ContactForm";
+import { CompactCTA } from "@/components/home/CompactCTA";
 import { MotionDiv } from "@/components/ui/MotionDiv";
 import { MotionSection } from "@/components/ui/MotionSection";
 
@@ -179,7 +179,7 @@ export default function BlogPage() {
         </MotionSection>
 
         {/* ── CONTACT FORM ── */}
-        <ContactForm />
+        <CompactCTA />
       </main>
       <Footer />
     </>

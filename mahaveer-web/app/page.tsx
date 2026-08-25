@@ -9,7 +9,7 @@ import { Services } from "@/components/home/Services";
 import { DigiluxBanner } from "@/components/home/DigiluxBanner";
 import { CTA } from "@/components/home/CTA";
 import { FAQ } from "@/components/home/FAQ";
-import { ContactForm } from "@/components/home/ContactForm";
+import { CompactCTA } from "@/components/home/CompactCTA";
 import { siteConfig } from "@/lib/config";
 
 export const metadata: Metadata = {
@@ -31,7 +31,7 @@ export default function HomePage() {
         <CTA />
         <FAQ />
         <DigiluxBanner />
-        <ContactForm />
+        <CompactCTA />
       </main>
       <Footer />
     </>

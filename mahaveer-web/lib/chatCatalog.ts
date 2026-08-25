@@ -140,8 +140,7 @@ export function filterCatalogByColor(requestText: string): typeof catalogProduct
 
 const APP_TYPE_KEYWORDS: Record<AppType, string[]> = {
   Packaging: ["packag", "box", "wrap", "bag", "carton", "gift"],
-  "Stationery & Print": ["stationery", "invitation", "card", "letterhead", "wedding", "menu", "certificate", "office"],
-  "Digital Printing": ["digital print", "print", "flyer", "brochure", "poster", "offset"],
+  "Stationery & Print": ["stationery", "invitation", "card", "letterhead", "wedding", "menu", "certificate", "office", "digital print", "print", "flyer", "brochure", "poster", "offset"],
   "Covering & Binding": ["bind", "cover", "book cover", "spine", "hardcover"],
 };
 

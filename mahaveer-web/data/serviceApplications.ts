@@ -12,14 +12,12 @@ import { slugify } from "@/lib/utils";
 const APP_DESCRIPTIONS: Record<AppType, string> = {
   Packaging: "Rigid boxes, cartons, tags and luxury wrapping — colourfast, durable stocks built for real-world handling.",
   "Stationery & Print": "Invitations, correspondence and fine artist papers with a tactile, premium hand-feel.",
-  "Digital Printing": "Consistent, machine-verified stocks engineered for sharp, reliable digital and offset output.",
   "Covering & Binding": "Decorative covering papers and structural boards for book covers, cases and binders.",
 };
 
 const APP_IMAGE: Record<AppType, string> = {
   Packaging: "/images/applications/packaging.jpg",
   "Stationery & Print": "/images/applications/stationery-print.jpg",
-  "Digital Printing": "/images/applications/digital-printing.jpg",
   "Covering & Binding": "/images/applications/covering-binding.jpg",
 };
 

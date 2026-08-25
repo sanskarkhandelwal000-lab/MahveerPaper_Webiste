@@ -2,7 +2,7 @@ export const siteConfig = {
   name: "Mahaveer Papers",
   // Positioning per Aug 2026 revision brief: Mahaveer is a speciality-paper
   // merchant, stockist, curator and distributor — not a manufacturer.
-  tagline: "Your trusted partner in speciality-paper sourcing, stocking and distribution.",
+  tagline: "Speciality-paper sourcing, stocking and distribution since 1992.",
   description:
     "Since 1992, Mahaveer Papers has helped printers, designers, packaging converters and brands choose the right paper for every idea — curated global ranges, ready stock and practical print guidance.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://mahaveerpapers.com",

@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { fullName, email, phone, projectLocation, applicationType, message } = parsed.data;
+    const { fullName, companyName, email, phone, projectLocation, applicationType, message } = parsed.data;
 
     const accessKey = process.env.WEB3FORMS_ACCESS_KEY;
     if (!accessKey) {
@@ -28,6 +28,7 @@ export async function POST(req: NextRequest) {
       // Reply-to goes to the person who filled the form
       replyto: email,
       name: fullName,
+      company: companyName || "—",
       email,
       phone: phone || "—",
       location: projectLocation,

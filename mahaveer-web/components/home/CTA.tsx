@@ -30,9 +30,9 @@ export function CTA() {
 
         <MotionDiv delay={0.1}>
           <h2 className="font-sans font-medium text-display-lg text-white mx-auto mb-5 max-w-3xl">
-            Ready to Elevate Your{" "}
+            Your Trusted{" "}
             <span className="text-brand-orange">
-              Paper Supply?
+              Speciality Paper Partner
             </span>
           </h2>
         </MotionDiv>
@@ -49,7 +49,7 @@ export function CTA() {
             href={`tel:${siteConfig.contact.whatsapp.replace(/\s/g, "")}`}
             className="btn-outline"
           >
-            Call Us Now
+            Speak to a Paper Specialist
             <span className="btn-icon-badge">
               <Phone className="h-5 w-5" />
             </span>

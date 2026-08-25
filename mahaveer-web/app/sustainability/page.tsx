@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { ContactForm } from "@/components/home/ContactForm";
+import { CompactCTA } from "@/components/home/CompactCTA";
 import { MotionDiv } from "@/components/ui/MotionDiv";
 import { MotionSection } from "@/components/ui/MotionSection";
 
@@ -305,7 +305,7 @@ export default function SustainabilityPage() {
         </MotionSection>
 
         {/* ── CONTACT FORM ── */}
-        <ContactForm />
+        <CompactCTA />
       </main>
       <Footer />
     </>

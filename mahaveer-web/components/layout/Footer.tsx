@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Phone, Mail, ChevronRight } from "lucide-react";
+import { Phone, Mail, ChevronRight, MessageCircle, MapPin } from "lucide-react";
 import { siteConfig } from "@/lib/config";
 import { MotionSection } from "@/components/ui/MotionSection";
 import { MotionDiv } from "@/components/ui/MotionDiv";
@@ -29,11 +29,14 @@ function LinkedinIcon({ className }: { className?: string }) {
   );
 }
 
+// Blog is left out until it has real published posts (revision brief) — add it
+// back in once /blog is no longer placeholder content.
 const quickLinks = [
   { label: "About", href: "/about" },
   { label: "Products", href: "/products" },
-  { label: "Blog", href: "/blog" },
-  { label: "Contact Us", href: "/contact" },
+  { label: "DigiLux", href: "/digilux" },
+  { label: "Sustainability", href: "/sustainability" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export function Footer() {
@@ -169,6 +172,19 @@ export function Footer() {
                   </a>
                 </li>
               ))}
+              <li>
+                <a
+                  href={`https://wa.me/${siteConfig.contact.whatsapp.replace(/\D/g, "")}`}
+                  className="group flex items-center gap-2 text-base text-[#D4D4D4] transition-colors hover:text-white"
+                >
+                  <MessageCircle className="h-3.5 w-3.5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
+                  WhatsApp
+                </a>
+              </li>
+              <li className="flex items-center gap-2 text-base text-[#D4D4D4]">
+                <MapPin className="h-3.5 w-3.5 shrink-0" />
+                Bengaluru &amp; Ahmedabad
+              </li>
             </ul>
           </div>
         </div>

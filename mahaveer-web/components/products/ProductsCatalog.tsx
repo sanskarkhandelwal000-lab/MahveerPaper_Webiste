@@ -320,7 +320,7 @@ function ProductsCatalogInner() {
               >
                 <p className="font-semibold text-brand-navy text-[15px] leading-tight">Application</p>
                 <p className="text-gray-400 text-[13px] mt-1 truncate">
-                  {pillLabel(appliedApps, "What's your end use?")}
+                  {pillLabel(appliedApps, "Select an application")}
                 </p>
               </button>
               {openKey === "app" && (

@@ -80,7 +80,7 @@ export function Navbar() {
                   priority
                 />
                 <span className="font-sans text-base lg:text-lg font-semibold text-white leading-none tracking-tight">
-                  Mahaveer Papers
+                  mahaveer papers
                 </span>
               </>
             )}

@@ -18,14 +18,6 @@ export function FaviniBanner() {
         >
           {/* Text panel */}
           <div className="relative z-10 px-6 py-16 sm:px-10 lg:px-14 lg:py-20 flex flex-col justify-center">
-            <MotionDiv>
-              <p
-                className="text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] mb-5"
-                style={{ color: GOLD }}
-              >
-                Since 1992 · Ready Stock · Bengaluru &amp; Ahmedabad · Samples Available
-              </p>
-            </MotionDiv>
             <MotionDiv delay={0.05}>
               <Image
                 src="/images/favini-logo-white.svg"

@@ -5,6 +5,11 @@ export const contactFormSchema = z.object({
     .string()
     .min(2, "Name must be at least 2 characters")
     .max(100, "Name is too long"),
+  companyName: z
+    .string()
+    .max(100, "Company name is too long")
+    .optional()
+    .or(z.literal("")),
   email: z
     .string()
     .email("Please enter a valid email address"),

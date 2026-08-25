@@ -68,7 +68,7 @@ export function DigiluxBanner() {
                   href="/digilux"
                   className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-4 font-semibold text-brand-dark transition-transform hover:-translate-y-0.5"
                 >
-                  Explore Products
+                  Explore DigiLux Media
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </MotionDiv>

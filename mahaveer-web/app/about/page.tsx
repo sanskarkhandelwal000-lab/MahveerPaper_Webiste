@@ -7,9 +7,8 @@ import { Footer } from "@/components/layout/Footer";
 import { About } from "@/components/home/About";
 import { CTA } from "@/components/home/CTA";
 import { FAQ } from "@/components/home/FAQ";
-import { ContactForm } from "@/components/home/ContactForm";
+import { CompactCTA } from "@/components/home/CompactCTA";
 import { MotionDiv } from "@/components/ui/MotionDiv";
-import { MotionSection } from "@/components/ui/MotionSection";
 
 export const metadata: Metadata = {
   title: "About",
@@ -118,7 +117,7 @@ export default function AboutPage() {
         <FAQ />
 
         {/* ── CONTACT FORM ── */}
-        <ContactForm />
+        <CompactCTA />
       </main>
       <Footer />
     </>

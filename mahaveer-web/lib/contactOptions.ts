@@ -1,10 +1,15 @@
-import { APP_TYPES } from "@/data/products";
+// Fixed enquiry-type list for the Contact form's "Enquiry Type" field (revision
+// brief, section B). This is deliberately NOT the catalogue's application
+// categories (data/products.ts APP_TYPES) — it's the *reason* someone is
+// filling the form out, not a paper end-use.
+export const ENQUIRY_TYPES = [
+  "Check Price & Stock",
+  "Request Samples",
+  "General Paper Requirement",
+  "DigiLux Sample Pack",
+  "Favini Swatches",
+  "Sustainability/FSC Requirement",
+  "Other",
+] as const;
 
-// Derived from the catalog's real application categories (data/products.ts)
-// rather than a separately hand-maintained list, so the Contact form's
-// dropdown can never drift out of sync with what the rest of the site
-// (Products filters, chatbot, homepage service cards) actually calls these.
-// "Other" is added as a catch-all for enquiries that don't fit a catalog app.
-export const APPLICATION_TYPES = [...APP_TYPES, "Other"] as const;
-
-export type ApplicationType = (typeof APPLICATION_TYPES)[number];
+export type EnquiryType = (typeof ENQUIRY_TYPES)[number];
