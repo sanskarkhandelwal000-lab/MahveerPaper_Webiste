@@ -1,15 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { Plus, Minus } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { MotionSection } from "@/components/ui/MotionSection";
 import { MotionDiv } from "@/components/ui/MotionDiv";
-import { faqs } from "@/data/faqs";
+import { faqs as defaultFaqs } from "@/data/faqs";
 import { cn } from "@/lib/utils";
+import type { FAQ as FAQItem } from "@/types";
 
-export function FAQ() {
-  const [openId, setOpenId] = useState<string | null>(faqs[0]?.id ?? null);
+// Revision brief (About Us Page Brief): the About page's FAQ block should stay
+// limited to company-related questions — items/heading/subtitle are overridable
+// so About can pass its own curated set instead of the general ordering/product FAQs.
+export function FAQ({
+  items = defaultFaqs,
+  eyebrow = "FAQs",
+  heading = (
+    <>
+      Frequently Asked <span className="text-brand-orange">Questions</span>
+    </>
+  ),
+  subtitle = "We know choosing paper comes with big questions. Here are answers to the ones we hear most — so you can feel confident from the start.",
+}: {
+  items?: FAQItem[];
+  eyebrow?: string;
+  heading?: ReactNode;
+  subtitle?: string;
+}) {
+  const [openId, setOpenId] = useState<string | null>(items[0]?.id ?? null);
 
   const toggle = (id: string) => setOpenId((prev) => (prev === id ? null : id));
 
@@ -19,25 +37,21 @@ export function FAQ() {
         {/* Header */}
         <div className="text-center mb-12">
           <MotionDiv>
-            <span className="chip mb-4 inline-flex">FAQs</span>
+            <span className="chip mb-4 inline-flex">{eyebrow}</span>
           </MotionDiv>
           <MotionDiv delay={0.1}>
             <h2 className="font-sans font-medium text-display-md text-brand-ink leading-tight">
-              Frequently Asked{" "}
-              <span className="text-brand-orange">Questions</span>
+              {heading}
             </h2>
           </MotionDiv>
           <MotionDiv delay={0.15}>
-            <p className="mt-4 text-brand-body leading-relaxed">
-              We know choosing paper comes with big questions. Here are answers
-              to the ones we hear most — so you can feel confident from the start.
-            </p>
+            <p className="mt-4 text-brand-body leading-relaxed">{subtitle}</p>
           </MotionDiv>
         </div>
 
         {/* Accordion */}
         <dl className="flex flex-col gap-2">
-          {faqs.map((faq, i) => (
+          {items.map((faq, i) => (
             <MotionDiv key={faq.id} delay={0.1 + i * 0.06}>
               <div
                 className={cn(

@@ -38,3 +38,40 @@ export const faqs: FAQ[] = [
       "Absolutely. We offer sample packs for most of our product lines so you can assess quality and suitability before committing to a full order. Samples are available on request — simply fill in our contact form.",
   },
 ];
+
+// Revision brief (About Us Page Brief): the About page's FAQ section should stay
+// limited to company-related questions — general ordering/product questions
+// (place-order, custom-solutions, moq, estimates, samples above) belong on
+// Contact or Products instead.
+export const companyFaqs: FAQ[] = [
+  {
+    id: "established",
+    question: "When was Mahaveer Papers established?",
+    answer:
+      "Mahaveer Papers was established in Bengaluru in 1992 and has been a speciality-paper sourcing, stocking and distribution business for more than three decades.",
+  },
+  {
+    id: "where-operate",
+    question: "Where does Mahaveer Papers operate?",
+    answer:
+      "We operate from our head office in Bengaluru and our branch in Ahmedabad, serving customers across India.",
+  },
+  {
+    id: "manufacturer-or-distributor",
+    question: "Is Mahaveer Papers a manufacturer or distributor?",
+    answer:
+      "Mahaveer Papers is a distributor, not a manufacturer. We source, stock and distribute speciality papers from trusted domestic and international mills, and help customers choose the right paper for their requirement.",
+  },
+  {
+    id: "fsc-certified",
+    question: "Is Mahaveer Papers FSC-certified?",
+    answer:
+      "Yes. Mahaveer Papers is an FSC-certified company, committed to responsible sourcing wherever applicable.",
+  },
+  {
+    id: "visit-or-speak",
+    question: "Can customers visit or speak with a paper specialist?",
+    answer:
+      "Yes — you're welcome to visit our Bengaluru or Ahmedabad locations, or speak with a paper specialist directly through our contact page for guidance and samples before you decide.",
+  },
+];

@@ -57,21 +57,21 @@ export function About() {
               <h2 className="font-sans font-medium text-display-md text-brand-ink">
                 A legacy woven into every fibre, designed for the{" "}
                 <span className="text-brand-orange">
-                  modern Visionary.
+                  modern visionary.
                 </span>
               </h2>
             </MotionDiv>
 
+            {/* Revision brief (About Us Page Brief): keep the homepage summary short —
+                the fuller company story now lives on the About page — and remove the
+                unverified "artisanal mills of Japan" / "sustainable forests of Scandinavia"
+                claims plus the "digital mediums" typo. */}
             <MotionDiv delay={0.2} className="flex flex-col text-[18px] leading-[27px] text-brand-body">
               <p>
-                At Mahaveer Papers, we believe that paper is not merely a substrate;
-                it is a catalyst for inspiration. Our curated collection spans the globe,
-                from the artisanal mills of Japan to the sustainable forests of Scandinavia.
-              </p>
-              <p>
-                Whether for a limited-edition monograph or a global brand identity,
-                our papers offer a distinct tactile authority that digital mediums
-                simply cannot replicate.
+                At Mahaveer Papers, paper is more than a substrate — it&apos;s a catalyst
+                for inspiration. We curate speciality paper collections from trusted mills
+                worldwide, offering a tactile authority that digital media simply
+                cannot replicate.
               </p>
             </MotionDiv>
           </div>
