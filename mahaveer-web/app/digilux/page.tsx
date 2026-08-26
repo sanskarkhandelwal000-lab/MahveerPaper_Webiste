@@ -12,7 +12,7 @@ import { MotionSection } from "@/components/ui/MotionSection";
 export const metadata: Metadata = {
   title: "DigiLux Papers",
   description:
-    "DIGILUX is Mahaveer Papers' dedicated brand for premium digital print media — speciality papers and self-adhesive solutions in the industry's most preferred 13 × 19 inch digital size.",
+    "DigiLux is Mahaveer Papers' dedicated brand for premium digital print media — speciality papers and self-adhesive solutions in the industry's most preferred 13 × 19 inch digital size.",
   alternates: { canonical: "/digilux" },
 };
 
@@ -21,41 +21,45 @@ const OLIVE = "#7C7844";
 const RUST = "#A63D12";
 const NAVY_DARK = "#1D2939";
 
+// Revision brief (Terminology): "Metallic Papers & Boards" and "Non-Tearable" used
+// consistently (was "& Board" / "Non Tearable" without the hyphen).
 const portfolioItems = [
   { label: "Premium white boards", image: "/images/mahaveer/eco-hb-white.jpg" },
   { label: "Texture Papers & Boards", image: "/images/mahaveer/textures-cream.jpg" },
-  { label: "Metallic Papers & Board", image: "/images/mahaveer/lustre-yellow-gold.jpg" },
-  { label: "Non Tearable & Clear Synthetic Sheets", image: "/images/mahaveer/nt-matt.jpg" },
+  { label: "Metallic Papers & Boards", image: "/images/mahaveer/lustre-yellow-gold.jpg" },
+  { label: "Non-Tearable & Clear Synthetic Sheets", image: "/images/mahaveer/nt-matt.jpg" },
   { label: "Chromo & Mirror Coat Self-Adhesive Sheets", image: "/images/mahaveer/vanor.jpg" },
   { label: "Gold & Silver Self-Adhesive Sheets", image: "/images/mahaveer/cloth-satin-gold.jpg" },
   { label: "PVC-Based Self-Adhesive Sheets", image: "/images/mahaveer/paperlike-synthetic.jpg" },
   { label: "Speciality Labels", image: "/images/mahaveer/digilux-crystal-ice.jpg" },
 ];
 
+// Revision brief (Application cards): action-oriented copy naming the materials used,
+// not mockup-instruction language (e.g. "highlighting paper quality" / "mockups").
 const applications = [
   {
     title: "FMCG",
-    body: "Premium product packaging with eye-catching shelf labels.",
+    body: "Create standout product packaging and shelf labels using textured and metallic boards.",
     image: "/figma/digilux2/app-fmcg.jpg",
   },
   {
     title: "Garment Tags",
-    body: "Luxury fashion hang tags showcasing premium paper finishes.",
+    body: "Create premium hang tags using textured boards and speciality finishes.",
     image: "/figma/digilux2/app-garment-tags.jpg",
   },
   {
     title: "Cosmetic Labels",
-    body: "High-end skincare and beauty labels with refined printing.",
+    body: "Create refined skincare and beauty labels using premium white boards and metallics.",
     image: "/figma/digilux2/app-cosmetic-labels.jpg",
   },
   {
     title: "Visiting Cards",
-    body: "Minimal, premium business card mockups highlighting paper quality.",
+    body: "Create distinctive short-run visiting cards using textured, metallic and premium boards.",
     image: "/figma/digilux2/app-visiting-cards.jpg",
   },
   {
     title: "Invitation Cards",
-    body: "Elegant invitation cards featuring textured paper, embossing, or foil accents.",
+    body: "Create elegant invitation cards using textured paper, foil accents and premium boards.",
     image: "/figma/digilux2/app-invitation-cards.jpg",
   },
 ];
@@ -98,6 +102,15 @@ export default function DigiLuxPage() {
 
           <div className="relative z-10 container-max section-padding w-full">
             <MotionDiv>
+              {/* Revision brief ("Parent brand"): the header keeps the Mahaveer Papers
+                  logo on every page now, so DigiLux is positioned as a sub-brand here
+                  in the hero instead — "DigiLux by Mahaveer Papers". */}
+              <span
+                className="inline-flex items-center gap-2 rounded-full border px-3 py-1.5 mb-5 text-sm font-semibold"
+                style={{ borderColor: NAVY_DARK, color: NAVY_DARK }}
+              >
+                DigiLux by Mahaveer Papers
+              </span>
               <h1
                 className="font-display font-normal mb-4"
                 style={{ fontSize: "clamp(2.5rem,5.5vw,4.75rem)", lineHeight: 1.05 }}
@@ -136,16 +149,11 @@ export default function DigiLuxPage() {
         >
           <div className="container-max section-padding relative z-10">
             <MotionDiv>
-              <h2 className="font-sans font-semibold text-2xl sm:text-3xl mb-10 flex items-center gap-3 flex-wrap text-white">
-                What is
-                <Image
-                  src="/images/digilux-logo.png"
-                  alt="DigiLux"
-                  width={124}
-                  height={47}
-                  className="h-8 w-auto lg:h-9"
-                />
-                ?
+              {/* Revision brief ("Broken heading"): render the name as text, not an
+                  <Image> logo swapped in mid-sentence — that rendered as a missing/
+                  broken name on slow connections and screen readers. */}
+              <h2 className="font-sans font-semibold text-2xl sm:text-3xl mb-10 text-white">
+                What is <span style={{ color: "#00C8B3" }}>DigiLux</span>?
               </h2>
             </MotionDiv>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -162,10 +170,10 @@ export default function DigiLuxPage() {
               </MotionDiv>
               <MotionDiv delay={0.1}>
                 <p className="font-display text-white/90 mb-10" style={{ fontSize: "clamp(1.1rem,1.7vw,1.4rem)", lineHeight: 1.6 }}>
-                  DigiLux is Mahaveer Papers&apos; premium collection of cut-size media for toner-based
-                  digital printing. Available primarily in the popular 13 × 19 inch format, the
-                  collection includes textured boards, metallic boards, premium white boards,
-                  self-adhesive sheets and selected speciality media.
+                  DigiLux by Mahaveer Papers is a premium collection of cut-size media for
+                  toner-based digital printing. Available primarily in the popular 13 × 19 inch
+                  format, the collection includes textured boards, metallic boards, premium
+                  white boards, self-adhesive sheets and selected speciality media.
                 </p>
                 {/* Proof strip — max four figures (revision brief, section C) */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
@@ -219,9 +227,8 @@ export default function DigiLuxPage() {
                 Our Portfolio
               </h2>
               <p className="mb-14 max-w-3xl text-[16px] text-gray-500">
-                Explore a diverse portfolio of premium print media crafted for packaging, labels, stationery,
-                marketing materials, and luxury print applications. With 55 SKUs across more than 10 product
-                categories, DIGILUX offers the perfect solution for every creative vision.
+                DigiLux offers a versatile collection for different digital-print and
+                short-run requirements.
               </p>
             </MotionDiv>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-6 gap-y-12">
@@ -249,13 +256,11 @@ export default function DigiLuxPage() {
           <div className="container-max">
             <MotionDiv>
               <h2 className="font-sans font-bold tracking-tight mb-4 text-white" style={{ fontSize: "clamp(2.25rem,4vw,3.5rem)" }}>
-                Application
+                Applications
               </h2>
               <p className="mb-14 max-w-4xl text-[16px] text-white/70 leading-relaxed">
-                Our papers give you the advantage you need to make your products stand out from the crowd. We
-                don&apos;t just supply materials; we deliver sustainable and innovative solutions. Whether you are a
-                brand owner, converter, printer, designer or communications agency, our packaging and speciality
-                papers give you the advantage you need.
+                DigiLux helps digital printers produce premium short-run work using textured
+                boards, metallic media, self-adhesive sheets and selected speciality materials.
               </p>
             </MotionDiv>
             <div className="grid grid-cols-2 lg:grid-cols-5 gap-6 lg:gap-8">
@@ -285,7 +290,7 @@ export default function DigiLuxPage() {
           <div className="container-max">
             <MotionDiv>
               <h2 className="font-sans font-bold tracking-tight mb-4 text-brand-navy" style={{ fontSize: "clamp(2.25rem,4vw,3.5rem)" }}>
-                Product
+                Products
               </h2>
               <p className="mb-12 max-w-3xl text-[16px] text-gray-500">
                 Explore our curated range of premium digital print media, crafted to deliver exceptional quality,

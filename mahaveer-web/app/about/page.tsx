@@ -174,7 +174,7 @@ export default function AboutPage() {
         </MotionSection>
 
         {/* ── ABOUT SECTION (short homepage-style summary, reused) ── */}
-        <About />
+        <About showCta={false} />
 
         {/* ── WHY CUSTOMERS TRUST MAHAVEER ── */}
         <MotionSection className="section-padding py-20 lg:py-28 bg-white">

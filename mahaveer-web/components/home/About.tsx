@@ -1,12 +1,16 @@
 import Image from "next/image";
-import { BadgeCheck } from "lucide-react";
+import Link from "next/link";
+import { BadgeCheck, CalendarDays, Award, MapPin } from "lucide-react";
 import { MotionSection } from "@/components/ui/MotionSection";
 import { MotionDiv } from "@/components/ui/MotionDiv";
-import { Counter } from "@/components/ui/Counter";
 import { siteConfig } from "@/lib/config";
 
+const FACT_ICONS = [CalendarDays, Award, MapPin];
+
 // Figma: MP file, node 2001:1231 "Section - About section"
-export function About() {
+// `showCta` is off when this same short summary is reused on the About page
+// itself, so it doesn't link to the page it's already on.
+export function About({ showCta = true }: { showCta?: boolean }) {
   return (
     <MotionSection className="bg-white px-4 sm:px-8 lg:px-10 py-16 lg:py-[100px]">
       <div className="mx-auto flex max-w-[1200px] flex-col items-center gap-10 lg:flex-row lg:items-start lg:gap-[60px]">
@@ -53,39 +57,55 @@ export function About() {
               </span>
             </MotionDiv>
 
+            {/* Revision brief (Homepage — required corrections, "About block"): new
+                heading, copy and CTA — this is the short homepage summary; the fuller
+                company story lives on the About page. */}
             <MotionDiv delay={0.15}>
               <h2 className="font-sans font-medium text-display-md text-brand-ink">
-                A legacy woven into every fibre, designed for the{" "}
-                <span className="text-brand-orange">
-                  modern visionary.
-                </span>
+                Speciality-Paper Expertise{" "}
+                <span className="text-brand-orange">Since 1992.</span>
               </h2>
             </MotionDiv>
 
-            {/* Revision brief (About Us Page Brief): keep the homepage summary short —
-                the fuller company story now lives on the About page — and remove the
-                unverified "artisanal mills of Japan" / "sustainable forests of Scandinavia"
-                claims plus the "digital mediums" typo. */}
             <MotionDiv delay={0.2} className="flex flex-col text-[18px] leading-[27px] text-brand-body">
               <p>
-                At Mahaveer Papers, paper is more than a substrate — it&apos;s a catalyst
-                for inspiration. We curate speciality paper collections from trusted mills
-                worldwide, offering a tactile authority that digital media simply
-                cannot replicate.
+                Mahaveer Papers is a speciality-paper sourcing, stocking and distribution
+                company with a presence in Bengaluru and Ahmedabad. We combine carefully
+                selected papers, dependable availability and practical knowledge
+                developed over more than three decades.
               </p>
             </MotionDiv>
+
+            {showCta && (
+              <MotionDiv delay={0.22}>
+                <Link
+                  href="/about"
+                  className="inline-flex items-center gap-2 text-brand-orange font-semibold hover:underline underline-offset-4 w-fit"
+                >
+                  Our Story
+                  <span aria-hidden="true">→</span>
+                </Link>
+              </MotionDiv>
+            )}
           </div>
 
-          {/* Stats */}
-          <MotionDiv delay={0.25} className="flex items-start gap-6">
-            {siteConfig.stats.map((stat) => (
-              <div key={stat.label} className="flex flex-col gap-1">
-                <p className="text-[48px] font-semibold leading-[48px] text-brand-ink tabular-nums">
-                  <Counter value={stat.value} />
-                </p>
-                <p className="text-[16px] leading-[24px] text-brand-body">{stat.label}</p>
-              </div>
-            ))}
+          {/* Proof facts — revision brief: static, not animated (an animated
+              count-up briefly rendered as "0" / "0+" before settling). Icon-led
+              tiles rather than plain divider-separated text, for a more premium feel. */}
+          <MotionDiv delay={0.25} className="flex flex-wrap items-center gap-x-8 gap-y-5">
+            {siteConfig.stats.map((fact, i) => {
+              const Icon = FACT_ICONS[i];
+              return (
+                <div key={fact} className="flex items-center gap-3">
+                  {Icon && (
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-orange/10">
+                      <Icon className="h-5 w-5 text-brand-orange" strokeWidth={1.75} />
+                    </span>
+                  )}
+                  <span className="text-[17px] font-semibold text-brand-ink whitespace-nowrap">{fact}</span>
+                </div>
+              );
+            })}
           </MotionDiv>
         </div>
       </div>

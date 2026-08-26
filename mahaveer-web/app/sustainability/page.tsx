@@ -28,7 +28,7 @@ const actions = [
     imageLeft: false,
     // Links straight to the pre-filtered FSC view (ProductsCatalog reads ?fsc=1) rather
     // than a generic browse link, since this card is specifically about certification.
-    cta: { label: "Browse FSC-Certified Products", href: "/products?fsc=1" },
+    cta: { label: "Browse FSC-Certified Papers", href: "/products?fsc=1" },
   },
   {
     id: "biodegradable",
@@ -67,9 +67,11 @@ export default function SustainabilityPage() {
       <Navbar />
       <main id="main-content" tabIndex={-1} className="scroll-mt-[92px]">
 
-        {/* ── HERO ── */}
+        {/* ── HERO — "Paper With a Better Purpose" ──
+            Revision brief: the hero and the "Paper With a Better Purpose" intro below it
+            said much the same thing twice — merged into this one section. */}
         <section
-          className="relative min-h-screen flex items-end overflow-hidden pb-20 lg:pb-32"
+          className="relative min-h-screen flex items-end overflow-hidden pb-20 lg:pb-28"
           aria-label="Sustainability hero"
         >
           <Image
@@ -85,26 +87,17 @@ export default function SustainabilityPage() {
             <div className="max-w-3xl">
               <MotionDiv>
                 <h1
-                  className="font-display italic font-normal text-brand-navy leading-[1.0] mb-7"
-                  style={{ fontSize: "clamp(2.5rem,7vw,6.5rem)", letterSpacing: "-0.02em" }}
+                  className="font-sans font-medium text-brand-navy leading-[1.1] mb-6"
+                  style={{ fontSize: "clamp(2.5rem,6vw,4.5rem)", letterSpacing: "-0.02em" }}
                 >
-                  <span className="text-brand-orange not-italic">A lasting</span>
-                  <br />
-                  commitment to
-                  <br />
-                  sustainability
+                  Paper With a <span className="text-brand-orange">Better Purpose</span>
                 </h1>
               </MotionDiv>
               <MotionDiv delay={0.1}>
-                <p className="text-brand-navy/80 text-base leading-relaxed mb-3 max-w-xl">
-                  Every decision we make today, from sourcing to final delivery, is a step
-                  toward a more resilient future. Sustainability for us isn&apos;t a destination
-                  – it&apos;s a daily practice that shapes our future, and the future of paper.
-                </p>
-                <p className="text-brand-navy/80 text-base leading-relaxed mb-10 max-w-xl">
-                  As a trusted partner, we work to ensure that paper remains a sustainable
-                  choice for generations to come – for our customers, for society, for the
-                  planet.
+                <p className="text-brand-navy/80 text-base lg:text-lg leading-relaxed mb-10 max-w-xl">
+                  Mahaveer Papers is an FSC-certified company. Paper is a biodegradable and
+                  recyclable medium of communication, and we supply papers selected to meet
+                  high environmental standards.
                 </p>
               </MotionDiv>
               <MotionDiv delay={0.2}>
@@ -119,108 +112,17 @@ export default function SustainabilityPage() {
           </div>
         </section>
 
-        {/* ── PAPER WITH A BETTER PURPOSE ── (same 2×2 image grid + text layout as before) */}
-        <MotionSection className="section-padding py-14 lg:py-20 bg-white">
-          <div className="container-max">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-
-              {/* Left: 2×2 image grid — same images as Home/About mosaic */}
-              <MotionDiv direction="left">
-                <div className="grid grid-cols-2 gap-3" style={{ height: "420px" }}>
-                  <div className="relative rounded-2xl overflow-hidden h-full">
-                    <Image
-                      src="/figma/paper-roll.jpg"
-                      alt="Brown paper roll close-up"
-                      fill
-                      sizes="25vw"
-                      className="object-cover object-bottom"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-3 h-full">
-                    <div className="relative rounded-2xl overflow-hidden flex-1">
-                      <Image
-                        src="/images/hero/slide-4.jpg"
-                        alt="Folded speciality paper sheets in warm tones"
-                        fill
-                        sizes="25vw"
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="relative rounded-2xl overflow-hidden flex-1">
-                      <Image
-                        src="/figma/colored-papers.jpg"
-                        alt="Vibrant purple and blue paper textures"
-                        fill
-                        sizes="25vw"
-                        className="object-cover"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </MotionDiv>
-
-              {/* Right: chip + heading + body */}
-              <div className="flex flex-col gap-5">
-                <MotionDiv delay={0.1}>
-                  {/* Blue variant chip — Figma: border/text #00449A, distinct from site-wide orange chip */}
-                  <span
-                    className="inline-flex items-center gap-1.5 text-sm font-medium uppercase tracking-[0.035em] rounded-full px-3 py-1.5 bg-white border"
-                    style={{ color: "#00449A", borderColor: "#00449A" }}
-                  >
-                    Sustainability
-                  </span>
-                </MotionDiv>
-                <MotionDiv delay={0.15}>
-                  <h2
-                    className="font-sans font-medium"
-                    style={{
-                      fontSize: "clamp(1.75rem,3vw,2.5rem)",
-                      lineHeight: 1.2,
-                      letterSpacing: "-0.04em",
-                      color: "#262626",
-                    }}
-                  >
-                    Paper With a{" "}
-                    <span className="text-brand-orange">Better Purpose</span>
-                  </h2>
-                </MotionDiv>
-                <MotionDiv delay={0.2}>
-                  <div className="flex flex-col gap-4 text-gray-600 leading-relaxed text-sm">
-                    <p>
-                      At Mahaveer Papers, sustainability begins with responsible sourcing. As an
-                      FSC-certified company, we are committed to supplying high-quality papers
-                      from responsible and trusted sources. Our papers are selected to meet high
-                      environmental standards while delivering the performance required for
-                      premium printing and packaging.
-                    </p>
-                    <p>
-                      Paper is made from renewable natural fibres. It is biodegradable and
-                      recyclable, making it one of the most environmentally responsible mediums
-                      for communication, printing and packaging. When sourced responsibly and
-                      recycled correctly, paper can be reused and returned to the natural cycle
-                      with minimal environmental impact.
-                    </p>
-                  </div>
-                </MotionDiv>
-              </div>
-            </div>
-          </div>
-        </MotionSection>
-
         {/* ── OUR COMMITMENT ── alternating image + text rows (same layout as before) */}
-        <MotionSection className="bg-white pb-16 lg:pb-20">
+        <MotionSection className="bg-white pt-20 lg:pt-28 pb-16 lg:pb-20">
           <div className="container-max section-padding">
-            <MotionDiv className="text-center mb-10 lg:mb-14">
-              <h2
-                className="font-sans font-semibold"
-                style={{
-                  fontSize: "clamp(1.5rem,2.5vw,2rem)",
-                  lineHeight: 1.5,
-                  color: "#202020",
-                }}
+            <MotionDiv className="text-center mb-14 lg:mb-16 max-w-xl mx-auto">
+              {/* Blue variant chip — matches the hero's own "Sustainability" chip style */}
+              <span
+                className="inline-flex items-center gap-1.5 text-sm font-medium uppercase tracking-[0.035em] rounded-full px-3 py-1.5 bg-white border"
+                style={{ color: "#00449A", borderColor: "#00449A" }}
               >
-                Our commitment:
-              </h2>
+                Our Commitment
+              </span>
             </MotionDiv>
 
             <div className="flex flex-col gap-10 lg:gap-14">
@@ -242,31 +144,19 @@ export default function SustainabilityPage() {
                       >
                         {action.body}
                       </p>
+                      {/* Revision brief ("Card actions"): one action per card — the
+                          "Speak to a Paper Specialist" link that used to repeat on
+                          every card is now the single common CTA at the bottom of
+                          the page instead. */}
                       {"cta" in action && action.cta && (
                         <Link
                           href={action.cta.href}
-                          className="mb-4 inline-flex items-center gap-2 rounded-full bg-brand-navy px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#0d1b2a]"
+                          className="inline-flex items-center gap-2 rounded-full bg-brand-navy px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#0d1b2a]"
                         >
                           {action.cta.label}
                           <ArrowRight className="h-3.5 w-3.5" />
                         </Link>
                       )}
-                      {/* Learn more — icon-left circular badge, matches Figma "Component 2" */}
-                      <Link
-                        href="/contact"
-                        className="group relative inline-flex h-8 items-center rounded-full pl-10 pr-5 text-sm font-medium transition-colors"
-                        style={{ color: "#2E2E2E" }}
-                      >
-                        <span
-                          className="absolute left-0 top-0 flex h-8 w-8 items-center justify-center rounded-full border-2 transition-transform group-hover:translate-x-0.5"
-                          style={{ borderColor: "#2E2E2E" }}
-                        >
-                          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
-                            <path d="M1 9L9 1M9 1H2.5M9 1V7.5" stroke="#2E2E2E" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                        </span>
-                        Speak to a Paper Specialist
-                      </Link>
                     </div>
 
                     {/* Image block */}
@@ -295,17 +185,23 @@ export default function SustainabilityPage() {
                 packaging requirement and sustainability preference.
               </p>
               <p className="text-center text-gray-500 text-xs italic leading-relaxed max-w-2xl mx-auto mt-4">
-                <span className="font-semibold not-italic">Good to know:</span> NT Matt and
-                Paperlike Synthetic are non-biodegradable but recyclable — please refer to the
-                individual product information or contact our team for guidance on any other
-                speciality synthetic media.
+                <span className="font-semibold not-italic">Important Product Exception:</span>{" "}
+                NT Matt and Paperlike Synthetic are non-biodegradable but recyclable — please
+                refer to the individual product information or contact our team for guidance on
+                any other speciality synthetic media.
               </p>
             </MotionDiv>
           </div>
         </MotionSection>
 
-        {/* ── CONTACT FORM ── */}
-        <CompactCTA />
+        {/* ── FINAL CTA ── revision brief: sustainability-specific heading/copy/buttons,
+            doubling as the one common "Speak to a Paper Specialist" CTA for this page. */}
+        <CompactCTA
+          heading="Need Help Choosing Responsibly?"
+          body="Tell us your application and certification requirement. Our team will help you identify suitable options."
+          primary={{ label: "Speak to a Paper Specialist", href: "/contact?applicationType=Sustainability%2FFSC+Requirement" }}
+          secondary={{ label: "Explore FSC-Certified Papers", href: "/products?fsc=1" }}
+        />
       </main>
       <Footer />
     </>

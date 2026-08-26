@@ -30,7 +30,7 @@ export interface ServiceApplicationCard {
   productCount: number;
 }
 
-export const serviceApplications: ServiceApplicationCard[] = APP_TYPES.map((appType) => ({
+const applicationCards: ServiceApplicationCard[] = APP_TYPES.map((appType) => ({
   id: slugify(appType),
   title: appType,
   description: APP_DESCRIPTIONS[appType],
@@ -38,3 +38,22 @@ export const serviceApplications: ServiceApplicationCard[] = APP_TYPES.map((appT
   href: `/products/application/${slugify(appType)}`,
   productCount: catalogProducts.filter((p) => p.app === appType).length,
 }));
+
+// Revision brief (Homepage — required corrections, "Digital Printing"): restore the
+// fourth application card. It links to /digilux rather than a product-application
+// filter — digital printing is DigiLux's dedicated media line, not a `product.app`
+// value on the general catalogue (see APP_TYPES comment in data/products.ts).
+const digitalPrintingCard: ServiceApplicationCard = {
+  id: "digital-printing",
+  title: "Digital Printing",
+  description:
+    "Selected papers and media for toner-based digital printing, personalised production and short-run requirements.",
+  image: "/images/applications/digital-printing.jpg",
+  href: "/digilux",
+  productCount: 55,
+};
+
+export const serviceApplications: ServiceApplicationCard[] = [
+  ...applicationCards,
+  digitalPrintingCard,
+];

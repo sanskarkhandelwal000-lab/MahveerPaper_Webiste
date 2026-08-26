@@ -16,9 +16,6 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-  // DigiLux keeps its own sub-brand mark in the same shared nav shell —
-  // logo swaps, everything else (shell, links, CTA, mobile menu) stays uniform.
-  const isDigiLux = pathname?.startsWith("/digilux") ?? false;
 
   useEffect(() => {
     setOpen(false);
@@ -53,37 +50,26 @@ export function Navbar() {
           )}
           aria-label="Main navigation"
         >
-          {/* Logo — DigiLux sub-brand mark on /digilux, Mahaveer Papers everywhere else */}
+          {/* Logo — Mahaveer Papers stays the visible parent brand across every page,
+              including /digilux (revision brief: "clarify the sub-brand" — the DigiLux
+              identity now lives inside that page's hero and product story instead). */}
           <Link
             href="/"
             className="flex items-center gap-2.5 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange rounded-sm"
             aria-label="Mahaveer Papers — Home"
           >
-            {isDigiLux ? (
-              <Image
-                src="/images/digilux-logo.png"
-                alt="DigiLux — Beyond Ordinary"
-                width={124}
-                height={47}
-                className="h-7 w-auto lg:h-8 object-contain"
-                priority
-              />
-            ) : (
-              <>
-                <Image
-                  src="/logo-icon.png"
-                  alt=""
-                  width={86}
-                  height={85}
-                  className="h-8 w-auto lg:h-9 object-contain"
-                  aria-hidden="true"
-                  priority
-                />
-                <span className="font-sans text-base lg:text-lg font-semibold text-white leading-none tracking-tight">
-                  mahaveer papers
-                </span>
-              </>
-            )}
+            <Image
+              src="/logo-icon.png"
+              alt=""
+              width={86}
+              height={85}
+              className="h-8 w-auto lg:h-9 object-contain"
+              aria-hidden="true"
+              priority
+            />
+            <span className="font-sans text-base lg:text-lg font-semibold text-white leading-none tracking-tight">
+              mahaveer papers
+            </span>
           </Link>
 
           {/* Desktop links */}

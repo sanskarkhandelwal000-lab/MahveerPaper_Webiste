@@ -38,10 +38,29 @@ export function CTA() {
         </MotionDiv>
 
         <MotionDiv delay={0.15}>
-          <p className="text-[#E5E5E5] text-[18px] leading-[27px] max-w-[600px] mx-auto mb-10">
+          <p className="text-[#E5E5E5] text-[18px] leading-[27px] max-w-[600px] mx-auto mb-8">
             Partner with Mahaveer Papers for consistent quality, scalable supply,
             and tailored solutions that fit your business needs.
           </p>
+        </MotionDiv>
+
+        {/* Trust proof — revision brief: six compact proof points under the headline */}
+        <MotionDiv delay={0.175}>
+          <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mb-10 text-[14px] font-medium text-white/80">
+            {[
+              "Since 1992",
+              "Ready Stock",
+              "Trusted Mills",
+              "Practical Guidance",
+              "Samples Available",
+              "Bengaluru & Ahmedabad",
+            ].map((point) => (
+              <li key={point} className="flex items-center gap-1.5">
+                <span className="h-1 w-1 rounded-full bg-brand-orange" aria-hidden="true" />
+                {point}
+              </li>
+            ))}
+          </ul>
         </MotionDiv>
 
         <MotionDiv delay={0.2} className="flex items-center justify-center">

@@ -7,6 +7,7 @@ import { Categories } from "@/components/home/Categories";
 import { FaviniBanner } from "@/components/home/FaviniBanner";
 import { Services } from "@/components/home/Services";
 import { DigiluxBanner } from "@/components/home/DigiluxBanner";
+import { SustainabilityBanner } from "@/components/home/SustainabilityBanner";
 import { CTA } from "@/components/home/CTA";
 import { FAQ } from "@/components/home/FAQ";
 import { CompactCTA } from "@/components/home/CompactCTA";
@@ -29,8 +30,9 @@ export default function HomePage() {
         <FaviniBanner />
         <Services />
         <CTA />
-        <FAQ />
         <DigiluxBanner />
+        <SustainabilityBanner />
+        <FAQ />
         <CompactCTA />
       </main>
       <Footer />

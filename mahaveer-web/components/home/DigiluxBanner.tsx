@@ -49,16 +49,16 @@ export function DigiluxBanner() {
                     className="font-display font-normal mb-6"
                     style={{ fontSize: "clamp(2rem,3.5vw,2.75rem)", lineHeight: 1.15 }}
                   >
-                    <span className="block text-white">DigiLux, Our New</span>
+                    <span className="block text-white">DigiLux</span>
                     <span className="block" style={{ color: GOLD }}>
-                      Premium Brand.
+                      by Mahaveer Papers
                     </span>
                   </h2>
                 </MotionDiv>
                 <MotionDiv delay={0.1}>
                   <p className="text-white/80 text-base lg:text-lg leading-relaxed">
-                    From luxury packaging to premium labels, DIGILUX papers deliver
-                    exceptional texture, color, and print performance.
+                    Premium 13 × 19 inch media developed for toner-based digital
+                    printing, short-run production and low-quantity requirements.
                   </p>
                 </MotionDiv>
               </div>

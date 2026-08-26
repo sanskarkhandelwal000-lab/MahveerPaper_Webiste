@@ -69,7 +69,7 @@ export function Services() {
             <MotionDiv>
               <span className="chip inline-flex">
                 <Settings className="h-3.5 w-3.5" />
-                Our Services
+                Explore by Application
               </span>
             </MotionDiv>
             <MotionDiv delay={0.1}>
@@ -84,9 +84,8 @@ export function Services() {
           <div className="flex flex-col gap-6 justify-between">
             <MotionDiv delay={0.15}>
               <p className="text-brand-body leading-[27px] text-[18px]">
-                From sourcing to delivery, we offer end-to-end paper solutions tailored to
-                your project, budget, and timeline. Whether it&apos;s a single premium
-                run or a bulk supply order, Mahaveer Papers makes it seamless.
+                Find papers suited to packaging, stationery, digital printing,
+                covering and binding.
               </p>
             </MotionDiv>
             <MotionDiv delay={0.2}>

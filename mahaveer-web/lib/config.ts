@@ -37,8 +37,7 @@ export const siteConfig = {
     { label: "Sustainability", href: "/sustainability" },
     { label: "Blog", href: "/blog" },
   ],
-  stats: [
-    { value: "30+", label: "Years of Speciality-Paper Expertise — Est. 1992" },
-    { value: "2", label: "Offices — Bengaluru & Ahmedabad" },
-  ],
+  // Homepage proof facts — revision brief: static, not animated counters
+  // (an animated count-up briefly rendered as "0" / "0+" before settling).
+  stats: ["Since 1992", "30+ Years of Expertise", "2 Locations"],
 } as const;
