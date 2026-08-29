@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense, useState, useRef, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { Suspense, useState, useRef, useEffect, useCallback, useMemo } from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { ArrowRight, ChevronLeft, ChevronRight, Search } from "lucide-react";
 import { ProductCard } from "@/components/products/ProductCard";
 import { catalogProducts, isFscCertified, isBiodegradable, isRecyclable, BOOKS, PAPER_TYPE_OPTIONS, APPLICATION_OPTIONS, COLOUR_GROUP_OPTIONS } from "@/data/products";
@@ -67,7 +67,7 @@ function CheckboxDropdown({
   );
 }
 
-function BookCarousel({ label, items }: { label: string; items: typeof catalogProducts }) {
+function BookCarousel({ label, items, catalogQuery }: { label: string; items: typeof catalogProducts; catalogQuery: string }) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [canLeft, setCanLeft] = useState(false);
   const [canRight, setCanRight] = useState(false);
@@ -185,8 +185,9 @@ function BookCarousel({ label, items }: { label: string; items: typeof catalogPr
             <div
               key={product.id}
               className="flex-shrink-0 snap-start basis-[88%] sm:basis-[calc((100%-32px)/2)] lg:basis-[calc((100%-64px)/3)] min-w-0"
+              onClick={() => sessionStorage.setItem("mp-catalog-scroll", String(window.scrollY))}
             >
-              <ProductCard product={product} delay={0.04 + (i % 6) * 0.06} />
+              <ProductCard product={product} delay={0.04 + (i % 6) * 0.06} catalogQuery={catalogQuery} />
             </div>
           ))}
         </div>
@@ -195,16 +196,31 @@ function BookCarousel({ label, items }: { label: string; items: typeof catalogPr
   );
 }
 
+function parseCsv(param: string | null): string[] {
+  if (!param) return [];
+  return param.split(",").map(s => s.trim()).filter(Boolean);
+}
+function toCsv(values: string[]): string | null {
+  if (values.length === 0) return null;
+  return values.join(",");
+}
+
 function ProductsCatalogInner() {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const [searchQuery, setSearchQuery] = useState(() => searchParams.get("search") ?? "");
+  const [searchInput, setSearchInput] = useState(() => searchParams.get("search") ?? "");
+
   const [fscOnly, setFscOnly] = useState(() => searchParams.get("fsc") === "1");
   const [brandOnly, setBrandOnly] = useState(() => searchParams.get("brand") === "favini");
   const [biodegradableOnly, setBiodegradableOnly] = useState(() => searchParams.get("biodegradable") === "1");
   const [recyclableOnly, setRecyclableOnly] = useState(() => searchParams.get("recyclable") === "1");
 
-  const [appliedTypes,  setAppliedTypes]  = useState<string[]>([]);
-  const [appliedApps,   setAppliedApps]   = useState<string[]>([]);
-  const [appliedColors, setAppliedColors] = useState<string[]>([]);
+  const [appliedTypes,  setAppliedTypes]  = useState<string[]>(() => parseCsv(searchParams.get("paperType")));
+  const [appliedApps,   setAppliedApps]   = useState<string[]>(() => parseCsv(searchParams.get("application")));
+  const [appliedColors, setAppliedColors] = useState<string[]>(() => parseCsv(searchParams.get("colour")));
 
   const [pendingTypes,  setPendingTypes]  = useState<string[]>([]);
   const [pendingApps,   setPendingApps]   = useState<string[]>([]);
@@ -212,6 +228,65 @@ function ProductsCatalogInner() {
 
   const [openKey, setOpenKey] = useState<DropdownKey | null>(null);
   const pillRef = useRef<HTMLDivElement>(null);
+  const suppressUrlSyncRef = useRef(true);
+
+  // Build the query string that represents current catalogue state (theme: brand navy + orange accent preserved)
+  const buildCatalogQuery = useCallback(() => {
+    const p = new URLSearchParams();
+    const pt = toCsv(appliedTypes);
+    const app = toCsv(appliedApps);
+    const col = toCsv(appliedColors);
+    if (pt) p.set("paperType", pt);
+    if (app) p.set("application", app);
+    if (col) p.set("colour", col);
+    if (searchQuery.trim()) p.set("search", searchQuery.trim());
+    if (fscOnly) p.set("fsc", "1");
+    if (brandOnly) p.set("brand", "favini");
+    if (biodegradableOnly) p.set("biodegradable", "1");
+    if (recyclableOnly) p.set("recyclable", "1");
+    return p.toString();
+  }, [appliedTypes, appliedApps, appliedColors, searchQuery, fscOnly, brandOnly, biodegradableOnly, recyclableOnly]);
+
+  // Hydrate from URL on mount / back-forward navigation (P0: shareability + state memory)
+  useEffect(() => {
+    suppressUrlSyncRef.current = true;
+    setAppliedTypes(parseCsv(searchParams.get("paperType")));
+    setAppliedApps(parseCsv(searchParams.get("application")));
+    setAppliedColors(parseCsv(searchParams.get("colour")));
+    setSearchQuery(searchParams.get("search") ?? "");
+    setSearchInput(searchParams.get("search") ?? "");
+    setFscOnly(searchParams.get("fsc") === "1");
+    setBrandOnly(searchParams.get("brand") === "favini");
+    setBiodegradableOnly(searchParams.get("biodegradable") === "1");
+    setRecyclableOnly(searchParams.get("recyclable") === "1");
+    // allow next sync to push
+    queueMicrotask(() => { suppressUrlSyncRef.current = false; });
+  }, [searchParams]);
+
+  // Push state to URL (replace, no history spam) — P0 URL state
+  useEffect(() => {
+    if (suppressUrlSyncRef.current) return;
+    const qs = buildCatalogQuery();
+    const url = qs ? `${pathname}?${qs}` : pathname;
+    const current = searchParams.toString() ? `${pathname}?${searchParams.toString()}` : pathname;
+    if (url !== current) router.replace(url, { scroll: false });
+  }, [buildCatalogQuery, pathname, router, searchParams]);
+
+  // Persist scroll position for return navigation
+  useEffect(() => {
+    const key = "mp-catalog-scroll";
+    const saved = sessionStorage.getItem(key);
+    if (saved) {
+      const y = parseInt(saved, 10);
+      if (!isNaN(y) && y > 0) window.scrollTo({ top: y, behavior: "instant" as ScrollBehavior });
+      sessionStorage.removeItem(key);
+    }
+    const onBeforeUnload = () => sessionStorage.setItem(key, String(window.scrollY));
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+  }, []);
+
+  const catalogQueryString = useMemo(() => buildCatalogQuery(), [buildCatalogQuery]);
 
   useEffect(() => {
     function handler(e: MouseEvent) {
@@ -243,6 +318,7 @@ function ProductsCatalogInner() {
     setOpenKey(null);
   }
 
+  const normalizedSearch = searchQuery.trim().toLowerCase();
   const filtered = catalogProducts.filter(p => {
     const matchType  = appliedTypes.length  === 0 || (p.paperTypes ?? []).some(t => appliedTypes.includes(t));
     const matchApp   = appliedApps.length   === 0 || (p.applications ?? []).some(a => appliedApps.includes(a));
@@ -251,7 +327,9 @@ function ProductsCatalogInner() {
     const matchBrand = !brandOnly || p.isFavini;
     const matchBio   = !biodegradableOnly || isBiodegradable(p);
     const matchRec   = !recyclableOnly || isRecyclable(p);
-    return matchType && matchApp && matchColor && matchFsc && matchBrand && matchBio && matchRec;
+    const hay = `${p.name} ${p.description} ${p.brand ?? ""} ${p.paperTypes?.join(" ") ?? ""} ${(p.colourGroups ?? []).join(" ")} ${p.book}`.toLowerCase();
+    const matchSearch = !normalizedSearch || hay.includes(normalizedSearch);
+    return matchType && matchApp && matchColor && matchFsc && matchBrand && matchBio && matchRec && matchSearch;
   });
 
   const grouped = BOOKS.map(book => ({
@@ -259,7 +337,7 @@ function ProductsCatalogInner() {
     items: filtered.filter(p => p.book === book),
   })).filter(g => g.items.length > 0);
 
-  const hasActiveFilters = appliedTypes.length > 0 || appliedApps.length > 0 || appliedColors.length > 0 || fscOnly || brandOnly || biodegradableOnly || recyclableOnly;
+  const hasActiveFilters = appliedTypes.length > 0 || appliedApps.length > 0 || appliedColors.length > 0 || fscOnly || brandOnly || biodegradableOnly || recyclableOnly || !!normalizedSearch;
 
   function pillLabel(applied: string[], placeholder: string) {
     if (applied.length === 0) return placeholder;
@@ -359,79 +437,75 @@ function ProductsCatalogInner() {
               )}
             </div>
 
-            {/* Search button — applies all pending selections */}
+            {/* Apply button — brand orange pill (search removed per request) */}
             <div className="flex items-center px-2 flex-shrink-0">
               <button
                 type="button"
                 aria-label="Apply filters"
-                onClick={applyAll}
-                className="bg-brand-orange hover:bg-orange-600 transition-colors text-white rounded-full w-12 h-12 flex items-center justify-center"
+                onClick={() => applyAll()}
+                className="bg-brand-orange hover:bg-[#d06a18] active:bg-[#b85e14] transition-colors text-white rounded-full w-12 h-12 flex items-center justify-center shadow-[0_4px_14px_rgba(232,121,28,0.35)]"
               >
                 <Search className="w-5 h-5" />
               </button>
             </div>
           </div>
 
-          {/* Active filter tags */}
+          {/* Active filter chips + Copy link — theme: white glass pills + orange accent + navy hover */}
           {hasActiveFilters && (
             <div className="flex flex-wrap items-center gap-2 mt-4">
+              {normalizedSearch && (
+                <span className="inline-flex items-center gap-1.5 bg-white text-brand-navy text-xs font-medium pl-3 pr-1 py-1 rounded-full border border-white shadow-sm">
+                  <Search className="h-3 w-3 text-brand-orange" />
+                  “{normalizedSearch}”
+                  <button type="button" onClick={() => { setSearchInput(""); setSearchQuery(""); }} aria-label="Clear search" className="ml-1 h-6 w-6 rounded-full bg-brand-navy text-white flex items-center justify-center hover:bg-black transition-colors">×</button>
+                </span>
+              )}
               {fscOnly && (
-                <span className="inline-flex items-center gap-1.5 bg-white/10 text-white text-xs font-medium px-3 py-1.5 rounded-full">
+                <span className="inline-flex items-center gap-1.5 bg-white text-brand-navy text-xs font-medium pl-3 pr-1 py-1 rounded-full border border-white shadow-sm">
                   FSC Certified
-                  <button
-                    type="button"
-                    onClick={() => setFscOnly(false)}
-                    aria-label="Remove FSC Certified filter"
-                    className="hover:text-brand-orange"
-                  >
-                    ×
-                  </button>
+                  <button type="button" onClick={() => setFscOnly(false)} aria-label="Remove FSC Certified filter" className="ml-1 h-6 w-6 rounded-full bg-brand-orange text-white flex items-center justify-center hover:bg-[#d06a18] transition-colors">×</button>
                 </span>
               )}
               {brandOnly && (
-                <span className="inline-flex items-center gap-1.5 bg-white/10 text-white text-xs font-medium px-3 py-1.5 rounded-full">
+                <span className="inline-flex items-center gap-1.5 bg-white text-brand-navy text-xs font-medium pl-3 pr-1 py-1 rounded-full border border-white shadow-sm">
                   Favini
-                  <button
-                    type="button"
-                    onClick={() => setBrandOnly(false)}
-                    aria-label="Remove Favini filter"
-                    className="hover:text-brand-orange"
-                  >
-                    ×
-                  </button>
+                  <button type="button" onClick={() => setBrandOnly(false)} aria-label="Remove Favini filter" className="ml-1 h-6 w-6 rounded-full bg-brand-orange text-white flex items-center justify-center hover:bg-[#d06a18] transition-colors">×</button>
                 </span>
               )}
               {biodegradableOnly && (
-                <span className="inline-flex items-center gap-1.5 bg-white/10 text-white text-xs font-medium px-3 py-1.5 rounded-full">
+                <span className="inline-flex items-center gap-1.5 bg-white text-brand-navy text-xs font-medium pl-3 pr-1 py-1 rounded-full border border-white shadow-sm">
                   Biodegradable
-                  <button type="button" onClick={() => setBiodegradableOnly(false)} aria-label="Remove Biodegradable filter" className="hover:text-brand-orange">×</button>
+                  <button type="button" onClick={() => setBiodegradableOnly(false)} aria-label="Remove Biodegradable filter" className="ml-1 h-6 w-6 rounded-full bg-brand-orange text-white flex items-center justify-center hover:bg-[#d06a18] transition-colors">×</button>
                 </span>
               )}
               {recyclableOnly && (
-                <span className="inline-flex items-center gap-1.5 bg-white/10 text-white text-xs font-medium px-3 py-1.5 rounded-full">
+                <span className="inline-flex items-center gap-1.5 bg-white text-brand-navy text-xs font-medium pl-3 pr-1 py-1 rounded-full border border-white shadow-sm">
                   Recyclable
-                  <button type="button" onClick={() => setRecyclableOnly(false)} aria-label="Remove Recyclable filter" className="hover:text-brand-orange">×</button>
+                  <button type="button" onClick={() => setRecyclableOnly(false)} aria-label="Remove Recyclable filter" className="ml-1 h-6 w-6 rounded-full bg-brand-orange text-white flex items-center justify-center hover:bg-[#d06a18] transition-colors">×</button>
                 </span>
               )}
-              {[...appliedTypes, ...appliedApps, ...appliedColors].map(tag => (
-                <span
-                  key={tag}
-                  className="inline-flex items-center gap-1.5 bg-white/10 text-white text-xs font-medium px-3 py-1.5 rounded-full"
-                >
-                  {tag}
+              {appliedTypes.map(tag => (
+                <span key={tag} className="inline-flex items-center gap-1.5 bg-white text-brand-navy text-xs font-medium pl-3 pr-1 py-1 rounded-full border border-white shadow-sm">
+                  <span className="text-[10px] font-bold tracking-wide text-brand-orange uppercase">Type</span>{tag}
+                  <button type="button" onClick={() => setAppliedTypes(v => v.filter(x => x !== tag))} aria-label={`Remove ${tag}`} className="ml-1 h-6 w-6 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center hover:bg-brand-navy hover:text-white transition-colors">×</button>
                 </span>
               ))}
-              <button
-                type="button"
-                onClick={() => {
-                  setAppliedTypes([]); setAppliedApps([]); setAppliedColors([]);
-                  setPendingTypes([]); setPendingApps([]); setPendingColors([]);
-                  setFscOnly(false); setBrandOnly(false);
-                  setBiodegradableOnly(false); setRecyclableOnly(false);
-                }}
-                className="text-brand-orange text-xs font-semibold hover:underline ml-1"
-              >
-                Clear all
+              {appliedApps.map(tag => (
+                <span key={tag} className="inline-flex items-center gap-1.5 bg-white text-brand-navy text-xs font-medium pl-3 pr-1 py-1 rounded-full border border-white shadow-sm">
+                  <span className="text-[10px] font-bold tracking-wide text-brand-orange uppercase">App</span>{tag}
+                  <button type="button" onClick={() => setAppliedApps(v => v.filter(x => x !== tag))} aria-label={`Remove ${tag}`} className="ml-1 h-6 w-6 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center hover:bg-brand-navy hover:text-white transition-colors">×</button>
+                </span>
+              ))}
+              {appliedColors.map(tag => (
+                <span key={tag} className="inline-flex items-center gap-1.5 bg-white text-brand-navy text-xs font-medium pl-3 pr-1 py-1 rounded-full border border-white shadow-sm">
+                  <span className="text-[10px] font-bold tracking-wide text-brand-orange uppercase">Colour</span>{tag}
+                  <button type="button" onClick={() => setAppliedColors(v => v.filter(x => x !== tag))} aria-label={`Remove ${tag}`} className="ml-1 h-6 w-6 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center hover:bg-brand-navy hover:text-white transition-colors">×</button>
+                </span>
+              ))}
+              <button type="button" onClick={() => { setAppliedTypes([]); setAppliedApps([]); setAppliedColors([]); setPendingTypes([]); setPendingApps([]); setPendingColors([]); setFscOnly(false); setBrandOnly(false); setBiodegradableOnly(false); setRecyclableOnly(false); setSearchInput(""); setSearchQuery(""); }} className="bg-white/15 backdrop-blur text-white border border-white/20 text-xs font-semibold px-3 py-2 rounded-full hover:bg-white hover:text-brand-navy hover:border-white transition-colors ml-1">Clear all</button>
+              <button type="button" onClick={() => { const url = window.location.href; navigator.clipboard.writeText(url); }} className="bg-brand-orange text-white text-xs font-semibold px-4 py-2 rounded-full shadow-[0_4px_14px_rgba(232,121,28,0.35)] hover:bg-[#d06a18] transition-colors inline-flex items-center gap-1.5">
+                Copy link
+                <ArrowRight className="h-3 w-3" />
               </button>
             </div>
           )}
@@ -454,7 +528,7 @@ function ProductsCatalogInner() {
         )}
 
         {grouped.map(group => (
-          <BookCarousel key={group.label} label={group.label} items={group.items} />
+          <BookCarousel key={group.label} label={group.label} items={group.items} catalogQuery={catalogQueryString} />
         ))}
         <p className="text-center text-[11px] leading-relaxed text-neutral-400 mt-6 max-w-3xl mx-auto">
           <span className="font-medium text-neutral-500 not-italic">Please Note:</span>{" "}

@@ -4,10 +4,11 @@ import { ArrowRight, ImageOff } from "lucide-react";
 import { MotionDiv } from "@/components/ui/MotionDiv";
 import type { CatalogProduct } from "@/data/products";
 
-export function ProductCard({ product, delay = 0 }: { product: CatalogProduct; delay?: number }) {
+export function ProductCard({ product, delay = 0, catalogQuery = "" }: { product: CatalogProduct; delay?: number; catalogQuery?: string }) {
+  const href = catalogQuery ? `/products/${product.id}?from=${encodeURIComponent(catalogQuery)}` : `/products/${product.id}`;
   return (
     <MotionDiv delay={delay}>
-      <Link href={`/products/${product.id}`} className="group block" aria-label={`View ${product.name}`}>
+      <Link href={href} onClick={() => sessionStorage.setItem("mp-catalog-scroll", String(window.scrollY))} className="group block" aria-label={`View ${product.name}`}>
         {/* Image container — increased height */}
         <div
           className="relative rounded-xl overflow-hidden mb-4 transition-transform duration-500 group-hover:scale-[1.015]"

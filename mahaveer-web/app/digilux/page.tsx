@@ -158,13 +158,15 @@ export default function DigiLuxPage() {
             </MotionDiv>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
               <MotionDiv direction="left">
-                <div className="relative mx-auto w-full max-w-md aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
+                <div className="relative mx-auto w-full max-w-md rounded-2xl overflow-hidden shadow-2xl">
                   <Image
-                    src="/figma/digilux2/about-collage.jpg"
-                    alt="Rolled colourful speciality papers"
-                    fill
+                    src="/figma/digilux2/whatisdigilux.jpg"
+                    alt="What is DigiLux — premium textured box crafted from DigiLux board"
+                    width={1448}
+                    height={1086}
                     sizes="(max-width: 1024px) 100vw, 480px"
-                    className="object-cover"
+                    className="h-auto w-full"
+                    unoptimized
                   />
                 </div>
               </MotionDiv>

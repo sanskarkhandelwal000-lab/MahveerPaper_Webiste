@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Mail, ImageOff, Sparkles, Layers, Ruler, Palette, Tag } from "lucide-react";
+import { Mail, ImageOff, Sparkles, Layers, Ruler, Palette, Tag, ArrowLeft } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { MotionDiv } from "@/components/ui/MotionDiv";
-import { catalogProducts, COLOR_NAME_HEX } from "@/data/products";
+import { catalogProducts, COLOR_NAME_HEX, BOOKS } from "@/data/products";
 
-type Props = { params: Promise<{ id: string }> };
+type Props = { params: Promise<{ id: string }>; searchParams?: Promise<{ from?: string }> };
 
 // "120 · 250 · 300 GSM" → "120, 250, 300 GSM" (Figma pill format)
 function formatGsm(gsm: string): string {
@@ -38,10 +38,36 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function ProductPage({ params }: Props) {
+function BackToResults({ from }: { from?: string }) {
+  const hasFrom = !!from;
+  const href = hasFrom ? `/products?${from}` : "/products";
+  return (
+    <div className="mb-4">
+      <Link
+        id="back-to-results"
+        href={href}
+        prefetch={false}
+        className="inline-flex items-center gap-2 rounded-full bg-white border border-gray-200 pl-2 pr-4 py-2 text-sm font-medium text-brand-navy shadow-sm hover:border-brand-orange/40 hover:text-brand-orange hover:shadow-md transition-all"
+        data-testid="back-to-results"
+        aria-label="Back to filtered results"
+      >
+        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-orange text-white">
+          <ArrowLeft className="h-3.5 w-3.5" />
+        </span>
+        {hasFrom ? "Back to Results" : "Back to Products"}
+      </Link>
+    </div>
+  );
+}
+
+export default async function ProductPage({ params, searchParams }: Props) {
   const { id } = await params;
+  const sp = (await searchParams) ?? {};
+  const fromQuery = sp.from ? decodeURIComponent(sp.from) : "";
   const product = catalogProducts.find(p => p.id === id);
   if (!product) notFound();
+  // Book label for breadcrumb: e.g. "Gloss & Metallic"
+  const bookLabel = BOOKS.includes(product.book as typeof BOOKS[number]) ? product.book : product.book;
 
   const familySizesLabel = product.sizes ? formatSizes(product.sizes) : null;
   // One card per real named colour when we have that data — falls back to repeating
@@ -113,13 +139,15 @@ export default async function ProductPage({ params }: Props) {
           </div>
         </section>
 
-        {/* ── SHADE / TEXTURE GRID ── Figma: breadcrumb, application heading, swatch cards */}
+        {/* ── SHADE / TEXTURE GRID — breadcrumb + Back to Results (P0 return action) */}
         <section className="bg-white py-10 lg:py-16 px-9">
-          {/* Breadcrumb — Figma: Home > Product > {name} */}
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-gray-400 mb-10 text-[15px]">
+          <BackToResults from={fromQuery} />
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-gray-400 mb-6 text-[15px] flex-wrap">
             <Link href="/" className="hover:text-brand-orange transition-colors">Home</Link>
             <span className="text-gray-300">&gt;</span>
-            <Link href="/products" className="hover:text-brand-orange transition-colors">Product</Link>
+            <Link href="/products" className="hover:text-brand-orange transition-colors">Products</Link>
+            <span className="text-gray-300">&gt;</span>
+            <Link href={`/products?paperType=${encodeURIComponent(product.paperTypes?.[0] ?? product.book)}`} className="hover:text-brand-orange transition-colors">{bookLabel}</Link>
             <span className="text-gray-300">&gt;</span>
             <span className="font-medium" style={{ color: "#202020" }}>{product.name}</span>
           </nav>
