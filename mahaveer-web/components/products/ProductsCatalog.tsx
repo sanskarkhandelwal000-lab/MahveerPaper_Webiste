@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Suspense, useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { ArrowRight, ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Search, Layers, LayoutGrid, Palette, X } from "lucide-react";
 import { ProductCard } from "@/components/products/ProductCard";
 import { catalogProducts, isFscCertified, isBiodegradable, isRecyclable, BOOKS, PAPER_TYPE_OPTIONS, APPLICATION_OPTIONS, COLOUR_GROUP_OPTIONS } from "@/data/products";
 
@@ -362,7 +362,7 @@ function ProductsCatalogInner() {
         <div className="container-max section-padding">
           <div
             ref={pillRef}
-            className={`relative flex items-stretch rounded-full shadow-2xl transition-colors duration-200 ${openKey ? "bg-[#e8e8e8]" : "bg-white"}`}
+            className={`relative flex items-stretch rounded-full shadow-2xl ring-1 ring-black/[0.04] transition-colors duration-200 ${openKey ? "bg-[#e8e8e8]" : "bg-white"}`}
           >
             {/* Paper Type */}
             <div className="relative flex-1 min-w-0">
@@ -371,7 +371,10 @@ function ProductsCatalogInner() {
                 onClick={() => toggle("type")}
                 className={`w-full h-full text-left px-7 py-5 transition-colors duration-200 ${sectionBtn("type", "rounded-l-full")}`}
               >
-                <p className="font-semibold text-brand-navy text-[15px] leading-tight">Paper Type</p>
+                <p className="flex items-center gap-1.5 font-semibold text-brand-navy text-[15px] leading-tight">
+                  <Layers className="h-3.5 w-3.5 text-brand-orange" strokeWidth={2} />
+                  Paper Type
+                </p>
                 <p className="text-gray-400 text-[13px] mt-1 truncate">
                   {pillLabel(appliedTypes, "Eco, Metallic, Textured…")}
                 </p>
@@ -396,7 +399,10 @@ function ProductsCatalogInner() {
                 onClick={() => toggle("app")}
                 className={`w-full h-full text-left px-7 py-5 transition-colors duration-200 ${sectionBtn("app", "rounded-2xl")}`}
               >
-                <p className="font-semibold text-brand-navy text-[15px] leading-tight">Application</p>
+                <p className="flex items-center gap-1.5 font-semibold text-brand-navy text-[15px] leading-tight">
+                  <LayoutGrid className="h-3.5 w-3.5 text-brand-orange" strokeWidth={2} />
+                  Application
+                </p>
                 <p className="text-gray-400 text-[13px] mt-1 truncate">
                   {pillLabel(appliedApps, "Select an application")}
                 </p>
@@ -421,7 +427,10 @@ function ProductsCatalogInner() {
                 onClick={() => toggle("color")}
                 className={`w-full h-full text-left px-7 py-5 transition-colors duration-200 ${sectionBtn("color", "rounded-2xl")}`}
               >
-                <p className="font-semibold text-brand-navy text-[15px] leading-tight">Colour</p>
+                <p className="flex items-center gap-1.5 font-semibold text-brand-navy text-[15px] leading-tight">
+                  <Palette className="h-3.5 w-3.5 text-brand-orange" strokeWidth={2} />
+                  Colour
+                </p>
                 <p className="text-gray-400 text-[13px] mt-1 truncate">
                   {pillLabel(appliedColors, "White, Black, Gold…")}
                 </p>
@@ -443,66 +452,69 @@ function ProductsCatalogInner() {
                 type="button"
                 aria-label="Apply filters"
                 onClick={() => applyAll()}
-                className="bg-brand-orange hover:bg-[#d06a18] active:bg-[#b85e14] transition-colors text-white rounded-full w-12 h-12 flex items-center justify-center shadow-[0_4px_14px_rgba(232,121,28,0.35)]"
+                className="bg-brand-orange hover:bg-[#d06a18] active:bg-[#b85e14] transition-all hover:scale-105 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-[0_4px_14px_rgba(232,121,28,0.35)]"
               >
                 <Search className="w-5 h-5" />
               </button>
             </div>
           </div>
 
-          {/* Active filter chips + Copy link — theme: white glass pills + orange accent + navy hover */}
+          {/* Active filter chips + Copy link — solid white pills with a real shadow
+              so they read clearly on any background (photo, gradient or plain white),
+              instead of the previous white-on-glass "Clear all" that vanished once the
+              bar scrolled past the hero photo onto a white section. */}
           {hasActiveFilters && (
             <div className="flex flex-wrap items-center gap-2 mt-4">
               {normalizedSearch && (
-                <span className="inline-flex items-center gap-1.5 bg-white text-brand-navy text-xs font-medium pl-3 pr-1 py-1 rounded-full border border-white shadow-sm">
+                <span className="inline-flex items-center gap-1.5 bg-white text-brand-navy text-xs font-medium pl-3 pr-1 py-1 rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
                   <Search className="h-3 w-3 text-brand-orange" />
                   “{normalizedSearch}”
-                  <button type="button" onClick={() => { setSearchInput(""); setSearchQuery(""); }} aria-label="Clear search" className="ml-1 h-6 w-6 rounded-full bg-brand-navy text-white flex items-center justify-center hover:bg-black transition-colors">×</button>
+                  <button type="button" onClick={() => { setSearchInput(""); setSearchQuery(""); }} aria-label="Clear search" className="ml-1 h-6 w-6 rounded-full bg-brand-navy text-white flex items-center justify-center hover:bg-black transition-colors"><X className="h-3 w-3" /></button>
                 </span>
               )}
               {fscOnly && (
-                <span className="inline-flex items-center gap-1.5 bg-white text-brand-navy text-xs font-medium pl-3 pr-1 py-1 rounded-full border border-white shadow-sm">
+                <span className="inline-flex items-center gap-1.5 bg-white text-brand-navy text-xs font-medium pl-3 pr-1 py-1 rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
                   FSC Certified
-                  <button type="button" onClick={() => setFscOnly(false)} aria-label="Remove FSC Certified filter" className="ml-1 h-6 w-6 rounded-full bg-brand-orange text-white flex items-center justify-center hover:bg-[#d06a18] transition-colors">×</button>
+                  <button type="button" onClick={() => setFscOnly(false)} aria-label="Remove FSC Certified filter" className="ml-1 h-6 w-6 rounded-full bg-brand-orange text-white flex items-center justify-center hover:bg-[#d06a18] transition-colors"><X className="h-3 w-3" /></button>
                 </span>
               )}
               {brandOnly && (
-                <span className="inline-flex items-center gap-1.5 bg-white text-brand-navy text-xs font-medium pl-3 pr-1 py-1 rounded-full border border-white shadow-sm">
+                <span className="inline-flex items-center gap-1.5 bg-white text-brand-navy text-xs font-medium pl-3 pr-1 py-1 rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
                   Favini
-                  <button type="button" onClick={() => setBrandOnly(false)} aria-label="Remove Favini filter" className="ml-1 h-6 w-6 rounded-full bg-brand-orange text-white flex items-center justify-center hover:bg-[#d06a18] transition-colors">×</button>
+                  <button type="button" onClick={() => setBrandOnly(false)} aria-label="Remove Favini filter" className="ml-1 h-6 w-6 rounded-full bg-brand-orange text-white flex items-center justify-center hover:bg-[#d06a18] transition-colors"><X className="h-3 w-3" /></button>
                 </span>
               )}
               {biodegradableOnly && (
-                <span className="inline-flex items-center gap-1.5 bg-white text-brand-navy text-xs font-medium pl-3 pr-1 py-1 rounded-full border border-white shadow-sm">
+                <span className="inline-flex items-center gap-1.5 bg-white text-brand-navy text-xs font-medium pl-3 pr-1 py-1 rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
                   Biodegradable
-                  <button type="button" onClick={() => setBiodegradableOnly(false)} aria-label="Remove Biodegradable filter" className="ml-1 h-6 w-6 rounded-full bg-brand-orange text-white flex items-center justify-center hover:bg-[#d06a18] transition-colors">×</button>
+                  <button type="button" onClick={() => setBiodegradableOnly(false)} aria-label="Remove Biodegradable filter" className="ml-1 h-6 w-6 rounded-full bg-brand-orange text-white flex items-center justify-center hover:bg-[#d06a18] transition-colors"><X className="h-3 w-3" /></button>
                 </span>
               )}
               {recyclableOnly && (
-                <span className="inline-flex items-center gap-1.5 bg-white text-brand-navy text-xs font-medium pl-3 pr-1 py-1 rounded-full border border-white shadow-sm">
+                <span className="inline-flex items-center gap-1.5 bg-white text-brand-navy text-xs font-medium pl-3 pr-1 py-1 rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
                   Recyclable
-                  <button type="button" onClick={() => setRecyclableOnly(false)} aria-label="Remove Recyclable filter" className="ml-1 h-6 w-6 rounded-full bg-brand-orange text-white flex items-center justify-center hover:bg-[#d06a18] transition-colors">×</button>
+                  <button type="button" onClick={() => setRecyclableOnly(false)} aria-label="Remove Recyclable filter" className="ml-1 h-6 w-6 rounded-full bg-brand-orange text-white flex items-center justify-center hover:bg-[#d06a18] transition-colors"><X className="h-3 w-3" /></button>
                 </span>
               )}
               {appliedTypes.map(tag => (
-                <span key={tag} className="inline-flex items-center gap-1.5 bg-white text-brand-navy text-xs font-medium pl-3 pr-1 py-1 rounded-full border border-white shadow-sm">
-                  <span className="text-[10px] font-bold tracking-wide text-brand-orange uppercase">Type</span>{tag}
-                  <button type="button" onClick={() => setAppliedTypes(v => v.filter(x => x !== tag))} aria-label={`Remove ${tag}`} className="ml-1 h-6 w-6 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center hover:bg-brand-navy hover:text-white transition-colors">×</button>
+                <span key={tag} className="inline-flex items-center gap-1.5 bg-white text-brand-navy text-xs font-medium pl-1.5 pr-1 py-1 rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+                  <span className="text-[10px] font-bold tracking-wide text-white uppercase bg-brand-orange rounded-full px-2 py-0.5">Type</span>{tag}
+                  <button type="button" onClick={() => setAppliedTypes(v => v.filter(x => x !== tag))} aria-label={`Remove ${tag}`} className="ml-1 h-6 w-6 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center hover:bg-brand-navy hover:text-white transition-colors"><X className="h-3 w-3" /></button>
                 </span>
               ))}
               {appliedApps.map(tag => (
-                <span key={tag} className="inline-flex items-center gap-1.5 bg-white text-brand-navy text-xs font-medium pl-3 pr-1 py-1 rounded-full border border-white shadow-sm">
-                  <span className="text-[10px] font-bold tracking-wide text-brand-orange uppercase">App</span>{tag}
-                  <button type="button" onClick={() => setAppliedApps(v => v.filter(x => x !== tag))} aria-label={`Remove ${tag}`} className="ml-1 h-6 w-6 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center hover:bg-brand-navy hover:text-white transition-colors">×</button>
+                <span key={tag} className="inline-flex items-center gap-1.5 bg-white text-brand-navy text-xs font-medium pl-1.5 pr-1 py-1 rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+                  <span className="text-[10px] font-bold tracking-wide text-white uppercase bg-brand-orange rounded-full px-2 py-0.5">App</span>{tag}
+                  <button type="button" onClick={() => setAppliedApps(v => v.filter(x => x !== tag))} aria-label={`Remove ${tag}`} className="ml-1 h-6 w-6 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center hover:bg-brand-navy hover:text-white transition-colors"><X className="h-3 w-3" /></button>
                 </span>
               ))}
               {appliedColors.map(tag => (
-                <span key={tag} className="inline-flex items-center gap-1.5 bg-white text-brand-navy text-xs font-medium pl-3 pr-1 py-1 rounded-full border border-white shadow-sm">
-                  <span className="text-[10px] font-bold tracking-wide text-brand-orange uppercase">Colour</span>{tag}
-                  <button type="button" onClick={() => setAppliedColors(v => v.filter(x => x !== tag))} aria-label={`Remove ${tag}`} className="ml-1 h-6 w-6 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center hover:bg-brand-navy hover:text-white transition-colors">×</button>
+                <span key={tag} className="inline-flex items-center gap-1.5 bg-white text-brand-navy text-xs font-medium pl-1.5 pr-1 py-1 rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+                  <span className="text-[10px] font-bold tracking-wide text-white uppercase bg-brand-orange rounded-full px-2 py-0.5">Colour</span>{tag}
+                  <button type="button" onClick={() => setAppliedColors(v => v.filter(x => x !== tag))} aria-label={`Remove ${tag}`} className="ml-1 h-6 w-6 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center hover:bg-brand-navy hover:text-white transition-colors"><X className="h-3 w-3" /></button>
                 </span>
               ))}
-              <button type="button" onClick={() => { setAppliedTypes([]); setAppliedApps([]); setAppliedColors([]); setPendingTypes([]); setPendingApps([]); setPendingColors([]); setFscOnly(false); setBrandOnly(false); setBiodegradableOnly(false); setRecyclableOnly(false); setSearchInput(""); setSearchQuery(""); }} className="bg-white/15 backdrop-blur text-white border border-white/20 text-xs font-semibold px-3 py-2 rounded-full hover:bg-white hover:text-brand-navy hover:border-white transition-colors ml-1">Clear all</button>
+              <button type="button" onClick={() => { setAppliedTypes([]); setAppliedApps([]); setAppliedColors([]); setPendingTypes([]); setPendingApps([]); setPendingColors([]); setFscOnly(false); setBrandOnly(false); setBiodegradableOnly(false); setRecyclableOnly(false); setSearchInput(""); setSearchQuery(""); }} className="bg-white text-brand-navy border border-gray-200 text-xs font-semibold px-3.5 py-2 rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:bg-brand-navy hover:text-white hover:border-brand-navy transition-colors ml-1">Clear all</button>
               <button type="button" onClick={() => { const url = window.location.href; navigator.clipboard.writeText(url); }} className="bg-brand-orange text-white text-xs font-semibold px-4 py-2 rounded-full shadow-[0_4px_14px_rgba(232,121,28,0.35)] hover:bg-[#d06a18] transition-colors inline-flex items-center gap-1.5">
                 Copy link
                 <ArrowRight className="h-3 w-3" />

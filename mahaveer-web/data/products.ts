@@ -642,7 +642,10 @@ export const catalogProducts: CatalogProduct[] = [
       "35% Cotton": "/images/favini/cotton-25.jpg",
       "60% Cotton": "/images/favini/cotton-60.jpg",
     },
-    image: "/images/favini/cotton.jpg",
+    // Family-card image: a flat, straight-on texture crop (same style as the other
+    // catalogue cards, e.g. Twill, Tradition Valentino Ivory) rather than the diagonal
+    // curled-sheet hero shot, which looked visually inconsistent next to them.
+    image: "/images/favini/cotton-25.jpg",
     type: "Color",
     app: "Stationery & Print",
     paperTypes: ["Watercolour Artist Papers"],
