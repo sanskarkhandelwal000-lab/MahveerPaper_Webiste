@@ -215,9 +215,9 @@ export const catalogProducts: CatalogProduct[] = [
     gsm: "80 GSM",
     sizes: "63.5 x 91.4 CM",
     colors: 12,
-    colorNames: ["Cream", "Peach", "Pink", "Blue", "Green", "Gold", "Turquoise", "Parrot Green", "Saffron", "Red", "Taro", "Hp Orange"],
+    colorNames: ["Colour Woodfree Cream", "Colour Woodfree Peach", "Colour Woodfree Pink", "Colour Woodfree Blue", "Colour Woodfree Green", "Colour Woodfree Gold", "Colour Woodfree Turquoise", "Colour Woodfree Parrot Green", "Colour Woodfree Saffron", "Colour Woodfree Red", "Colour Woodfree Taro", "Colour Woodfree Hp Orange"],
     image: "/images/mahaveer/colour-paper-wood-free.jpg",
-    colorImages: { "Cream": "/images/mahaveer/colour-paper-wood-free.jpg", "Peach": "/images/mahaveer/colour-paper-wood-free-peach.jpg", "Pink": "/images/mahaveer/colour-paper-wood-free-pink.jpg", "Blue": "/images/mahaveer/colour-paper-wood-free-blue.jpg", "Green": "/images/mahaveer/colour-paper-wood-free-green.jpg", "Gold": "/images/mahaveer/colour-paper-wood-free-gold.jpg", "Turquoise": "/images/mahaveer/colour-paper-wood-free-turquoise.jpg", "Parrot Green": "/images/mahaveer/colour-paper-wood-free-parrot-green.jpg", "Saffron": "/images/mahaveer/colour-paper-wood-free-saffron.jpg", "Red": "/images/mahaveer/colour-paper-wood-free-red.jpg", "Taro": "/images/mahaveer/colour-paper-wood-free-taro.jpg", "Hp Orange": "/images/mahaveer/colour-paper-wood-free-hp-orange.jpg" },
+    colorImages: { "Colour Woodfree Cream": "/images/mahaveer/colour-paper-wood-free.jpg", "Colour Woodfree Peach": "/images/mahaveer/colour-paper-wood-free-peach.jpg", "Colour Woodfree Pink": "/images/mahaveer/colour-paper-wood-free-pink.jpg", "Colour Woodfree Blue": "/images/mahaveer/colour-paper-wood-free-blue.jpg", "Colour Woodfree Green": "/images/mahaveer/colour-paper-wood-free-green.jpg", "Colour Woodfree Gold": "/images/mahaveer/colour-paper-wood-free-gold.jpg", "Colour Woodfree Turquoise": "/images/mahaveer/colour-paper-wood-free-turquoise.jpg", "Colour Woodfree Parrot Green": "/images/mahaveer/colour-paper-wood-free-parrot-green.jpg", "Colour Woodfree Saffron": "/images/mahaveer/colour-paper-wood-free-saffron.jpg", "Colour Woodfree Red": "/images/mahaveer/colour-paper-wood-free-red.jpg", "Colour Woodfree Taro": "/images/mahaveer/colour-paper-wood-free-taro.jpg", "Colour Woodfree Hp Orange": "/images/mahaveer/colour-paper-wood-free-hp-orange.jpg" },
     type: "Color",
     app: "Stationery & Print",
     paperTypes: ["Coloured Woodfree Paper"],
@@ -290,9 +290,9 @@ export const catalogProducts: CatalogProduct[] = [
     gsm: "250 · 300 GSM",
     sizes: "70 x 100 CM",
     colors: 1,
-    colorNames: ["Black"],
+    colorNames: ["Mystique Black"],
     image: "/images/mahaveer/mystique-black.jpg",
-    colorImages: { "Black": "/images/mahaveer/mystique-black.jpg" },
+    colorImages: { "Mystique Black": "/images/mahaveer/mystique-black.jpg" },
     type: "Color",
     app: "Packaging",
     paperTypes: ["Commercial Coloured Paper", "Board"],
@@ -321,11 +321,11 @@ export const catalogProducts: CatalogProduct[] = [
     gsm: "250 · 320 GSM",
     sizes: "70 x 100 CM",
     colors: 10,
-    colorNames: ["Shocking Pink", "English Green", "Orange", "Fire Red", "Graphite Grey", "Tobacco", "Burgundy", "Coffee Brown", "Cobalt", "Nero"],
+    colorNames: ["Burano Shocking Pink", "Burano English Green", "Burano Orange Arancio", "Burano Fire Red", "Burano Graphite Grey", "Burano Tobacco", "Burano Burgundy", "Burano Coffee Brown", "Burano Cobalt", "Burano Nero"],
     colorGsm: {
-      "Shocking Pink": "250 GSM", "English Green": "250 GSM", "Orange": "250 GSM", "Fire Red": "250 GSM",
-      "Graphite Grey": "250 GSM", "Tobacco": "250 GSM", "Burgundy": "250 GSM", "Coffee Brown": "250 GSM",
-      "Cobalt": "250 · 320 GSM", "Nero": "250 · 320 GSM",
+      "Burano Shocking Pink": "250 GSM", "Burano English Green": "250 GSM", "Burano Orange Arancio": "250 GSM", "Burano Fire Red": "250 GSM",
+      "Burano Graphite Grey": "250 GSM", "Burano Tobacco": "250 GSM", "Burano Burgundy": "250 GSM", "Burano Coffee Brown": "250 GSM",
+      "Burano Cobalt": "250 · 320 GSM", "Burano Nero": "250 · 320 GSM",
     },
     image: "/images/favini/burano.jpg",
     // Real Favini product photography (favini.com/gs/en/products/burano) for colour
@@ -334,16 +334,16 @@ export const catalogProducts: CatalogProduct[] = [
     // "Nero" — these have no exact name match on Favini's own site, but the client's
     // own photo of the physical product is a direct source and always wins.
     colorImages: {
-      "Shocking Pink": "/images/favini/burano-shocking-pink.jpg",
-      "English Green": "/images/favini/burano-english-green.jpg",
-      "Orange": "/images/favini/burano-orange.jpg",
-      "Fire Red": "/images/favini/burano-fire-red.jpg",
-      "Graphite Grey": "/images/favini/burano-graphite-grey.jpg",
-      "Tobacco": "/images/favini/burano-tobacco.jpg",
-      "Burgundy": "/images/favini/burano-burgundy.jpg",
-      "Coffee Brown": "/images/favini/burano-coffee-brown.jpg",
-      "Cobalt": "/images/favini/burano-cobalt.jpg",
-      "Nero": "/images/favini/burano-nero.jpg",
+      "Burano Shocking Pink": "/images/favini/burano-shocking-pink.jpg",
+      "Burano English Green": "/images/favini/burano-english-green.jpg",
+      "Burano Orange Arancio": "/images/favini/burano-orange.jpg",
+      "Burano Fire Red": "/images/favini/burano-fire-red.jpg",
+      "Burano Graphite Grey": "/images/favini/burano-graphite-grey.jpg",
+      "Burano Tobacco": "/images/favini/burano-tobacco.jpg",
+      "Burano Burgundy": "/images/favini/burano-burgundy.jpg",
+      "Burano Coffee Brown": "/images/favini/burano-coffee-brown.jpg",
+      "Burano Cobalt": "/images/favini/burano-cobalt.jpg",
+      "Burano Nero": "/images/favini/burano-nero.jpg",
     },
     type: "Color",
     app: "Packaging",
@@ -377,11 +377,11 @@ export const catalogProducts: CatalogProduct[] = [
     gsm: "120 · 260 · 310 · 340 GSM",
     sizes: "70 x 100 CM · 72 x 102 CM",
     colors: 4,
-    colorNames: ["Black", "Red", "Brown", "Petrol"],
-    colorGsm: { "Black": "120 · 260 · 310 GSM", "Red": "120 · 310 GSM", "Brown": "120 · 340 GSM", "Petrol": "120 · 340 GSM" },
+    colorNames: ["Tube Black", "Tube Red", "Tube Brown", "Tube Petrol"],
+    colorGsm: { "Tube Black": "120 · 260 · 310 GSM", "Tube Red": "120 · 310 GSM", "Tube Brown": "120 · 340 GSM", "Tube Petrol": "120 · 340 GSM" },
     // Each colour ships in exactly one sheet size, not both — Red is 70 x 100 CM only,
     // Black/Brown/Petrol are 72 x 102 CM only (source: R018 master sheet SKUs 50045-50053).
-    colorSizes: { "Black": "72 x 102 CM", "Red": "70 x 100 CM", "Brown": "72 x 102 CM", "Petrol": "72 x 102 CM" },
+    colorSizes: { "Tube Black": "72 x 102 CM", "Tube Red": "70 x 100 CM", "Tube Brown": "72 x 102 CM", "Tube Petrol": "72 x 102 CM" },
     image: "/images/favini/tube.jpg",
     // Real Favini photos (favini.com/gs/en/products/tube) — Black and Petrol only, both
     // exact matches on Favini's own colour list. "Red" and "Brown" have NO match on that
@@ -389,10 +389,10 @@ export const catalogProducts: CatalogProduct[] = [
     // Black/Black Max/Hide-variants), but both now have client-supplied real photos of
     // the actual product (Pending Images/MP_500x500), which are a direct source.
     colorImages: {
-      "Black": "/images/favini/tube-black.jpg",
-      "Red": "/images/favini/tube-red.jpg",
-      "Brown": "/images/favini/tube-brown.jpg",
-      "Petrol": "/images/favini/tube-petrol.jpg",
+      "Tube Black": "/images/favini/tube-black.jpg",
+      "Tube Red": "/images/favini/tube-red.jpg",
+      "Tube Brown": "/images/favini/tube-brown.jpg",
+      "Tube Petrol": "/images/favini/tube-petrol.jpg",
     },
     type: "Color",
     app: "Packaging",
@@ -420,18 +420,18 @@ export const catalogProducts: CatalogProduct[] = [
     gsm: "700 GSM",
     sizes: "71 x 101 CM",
     colors: 5,
-    colorNames: ["White", "Kraft Brown", "Dark Grey", "Red", "Black"],
+    colorNames: ["Sumo White", "Sumo Kraft Brown", "Sumo Dark Grey", "Sumo Red", "Sumo Black"],
     image: "/images/favini/sumo.jpg",
     // Favini's own Sumo page (favini.com/gs/en/products/sumo) has no unique board
     // photography for these 5 colours — it reuses photos from their other paper lines
     // (Biancoflash, Burano) as swatch stand-ins. Mirroring that exactly, per instruction,
     // rather than inventing our own: these are paper photos, not Sumo's actual board texture.
     colorImages: {
-      "White": "/images/favini/sumo-white.jpg",
-      "Kraft Brown": "/images/favini/sumo-kraft-brown.jpg",
-      "Dark Grey": "/images/favini/sumo-dark-grey.jpg",
-      "Red": "/images/favini/sumo-red.jpg",
-      "Black": "/images/favini/sumo-black.jpg",
+      "Sumo White": "/images/favini/sumo-white.jpg",
+      "Sumo Kraft Brown": "/images/favini/sumo-kraft-brown.jpg",
+      "Sumo Dark Grey": "/images/favini/sumo-dark-grey.jpg",
+      "Sumo Red": "/images/favini/sumo-red.jpg",
+      "Sumo Black": "/images/favini/sumo-black.jpg",
     },
     type: "Color",
     app: "Packaging",
@@ -463,7 +463,7 @@ export const catalogProducts: CatalogProduct[] = [
     book: "Textures",
     name: "MP Textures",
     gsm: "300 · 350 GSM",
-    sizes: "33 x 48 CM · 67 x 98 CM · 70 x 100 CM",
+    sizes: "67 x 98 CM · 70 x 100 CM",
     // Was wrongly collapsed to 3 generic colour swatches (Cream/White/Natural) — the
     // sheet's "Colour Name" field really is just Cream/White/Natural for all 18 SKUs,
     // but each is a genuinely different embossed pattern (its own "Texture" field value:
@@ -472,48 +472,49 @@ export const catalogProducts: CatalogProduct[] = [
     // name = "{Texture} {Colour}" straight from the sheet, no photos guessed.
     colors: 18,
     colorNames: [
-      "Needle Point Cream", "Linea Cream", "Fine Toie Cream", "Valentino Cream", "Toyle Moyne Cream", "Silk Soie Cream", "Design Bag Cream",
-      "Needle Point White", "Design Bag White", "Valentino White", "Classic Linen White", "Linea White", "Toyle Moyne White", "Silk Soie White", "Canvas Linen White", "White Net", "K Linen White",
+      "MP 192 Needle Point Cream", "MP 366 Linea Cream", "MP 456 Fine Toie Cream", "MP 538 Valentino Cream", "MP 541 Toyle Moyne Cream", "MP 1031 Silk Soie Cream", "MP 1157 Design Bag Cream",
+      "MP 398 HB Needle Point White", "MP 486 HB Design Bag White 1/s", "MP 536 HB Valentino White", "MP 800 HB Classic Linen White", "MP 811 HB Linea White", "MP 897 HB Toyle Moyne White", "MP 1030 HB Silk Soie White", "MP 1182 HB Canvas Linen White", "MP 1214 HB White Net", "K Linen White",
       "Natural Rock",
     ],
     colorGsm: {
-      "Needle Point Cream": "300 GSM", "Linea Cream": "300 GSM", "Fine Toie Cream": "300 GSM", "Valentino Cream": "300 GSM",
-      "Toyle Moyne Cream": "300 GSM", "Silk Soie Cream": "300 GSM", "Design Bag Cream": "300 GSM",
-      "Needle Point White": "300 GSM", "Design Bag White": "300 GSM", "Valentino White": "300 GSM", "Classic Linen White": "300 GSM",
-      "Linea White": "300 GSM", "Toyle Moyne White": "300 GSM", "Silk Soie White": "300 GSM", "Canvas Linen White": "300 GSM",
-      "White Net": "300 GSM", "K Linen White": "350 GSM",
+      "MP 192 Needle Point Cream": "300 GSM", "MP 366 Linea Cream": "300 GSM", "MP 456 Fine Toie Cream": "300 GSM", "MP 538 Valentino Cream": "300 GSM",
+      "MP 541 Toyle Moyne Cream": "300 GSM", "MP 1031 Silk Soie Cream": "300 GSM", "MP 1157 Design Bag Cream": "300 GSM",
+      "MP 398 HB Needle Point White": "300 GSM", "MP 486 HB Design Bag White 1/s": "300 GSM", "MP 536 HB Valentino White": "300 GSM", "MP 800 HB Classic Linen White": "300 GSM",
+      "MP 811 HB Linea White": "300 GSM", "MP 897 HB Toyle Moyne White": "300 GSM", "MP 1030 HB Silk Soie White": "300 GSM", "MP 1182 HB Canvas Linen White": "300 GSM",
+      "MP 1214 HB White Net": "300 GSM", "K Linen White": "350 GSM",
       "Natural Rock": "300 GSM",
     },
     // Per-SKU size — verified against the master sheet's row-level Size column: every
-    // colour/texture in this family comes in exactly ONE size (never all three), the
-    // same root-cause bug already fixed for Tube and Bianco Flash.
+    // colour/texture in this family comes in exactly one size, the same root-cause bug
+    // already fixed for Tube and Bianco Flash. K Linen White / Natural Rock are 70 x 100 CM;
+    // every other colour (incl. Fine Toie Cream) is 67 x 98 CM.
     colorSizes: {
-      "Needle Point Cream": "67 x 98 CM", "Linea Cream": "67 x 98 CM", "Fine Toie Cream": "33 x 48 CM", "Valentino Cream": "67 x 98 CM",
-      "Toyle Moyne Cream": "67 x 98 CM", "Silk Soie Cream": "67 x 98 CM", "Design Bag Cream": "67 x 98 CM",
-      "Needle Point White": "67 x 98 CM", "Design Bag White": "67 x 98 CM", "Valentino White": "67 x 98 CM", "Classic Linen White": "67 x 98 CM",
-      "Linea White": "67 x 98 CM", "Toyle Moyne White": "67 x 98 CM", "Silk Soie White": "67 x 98 CM", "Canvas Linen White": "67 x 98 CM",
-      "White Net": "67 x 98 CM", "K Linen White": "70 x 100 CM",
+      "MP 192 Needle Point Cream": "67 x 98 CM", "MP 366 Linea Cream": "67 x 98 CM", "MP 456 Fine Toie Cream": "67 x 98 CM", "MP 538 Valentino Cream": "67 x 98 CM",
+      "MP 541 Toyle Moyne Cream": "67 x 98 CM", "MP 1031 Silk Soie Cream": "67 x 98 CM", "MP 1157 Design Bag Cream": "67 x 98 CM",
+      "MP 398 HB Needle Point White": "67 x 98 CM", "MP 486 HB Design Bag White 1/s": "67 x 98 CM", "MP 536 HB Valentino White": "67 x 98 CM", "MP 800 HB Classic Linen White": "67 x 98 CM",
+      "MP 811 HB Linea White": "67 x 98 CM", "MP 897 HB Toyle Moyne White": "67 x 98 CM", "MP 1030 HB Silk Soie White": "67 x 98 CM", "MP 1182 HB Canvas Linen White": "67 x 98 CM",
+      "MP 1214 HB White Net": "67 x 98 CM", "K Linen White": "70 x 100 CM",
       "Natural Rock": "70 x 100 CM",
     },
     // Real per-SKU photography from the client's own 4x5_texture_crops set, matched by
     // exact SKU number (50059–50076) — not guessed, not reused across patterns.
     colorImages: {
-      "Needle Point Cream": "/images/mahaveer/textures/needle-point-cream.jpg",
-      "Linea Cream": "/images/mahaveer/textures/linea-cream.jpg",
-      "Fine Toie Cream": "/images/mahaveer/textures/fine-toie-cream.jpg",
-      "Valentino Cream": "/images/mahaveer/textures/valentino-cream.jpg",
-      "Toyle Moyne Cream": "/images/mahaveer/textures/toyle-moyne-cream.jpg",
-      "Silk Soie Cream": "/images/mahaveer/textures/silk-soie-cream.jpg",
-      "Design Bag Cream": "/images/mahaveer/textures/design-bag-cream.jpg",
-      "Needle Point White": "/images/mahaveer/textures/needle-point-white.jpg",
-      "Design Bag White": "/images/mahaveer/textures/design-bag-white.jpg",
-      "Valentino White": "/images/mahaveer/textures/valentino-white.jpg",
-      "Classic Linen White": "/images/mahaveer/textures/classic-linen-white.jpg",
-      "Linea White": "/images/mahaveer/textures/linea-white.jpg",
-      "Toyle Moyne White": "/images/mahaveer/textures/toyle-moyne-white.jpg",
-      "Silk Soie White": "/images/mahaveer/textures/silk-soie-white.jpg",
-      "Canvas Linen White": "/images/mahaveer/textures/canvas-linen-white.jpg",
-      "White Net": "/images/mahaveer/textures/white-net.jpg",
+      "MP 192 Needle Point Cream": "/images/mahaveer/textures/needle-point-cream.jpg",
+      "MP 366 Linea Cream": "/images/mahaveer/textures/linea-cream.jpg",
+      "MP 456 Fine Toie Cream": "/images/mahaveer/textures/fine-toie-cream.jpg",
+      "MP 538 Valentino Cream": "/images/mahaveer/textures/valentino-cream.jpg",
+      "MP 541 Toyle Moyne Cream": "/images/mahaveer/textures/toyle-moyne-cream.jpg",
+      "MP 1031 Silk Soie Cream": "/images/mahaveer/textures/silk-soie-cream.jpg",
+      "MP 1157 Design Bag Cream": "/images/mahaveer/textures/design-bag-cream.jpg",
+      "MP 398 HB Needle Point White": "/images/mahaveer/textures/needle-point-white.jpg",
+      "MP 486 HB Design Bag White 1/s": "/images/mahaveer/textures/design-bag-white.jpg",
+      "MP 536 HB Valentino White": "/images/mahaveer/textures/valentino-white.jpg",
+      "MP 800 HB Classic Linen White": "/images/mahaveer/textures/classic-linen-white.jpg",
+      "MP 811 HB Linea White": "/images/mahaveer/textures/linea-white.jpg",
+      "MP 897 HB Toyle Moyne White": "/images/mahaveer/textures/toyle-moyne-white.jpg",
+      "MP 1030 HB Silk Soie White": "/images/mahaveer/textures/silk-soie-white.jpg",
+      "MP 1182 HB Canvas Linen White": "/images/mahaveer/textures/canvas-linen-white.jpg",
+      "MP 1214 HB White Net": "/images/mahaveer/textures/white-net.jpg",
       "K Linen White": "/images/mahaveer/textures/k-linen-white.jpg",
       "Natural Rock": "/images/mahaveer/textures/natural-rock.jpg",
     },
@@ -547,13 +548,13 @@ export const catalogProducts: CatalogProduct[] = [
     gsm: "120 · 250 · 300 GSM",
     sizes: "72 x 102 CM",
     colors: 2,
-    colorNames: ["White", "Ivory"],
+    colorNames: ["Prisma White", "Prisma Ivory"],
     image: "/images/favini/prisma.jpg",
     // Favini's site (favini.com/gs/en/products/prisma) — both "03 White" and "05 Ivory"
     // have real dedicated photos (Prisma-White / Prisma-05-Ivory).
     colorImages: {
-      "White": "/images/favini/prisma-white.jpg",
-      "Ivory": "/images/favini/prisma-ivory.jpg",
+      "Prisma White": "/images/favini/prisma-white.jpg",
+      "Prisma Ivory": "/images/favini/prisma-ivory.jpg",
     },
     type: "Textured",
     app: "Packaging",
@@ -582,14 +583,14 @@ export const catalogProducts: CatalogProduct[] = [
     gsm: "120 · 240 · 300 GSM",
     sizes: "72 x 102 CM",
     colors: 2,
-    colorNames: ["Bright White", "Ivory"],
+    colorNames: ["Twill Bright White", "Twill Ivory"],
     image: "/images/favini/twill.jpg",
     // Real Favini photos (favini.com/gs/en/products/twill) — both colours are exact
     // matches on Favini's own list, and both have dedicated Twill photography (not
     // borrowed from another product line).
     colorImages: {
-      "Bright White": "/images/favini/twill-bright-white.jpg",
-      "Ivory": "/images/favini/twill-ivory.jpg",
+      "Twill Bright White": "/images/favini/twill-bright-white.jpg",
+      "Twill Ivory": "/images/favini/twill-ivory.jpg",
     },
     type: "Textured",
     app: "Packaging",
@@ -660,8 +661,8 @@ export const catalogProducts: CatalogProduct[] = [
     // colour — the sheet's "Colour Name" field is "Natural" for all three (same shade),
     // which previously collapsed them into a single swatch and hid the real product
     // variants. Sheet source confirms 25% (not 20%), per SKUs 50091–50093.
-    colorNames: ["25% Cotton", "35% Cotton", "60% Cotton"],
-    colorGsm: { "25% Cotton": "240 GSM", "35% Cotton": "300 GSM", "60% Cotton": "300 GSM" },
+    colorNames: ["25% Cotton Natural", "35% Cotton Natural", "60% Cotton Natural"],
+    colorGsm: { "25% Cotton Natural": "240 GSM", "35% Cotton Natural": "300 GSM", "60% Cotton Natural": "300 GSM" },
     // Real per-variant Favini Art photos (favini.com/gs/en/products/favini-art), matched
     // via the sheet's own technical notes ("Watercolour Eco 25%", "Watercolour 35%",
     // "Watercolour Cloud 60%"). They visibly differ — 60% has a noticeably coarser grain
@@ -670,9 +671,9 @@ export const catalogProducts: CatalogProduct[] = [
     // reuses one photo for both 25% and 35% (same as their Sumo practice elsewhere),
     // mirrored here rather than guessing a third distinct image.
     colorImages: {
-      "25% Cotton": "/images/favini/cotton-25.jpg",
-      "35% Cotton": "/images/favini/cotton-25.jpg",
-      "60% Cotton": "/images/favini/cotton-60.jpg",
+      "25% Cotton Natural": "/images/favini/cotton-25.jpg",
+      "35% Cotton Natural": "/images/favini/cotton-25.jpg",
+      "60% Cotton Natural": "/images/favini/cotton-60.jpg",
     },
     // Family-card image: a flat, straight-on texture crop (same style as the other
     // catalogue cards, e.g. Twill, Tradition Valentino Ivory) rather than the diagonal
@@ -916,13 +917,13 @@ export const catalogProducts: CatalogProduct[] = [
     gsm: "270 · 300 · 350 GSM",
     sizes: "64 x 92 CM · 67 x 98 CM · 71 x 101 CM",
     colors: 2,
-    colorNames: ["White", "Natura"],
-    colorGsm: { "White": "270 · 300 · 350 GSM", "Natura": "300 · 350 GSM" },
+    colorNames: ["Eco HB White", "Eco HB Natura"],
+    colorGsm: { "Eco HB White": "270 · 300 · 350 GSM", "Eco HB Natura": "300 · 350 GSM" },
     // Natura only ships in 71 x 101 CM — the other two sizes in the family-wide list
     // above are White-only (verified against the master sheet's row-level Size column).
-    colorSizes: { "White": "64 x 92 CM · 67 x 98 CM · 71 x 101 CM", "Natura": "71 x 101 CM" },
+    colorSizes: { "Eco HB White": "64 x 92 CM · 67 x 98 CM · 71 x 101 CM", "Eco HB Natura": "71 x 101 CM" },
     image: "/images/mahaveer/eco-hb-white.jpg",
-    colorImages: { "White": "/images/mahaveer/eco-hb-white.jpg", "Natura": "/images/mahaveer/eco-hb-natura.jpg" },
+    colorImages: { "Eco HB White": "/images/mahaveer/eco-hb-white.jpg", "Eco HB Natura": "/images/mahaveer/eco-hb-natura.jpg" },
     type: "Textured",
     app: "Packaging",
     paperTypes: ["High-Bulk Textured Premium Board"],
@@ -1056,16 +1057,16 @@ export const catalogProducts: CatalogProduct[] = [
     // "Natural White" (120/300 GSM, 70x100 CM) is actually SKUs 50144-50145 "Contact
     // Natural White" — a different product entirely — so it's dropped from here rather
     // than duplicated; see the "contact-natural" family for that colour.
-    colorNames: ["Master White", "Ivory"],
-    colorGsm: { "Master White": "120 · 280 · 320 GSM", "Ivory": "120 · 250 · 300 GSM" },
-    colorSizes: { "Master White": "71 x 101 CM", "Ivory": "70 x 100 CM" },
+    colorNames: ["Bianco Flash Master White", "Bianco Flash Ivory"],
+    colorGsm: { "Bianco Flash Master White": "120 · 280 · 320 GSM", "Bianco Flash Ivory": "120 · 250 · 300 GSM" },
+    colorSizes: { "Bianco Flash Master White": "71 x 101 CM", "Bianco Flash Ivory": "70 x 100 CM" },
     image: "/images/favini/bianco-flash.jpg",
     // Real Favini photos (favini.com/gs/en/products/biancoflash) — "Master White" =
     // Favini's "Master", "Ivory" = Favini's own "Ivory" (dedicated photo, not borrowed
     // from "Premium").
     colorImages: {
-      "Master White": "/images/favini/biancoflash-master.jpg",
-      "Ivory": "/images/favini/biancoflash-ivory.jpg",
+      "Bianco Flash Master White": "/images/favini/biancoflash-master.jpg",
+      "Bianco Flash Ivory": "/images/favini/biancoflash-ivory.jpg",
     },
     type: "Color",
     app: "Packaging",
@@ -1133,16 +1134,16 @@ export const catalogProducts: CatalogProduct[] = [
     gsm: "250 · 300 · 450 GSM",
     sizes: "72 x 102 CM",
     colors: 2,
-    colorNames: ["Bianco", "Ivory"],
-    colorGsm: { "Bianco": "250 · 300 · 450 GSM", "Ivory": "300 GSM" },
+    colorNames: ["Contact Pack Bianco", "Contact Pack Ivory"],
+    colorGsm: { "Contact Pack Bianco": "250 · 300 · 450 GSM", "Contact Pack Ivory": "300 GSM" },
     image: "/images/favini/contact-pack.jpg",
     // Real Favini photo (favini.com/gs/en/products/contact-pack) — "Ivory" is an exact
     // match with a direct dedicated photo. "Bianco" has no exact match on Favini's site
     // (Favini calls it "White") but now has a client-supplied real photo of the actual
     // product (Pending Images/MP_500x500), which is a direct source and always wins.
     colorImages: {
-      "Ivory": "/images/favini/contact-pack-ivory.jpg",
-      "Bianco": "/images/favini/contact-pack-bianco.jpg",
+      "Contact Pack Ivory": "/images/favini/contact-pack-ivory.jpg",
+      "Contact Pack Bianco": "/images/favini/contact-pack-bianco.jpg",
     },
     type: "Color",
     app: "Packaging",
@@ -1175,11 +1176,11 @@ export const catalogProducts: CatalogProduct[] = [
     gsm: "250 · 350 GSM",
     sizes: "72 x 102 CM",
     colors: 1,
-    colorNames: ["Corn"],
+    colorNames: ["Crush Corn"],
     image: "/images/favini/crush.jpg",
     // Real Favini photo (favini.com/gs/en/products/crush) — plain "Corn" has no dedicated
     // photo there (placeholder icon), but "Corn Digital" does, same paper/colour.
-    colorImages: { "Corn": "/images/favini/crush-corn.jpg" },
+    colorImages: { "Crush Corn": "/images/favini/crush-corn.jpg" },
     type: "Eco",
     app: "Packaging",
     paperTypes: ["Eco-Friendly Recycled Fine Paper"],
@@ -1227,14 +1228,14 @@ export const catalogProducts: CatalogProduct[] = [
     gsm: "120 · 145 · 200 · 240 · 270 · 320 GSM",
     sizes: "70 x 100 CM",
     colors: 2,
-    colorNames: ["White", "Ivory"],
+    colorNames: ["Influence White", "Influence Ivory"],
     image: "/images/favini/influence-white-real.jpg",
     // "Influence" is Mahaveer's own trade name for what Favini sells as "Dolce Vita"
     // (sheet's Series column: "Influence (Dolce Vita equivalent reference)", remarks cite
     // Dolce-Vita_TDS_12052020.pdf). Real Favini photos from favini.com/gs/en/products/
     // dolce-vita — both colours are exact matches there. Replaces the previous pair of
     // images whose origin couldn't be verified against Favini's site under either name.
-    colorImages: { "White": "/images/favini/influence-white-real.jpg", "Ivory": "/images/favini/influence-ivory-real.jpg" },
+    colorImages: { "Influence White": "/images/favini/influence-white-real.jpg", "Influence Ivory": "/images/favini/influence-ivory-real.jpg" },
     type: "Color",
     app: "Stationery & Print",
     paperTypes: ["Premium High-Definition Uncoated Paper"],
@@ -1261,9 +1262,9 @@ export const catalogProducts: CatalogProduct[] = [
     gsm: "285 GSM",
     sizes: "67 x 98 CM",
     colors: 6,
-    colorNames: ["Ice White", "Pearl White", "Light Cream", "Yellow Gold", "Light Gold", "Shimmer White"],
+    colorNames: ["Lustre Ice White", "Lustre Pearl White", "Lustre Light Cream", "Lustre Yellow Gold", "Lustre Light Gold", "Lustre Shimmer White"],
     image: "/images/mahaveer/lustre-ice-white.jpg",
-    colorImages: { "Ice White": "/images/mahaveer/lustre-ice-white.jpg", "Pearl White": "/images/mahaveer/lustre-pearl-white.jpg", "Light Cream": "/images/mahaveer/lustre-light-cream.jpg", "Yellow Gold": "/images/mahaveer/lustre-yellow-gold.jpg", "Light Gold": "/images/mahaveer/lustre-light-gold.jpg", "Shimmer White": "/images/mahaveer/lustre-shimmer-white.jpg" },
+    colorImages: { "Lustre Ice White": "/images/mahaveer/lustre-ice-white.jpg", "Lustre Pearl White": "/images/mahaveer/lustre-pearl-white.jpg", "Lustre Light Cream": "/images/mahaveer/lustre-light-cream.jpg", "Lustre Yellow Gold": "/images/mahaveer/lustre-yellow-gold.jpg", "Lustre Light Gold": "/images/mahaveer/lustre-light-gold.jpg", "Lustre Shimmer White": "/images/mahaveer/lustre-shimmer-white.jpg" },
     type: "Metallic",
     app: "Packaging",
     paperTypes: ["Metallic Paper", "Board"],
@@ -1281,14 +1282,14 @@ export const catalogProducts: CatalogProduct[] = [
     gsm: "120 · 160 · 240 · 290 GSM",
     sizes: "70 x 100 CM",
     colors: 2,
-    colorNames: ["Ice Gold", "White Gold"],
-    colorGsm: { "Ice Gold": "240 · 290 GSM", "White Gold": "120 · 160 GSM" },
+    colorNames: ["In Metal Ice Gold", "In Metal White Gold"],
+    colorGsm: { "In Metal Ice Gold": "240 · 290 GSM", "In Metal White Gold": "120 · 160 GSM" },
     image: "/images/favini/in-metal-white-gold.jpg",
     // Client-supplied real photos of the actual product (MP_Images_500x500) — the only
     // source available; both colours were previously video-only (no still frame).
     colorImages: {
-      "Ice Gold": "/images/favini/in-metal-ice-gold.jpg",
-      "White Gold": "/images/favini/in-metal-white-gold.jpg",
+      "In Metal Ice Gold": "/images/favini/in-metal-ice-gold.jpg",
+      "In Metal White Gold": "/images/favini/in-metal-white-gold.jpg",
     },
     type: "Metallic",
     app: "Packaging",
@@ -1307,10 +1308,10 @@ export const catalogProducts: CatalogProduct[] = [
     gsm: "120 · 250 · 290 GSM",
     sizes: "70 x 100 CM",
     colors: 4,
-    colorNames: ["Marble White", "Candle Light Cream", "Real Copper", "Real Gold"],
+    colorNames: ["Majestic Marble White", "Majestic Candle Light Cream", "Majestic Real Copper", "Majestic Real Gold"],
     colorGsm: {
-      "Marble White": "120 · 290 GSM", "Candle Light Cream": "120 · 250 GSM",
-      "Real Copper": "120 · 250 GSM", "Real Gold": "120 · 250 GSM",
+      "Majestic Marble White": "120 · 290 GSM", "Majestic Candle Light Cream": "120 · 250 GSM",
+      "Majestic Real Copper": "120 · 250 GSM", "Majestic Real Gold": "120 · 250 GSM",
     },
     image: "/images/favini/majestic.jpg",
     // Real Favini photos (favini.com/gs/en/products/majestic). "Candle Light Cream" and
@@ -1319,10 +1320,10 @@ export const catalogProducts: CatalogProduct[] = [
     // "Real Copper" has zero mentions anywhere on Favini's Majestic page, but now has a
     // client-supplied real photo of the actual product (Pending Images/MP_500x500).
     colorImages: {
-      "Marble White": "/images/favini/majestic-marble-white.jpg",
-      "Candle Light Cream": "/images/favini/majestic-candlelight-cream.jpg",
-      "Real Gold": "/images/favini/majestic-real-gold.jpg",
-      "Real Copper": "/images/favini/majestic-real-copper.jpg",
+      "Majestic Marble White": "/images/favini/majestic-marble-white.jpg",
+      "Majestic Candle Light Cream": "/images/favini/majestic-candlelight-cream.jpg",
+      "Majestic Real Gold": "/images/favini/majestic-real-gold.jpg",
+      "Majestic Real Copper": "/images/favini/majestic-real-copper.jpg",
     },
     type: "Metallic",
     app: "Packaging",
@@ -1359,10 +1360,10 @@ export const catalogProducts: CatalogProduct[] = [
     gsm: "120 · 240 GSM",
     sizes: "78.7 x 109.2 CM",
     colors: 5,
-    colorNames: ["Black", "Aqua Blue", "Navy Blue", "Green", "Wood Palm"],
-    colorGsm: { "Black": "120 · 240 GSM", "Aqua Blue": "120 GSM", "Navy Blue": "120 GSM", "Green": "120 GSM", "Wood Palm": "120 GSM" },
+    colorNames: ["Cloud Black", "Cloud Aqua Blue", "Cloud Navy Blue", "Cloud Green", "Cloud Wood Palm"],
+    colorGsm: { "Cloud Black": "120 · 240 GSM", "Cloud Aqua Blue": "120 GSM", "Cloud Navy Blue": "120 GSM", "Cloud Green": "120 GSM", "Cloud Wood Palm": "120 GSM" },
     image: "/images/mahaveer/cloud-black.jpg",
-    colorImages: { "Black": "/images/mahaveer/cloud-black.jpg", "Aqua Blue": "/images/mahaveer/cloud-aqua-blue.jpg", "Navy Blue": "/images/mahaveer/cloud-navy-blue.jpg", "Green": "/images/mahaveer/cloud-green.jpg", "Wood Palm": "/images/mahaveer/cloud-wood-palm.jpg" },
+    colorImages: { "Cloud Black": "/images/mahaveer/cloud-black.jpg", "Cloud Aqua Blue": "/images/mahaveer/cloud-aqua-blue.jpg", "Cloud Navy Blue": "/images/mahaveer/cloud-navy-blue.jpg", "Cloud Green": "/images/mahaveer/cloud-green.jpg", "Cloud Wood Palm": "/images/mahaveer/cloud-wood-palm.jpg" },
     type: "Textured",
     app: "Covering & Binding",
     paperTypes: ["Premium Ultra Matte Paper & Board"],
@@ -1511,9 +1512,9 @@ export const catalogProducts: CatalogProduct[] = [
     gsm: "120 GSM",
     sizes: "70 x 100 CM",
     colors: 10,
-    colorNames: ["Black", "Cream", "Maroon", "Navy Blue", "Red", "Wine", "Bronze", "Gold", "Green", "Purple"],
+    colorNames: ["Cloth Satin Black", "Cloth Satin Cream", "Cloth Satin Maroon", "Cloth Satin Navy Blue", "Cloth Satin Red", "Cloth Satin Wine", "Cloth Satin Bronze", "Cloth Satin Gold", "Cloth Satin Green", "Cloth Satin Purple"],
     image: "/images/mahaveer/cloth-satin-black.jpg",
-    colorImages: { "Black": "/images/mahaveer/cloth-satin-black.jpg", "Cream": "/images/mahaveer/cloth-satin-cream.jpg", "Maroon": "/images/mahaveer/cloth-satin-maroon.jpg", "Navy Blue": "/images/mahaveer/cloth-satin-navy-blue.jpg", "Red": "/images/mahaveer/cloth-satin-red.jpg", "Wine": "/images/mahaveer/cloth-satin-wine.jpg", "Bronze": "/images/mahaveer/cloth-satin-bronze.jpg", "Gold": "/images/mahaveer/cloth-satin-gold.jpg", "Green": "/images/mahaveer/cloth-satin-green.jpg", "Purple": "/images/mahaveer/cloth-satin-purple.jpg" },
+    colorImages: { "Cloth Satin Black": "/images/mahaveer/cloth-satin-black.jpg", "Cloth Satin Cream": "/images/mahaveer/cloth-satin-cream.jpg", "Cloth Satin Maroon": "/images/mahaveer/cloth-satin-maroon.jpg", "Cloth Satin Navy Blue": "/images/mahaveer/cloth-satin-navy-blue.jpg", "Cloth Satin Red": "/images/mahaveer/cloth-satin-red.jpg", "Cloth Satin Wine": "/images/mahaveer/cloth-satin-wine.jpg", "Cloth Satin Bronze": "/images/mahaveer/cloth-satin-bronze.jpg", "Cloth Satin Gold": "/images/mahaveer/cloth-satin-gold.jpg", "Cloth Satin Green": "/images/mahaveer/cloth-satin-green.jpg", "Cloth Satin Purple": "/images/mahaveer/cloth-satin-purple.jpg" },
     type: "Textured",
     app: "Covering & Binding",
     brand: "Mahaveer Papers",
@@ -1535,7 +1536,7 @@ export const catalogProducts: CatalogProduct[] = [
     gsm: "120 GSM",
     sizes: "72 x 102 CM",
     colors: 8,
-    colorNames: ["Bianco", "Grey", "Green", "Brown", "Coffee", "Navy", "Cobalt", "Nero"],
+    colorNames: ["Classy Cover Bianco", "Classy Cover Grey", "Classy Cover Green", "Classy Cover Brown", "Classy Cover Coffee", "Classy Cover Navy", "Classy Cover Cobalt", "Classy Cover Nero"],
     image: "/images/favini/classy-cover.jpg",
     // Real Favini photos (favini.com/gs/en/products/classycovers), matched by core colour
     // word with the TT/MN/LN texture-code suffix ignored (per instruction). "Bianco" and
@@ -1543,14 +1544,14 @@ export const catalogProducts: CatalogProduct[] = [
     // "Black", a full-word translation — but both now have client-supplied real photos
     // of the actual product (Pending Images/MP_500x500), which are a direct source.
     colorImages: {
-      "Bianco": "/images/favini/classy-cover-bianco.jpg",
-      "Grey": "/images/favini/classy-cover-grey.jpg",
-      "Green": "/images/favini/classy-cover-green.jpg",
-      "Brown": "/images/favini/classy-cover-brown.jpg",
-      "Coffee": "/images/favini/classy-cover-coffee.jpg",
-      "Navy": "/images/favini/classy-cover-navy.jpg",
-      "Cobalt": "/images/favini/classy-cover-cobalt.jpg",
-      "Nero": "/images/favini/classy-cover-nero.jpg",
+      "Classy Cover Bianco": "/images/favini/classy-cover-bianco.jpg",
+      "Classy Cover Grey": "/images/favini/classy-cover-grey.jpg",
+      "Classy Cover Green": "/images/favini/classy-cover-green.jpg",
+      "Classy Cover Brown": "/images/favini/classy-cover-brown.jpg",
+      "Classy Cover Coffee": "/images/favini/classy-cover-coffee.jpg",
+      "Classy Cover Navy": "/images/favini/classy-cover-navy.jpg",
+      "Classy Cover Cobalt": "/images/favini/classy-cover-cobalt.jpg",
+      "Classy Cover Nero": "/images/favini/classy-cover-nero.jpg",
     },
     type: "Textured",
     app: "Covering & Binding",
@@ -1702,10 +1703,10 @@ export const catalogProducts: CatalogProduct[] = [
     gsm: "110/90 · 120/90 · 130/90",
     sizes: "13x19 Inch",
     colors: 5,
-    colorNames: ["Crystal Ice", "Pure Pearl", "Black Velvet", "Snow Sand", "Linen Touch"],
-    colorGsm: { "Crystal Ice": "120/90", "Pure Pearl": "110/90", "Black Velvet": "120/90", "Snow Sand": "130/90", "Linen Touch": "120/90" },
+    colorNames: ["Digilux Crystal Ice Label", "Digilux Pure Pearl Label", "Digilux Black Velvet Label", "Digilux Snow Sand Label", "Digilux Linen Touch Label"],
+    colorGsm: { "Digilux Crystal Ice Label": "120/90", "Digilux Pure Pearl Label": "110/90", "Digilux Black Velvet Label": "120/90", "Digilux Snow Sand Label": "130/90", "Digilux Linen Touch Label": "120/90" },
     image: "/images/mahaveer/digilux-crystal-ice.jpg",
-    colorImages: { "Crystal Ice": "/images/mahaveer/digilux-crystal-ice.jpg", "Pure Pearl": "/images/mahaveer/digilux-pure-pearl.jpg", "Black Velvet": "/images/mahaveer/digilux-black-velvet.jpg", "Snow Sand": "/images/mahaveer/digilux-snow-sand.jpg", "Linen Touch": "/images/mahaveer/digilux-linen-touch.jpg" },
+    colorImages: { "Digilux Crystal Ice Label": "/images/mahaveer/digilux-crystal-ice.jpg", "Digilux Pure Pearl Label": "/images/mahaveer/digilux-pure-pearl.jpg", "Digilux Black Velvet Label": "/images/mahaveer/digilux-black-velvet.jpg", "Digilux Snow Sand Label": "/images/mahaveer/digilux-snow-sand.jpg", "Digilux Linen Touch Label": "/images/mahaveer/digilux-linen-touch.jpg" },
     type: "Specialty",
     app: "Packaging",
     brand: "Digilux",
@@ -1730,17 +1731,17 @@ export const catalogProducts: CatalogProduct[] = [
     gsm: "1.0 · 1.2 · 1.4 · 1.5 · 1.8 · 2.0 · 2.5 · 3.0 MM",
     sizes: "79 x 104 CM",
     colors: 3,
-    colorNames: ["Grey", "Black Top", "White Top"],
+    colorNames: ["Grey Binding Board", "Black Top Binding Board", "White Top Binding Board"],
     colorGsm: {
-      "Grey": "1.0 · 1.2 · 1.5 · 1.8 · 2.0 · 2.5 · 3.0 MM",
-      "Black Top": "1.2 · 1.4 · 1.8 MM",
-      "White Top": "1.5 · 1.8 MM",
+      "Grey Binding Board": "1.0 · 1.2 · 1.5 · 1.8 · 2.0 · 2.5 · 3.0 MM",
+      "Black Top Binding Board": "1.2 · 1.4 · 1.8 MM",
+      "White Top Binding Board": "1.5 · 1.8 MM",
     },
     image: "/images/mahaveer/grey-binding-board.jpg",
     colorImages: {
-      "Grey": "/images/mahaveer/grey-binding-board.jpg",
-      "Black Top": "/images/mahaveer/black-top-binding-board.jpg",
-      "White Top": "/images/mahaveer/white-top-binding-board.jpg",
+      "Grey Binding Board": "/images/mahaveer/grey-binding-board.jpg",
+      "Black Top Binding Board": "/images/mahaveer/black-top-binding-board.jpg",
+      "White Top Binding Board": "/images/mahaveer/white-top-binding-board.jpg",
     },
     type: "Board",
     app: "Covering & Binding",
