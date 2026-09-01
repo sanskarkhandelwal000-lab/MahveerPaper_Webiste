@@ -473,13 +473,13 @@ export const catalogProducts: CatalogProduct[] = [
     colors: 18,
     colorNames: [
       "MP 192 Needle Point Cream", "MP 366 Linea Cream", "MP 456 Fine Toie Cream", "MP 538 Valentino Cream", "MP 541 Toyle Moyne Cream", "MP 1031 Silk Soie Cream", "MP 1157 Design Bag Cream",
-      "MP 398 HB Needle Point White", "MP 486 HB Design Bag White 1/s", "MP 536 HB Valentino White", "MP 800 HB Classic Linen White", "MP 811 HB Linea White", "MP 897 HB Toyle Moyne White", "MP 1030 HB Silk Soie White", "MP 1182 HB Canvas Linen White", "MP 1214 HB White Net", "K Linen White",
+      "MP 398 HB Needle Point White", "MP 486 HB Design Bag White", "MP 536 HB Valentino White", "MP 800 HB Classic Linen White", "MP 811 HB Linea White", "MP 897 HB Toyle Moyne White", "MP 1030 HB Silk Soie White", "MP 1182 HB Canvas Linen White", "MP 1214 HB White Net", "K Linen White",
       "Natural Rock",
     ],
     colorGsm: {
       "MP 192 Needle Point Cream": "300 GSM", "MP 366 Linea Cream": "300 GSM", "MP 456 Fine Toie Cream": "300 GSM", "MP 538 Valentino Cream": "300 GSM",
       "MP 541 Toyle Moyne Cream": "300 GSM", "MP 1031 Silk Soie Cream": "300 GSM", "MP 1157 Design Bag Cream": "300 GSM",
-      "MP 398 HB Needle Point White": "300 GSM", "MP 486 HB Design Bag White 1/s": "300 GSM", "MP 536 HB Valentino White": "300 GSM", "MP 800 HB Classic Linen White": "300 GSM",
+      "MP 398 HB Needle Point White": "300 GSM", "MP 486 HB Design Bag White": "300 GSM", "MP 536 HB Valentino White": "300 GSM", "MP 800 HB Classic Linen White": "300 GSM",
       "MP 811 HB Linea White": "300 GSM", "MP 897 HB Toyle Moyne White": "300 GSM", "MP 1030 HB Silk Soie White": "300 GSM", "MP 1182 HB Canvas Linen White": "300 GSM",
       "MP 1214 HB White Net": "300 GSM", "K Linen White": "350 GSM",
       "Natural Rock": "300 GSM",
@@ -491,7 +491,7 @@ export const catalogProducts: CatalogProduct[] = [
     colorSizes: {
       "MP 192 Needle Point Cream": "67 x 98 CM", "MP 366 Linea Cream": "67 x 98 CM", "MP 456 Fine Toie Cream": "67 x 98 CM", "MP 538 Valentino Cream": "67 x 98 CM",
       "MP 541 Toyle Moyne Cream": "67 x 98 CM", "MP 1031 Silk Soie Cream": "67 x 98 CM", "MP 1157 Design Bag Cream": "67 x 98 CM",
-      "MP 398 HB Needle Point White": "67 x 98 CM", "MP 486 HB Design Bag White 1/s": "67 x 98 CM", "MP 536 HB Valentino White": "67 x 98 CM", "MP 800 HB Classic Linen White": "67 x 98 CM",
+      "MP 398 HB Needle Point White": "67 x 98 CM", "MP 486 HB Design Bag White": "67 x 98 CM", "MP 536 HB Valentino White": "67 x 98 CM", "MP 800 HB Classic Linen White": "67 x 98 CM",
       "MP 811 HB Linea White": "67 x 98 CM", "MP 897 HB Toyle Moyne White": "67 x 98 CM", "MP 1030 HB Silk Soie White": "67 x 98 CM", "MP 1182 HB Canvas Linen White": "67 x 98 CM",
       "MP 1214 HB White Net": "67 x 98 CM", "K Linen White": "70 x 100 CM",
       "Natural Rock": "70 x 100 CM",
@@ -507,7 +507,7 @@ export const catalogProducts: CatalogProduct[] = [
       "MP 1031 Silk Soie Cream": "/images/mahaveer/textures/silk-soie-cream.jpg",
       "MP 1157 Design Bag Cream": "/images/mahaveer/textures/design-bag-cream.jpg",
       "MP 398 HB Needle Point White": "/images/mahaveer/textures/needle-point-white.jpg",
-      "MP 486 HB Design Bag White 1/s": "/images/mahaveer/textures/design-bag-white.jpg",
+      "MP 486 HB Design Bag White": "/images/mahaveer/textures/design-bag-white.jpg",
       "MP 536 HB Valentino White": "/images/mahaveer/textures/valentino-white.jpg",
       "MP 800 HB Classic Linen White": "/images/mahaveer/textures/classic-linen-white.jpg",
       "MP 811 HB Linea White": "/images/mahaveer/textures/linea-white.jpg",
