@@ -6,6 +6,7 @@ import { Mail, ImageOff, Sparkles, Layers, Ruler, Palette, Tag, ArrowLeft } from
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { MotionDiv } from "@/components/ui/MotionDiv";
+import { ZoomImage } from "@/components/ui/ZoomImage";
 import { catalogProducts, COLOR_NAME_HEX, BOOKS } from "@/data/products";
 
 type Props = { params: Promise<{ id: string }>; searchParams?: Promise<{ from?: string }> };
@@ -268,30 +269,8 @@ export default async function ProductPage({ params, searchParams }: Props) {
               const colorImage = product.colorImages?.[swatch.name];
               const plainHexBlock = !colorImage && !!swatch.hex;
 
-              return (
-              <MotionDiv key={`${swatch.name}-${i}`} delay={0.04 + (i % 4) * 0.05}>
-                <div
-                  className="relative overflow-hidden rounded-sm"
-                  style={{
-                    aspectRatio: "1/1",
-                    backgroundColor: plainHexBlock ? swatch.hex : undefined,
-                  }}
-                >
-                  {colorImage ? (
-                    <Image
-                      src={colorImage}
-                      alt={`${product.name} — ${swatch.name}`}
-                      fill
-                      unoptimized
-                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                      className="object-cover"
-                    />
-                  ) : !plainHexBlock ? (
-                    <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-gray-100 text-gray-400">
-                      <ImageOff className="h-7 w-7" strokeWidth={1.5} />
-                      <span className="text-[11px] font-medium">Photo coming soon</span>
-                    </div>
-                  ) : null}
+              const swatchBadges = (
+                <>
                   <span className="absolute bottom-2 right-2 flex h-6 w-7 items-center justify-center rounded-[4px] bg-white shadow-sm">
                     <Mail className="h-3.5 w-3.5 text-gray-700" />
                   </span>
@@ -306,7 +285,35 @@ export default async function ProductPage({ params, searchParams }: Props) {
                       <Image src="/images/favini-logo.svg" alt="Favini" width={40} height={10} className="h-2.5 w-auto" unoptimized />
                     </span>
                   )}
-                </div>
+                </>
+              );
+
+              return (
+              <MotionDiv key={`${swatch.name}-${i}`} delay={0.04 + (i % 4) * 0.05}>
+                {colorImage ? (
+                  <ZoomImage
+                    src={colorImage}
+                    alt={`${product.name} — ${swatch.name}`}
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    className="rounded-sm"
+                    style={{ aspectRatio: "1/1" }}
+                  >
+                    {swatchBadges}
+                  </ZoomImage>
+                ) : (
+                  <div
+                    className="relative overflow-hidden rounded-sm"
+                    style={{ aspectRatio: "1/1", backgroundColor: plainHexBlock ? swatch.hex : undefined }}
+                  >
+                    {!plainHexBlock && (
+                      <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-gray-100 text-gray-400">
+                        <ImageOff className="h-7 w-7" strokeWidth={1.5} />
+                        <span className="text-[11px] font-medium">Photo coming soon</span>
+                      </div>
+                    )}
+                    {swatchBadges}
+                  </div>
+                )}
                 <div className="mt-4 flex flex-wrap items-center gap-2">
                   <span
                     className="inline-flex items-center border text-[13px] font-medium px-3 py-1 rounded-full"

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { Search, ImageOff } from "lucide-react";
 import { MotionDiv } from "@/components/ui/MotionDiv";
+import { ZoomImage } from "@/components/ui/ZoomImage";
 
 // Full 55-SKU DigiLux range, sourced from the Digilux_All_Product_Master
 // spreadsheet (Aug 2026) — Product Name, Product Category, Colour Name,
@@ -250,30 +251,29 @@ export function DigiLuxCatalog() {
               className="group block"
               aria-label={`Enquire about ${product.name}`}
             >
-              <div className="relative aspect-square rounded-xl overflow-hidden mb-3 bg-gray-100">
-                {product.image ? (
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                ) : (
-                  <div className="flex h-full w-full flex-col items-center justify-center gap-1.5 text-gray-400">
-                    <ImageOff className="h-6 w-6" strokeWidth={1.5} />
-                    <span className="text-[11px] font-medium">Photo coming soon</span>
+              {product.image ? (
+                <ZoomImage
+                  src={product.image}
+                  alt={product.name}
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  className="aspect-square rounded-xl mb-3 bg-gray-100"
+                  imgClassName="object-cover group-hover:scale-105 transition-transform duration-500"
+                >
+                  <span className="pointer-events-none absolute bottom-1.5 left-1.5 text-[9px] leading-none text-white/70 bg-black/35 backdrop-blur-sm px-1.5 py-1 rounded">
+                    Image indicative
+                  </span>
+                  <div className="pointer-events-none absolute bottom-2 right-2 flex h-7 w-7 items-center justify-center rounded-md bg-white shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                      <path d="M1 1h10v7H7l-3 3V8H1V1z" stroke="#0F1923" strokeWidth="1.2" strokeLinejoin="round" />
+                    </svg>
                   </div>
-                )}
-                <span className="pointer-events-none absolute bottom-1.5 left-1.5 text-[9px] leading-none text-white/70 bg-black/35 backdrop-blur-sm px-1.5 py-1 rounded">
-                  Image indicative
-                </span>
-                <div className="absolute bottom-2 right-2 flex h-7 w-7 items-center justify-center rounded-md bg-white shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                    <path d="M1 1h10v7H7l-3 3V8H1V1z" stroke="#0F1923" strokeWidth="1.2" strokeLinejoin="round" />
-                  </svg>
+                </ZoomImage>
+              ) : (
+                <div className="relative aspect-square rounded-xl overflow-hidden mb-3 bg-gray-100 flex flex-col items-center justify-center gap-1.5 text-gray-400">
+                  <ImageOff className="h-6 w-6" strokeWidth={1.5} />
+                  <span className="text-[11px] font-medium">Photo coming soon</span>
                 </div>
-              </div>
+              )}
 
               <div className="flex flex-wrap gap-1.5 mb-1.5">
                 <span className="text-[11px] border border-gray-300 text-gray-500 px-2.5 py-0.5 rounded-full leading-tight">
