@@ -17,7 +17,7 @@ export function ProductCard({ product, delay = 0, catalogQuery = "" }: { product
             there instead, where a customer is actually choosing a specific colour. */}
         <div
           className="relative rounded-xl overflow-hidden mb-4 transition-transform duration-500 group-hover:scale-[1.015]"
-          style={{ aspectRatio: "4 / 4.2" }}
+          style={{ aspectRatio: "4 / 3.6" }}
         >
           {product.image ? (
             <Image
