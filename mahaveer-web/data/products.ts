@@ -735,11 +735,28 @@ export const catalogProducts: CatalogProduct[] = [
     book: "Blacks & Krafts",
     name: "VTC Black",
     gsm: "120 · 200 · 250 · 300 · 600 · 900 GSM",
-    sizes: "70 x 100 CM · 71 x 101 CM · 79 x 109 CM",
-    colors: 1,
-    colorNames: ["Black"],
+    sizes: "63.5 x 91.4 CM · 70 x 100 CM · 71 x 101 CM · 79 x 109 CM",
+    colors: 3,
+    // Split by GSM/size group per instruction (Sept 2026) — all three groups are the
+    // same Black shade, so they share the one product photo, distinguished by weight
+    // and the size(s) each weight actually ships in.
+    colorNames: ["VTC 120 GSM", "VTC 200 · 250 · 300 GSM", "VTC 600 · 900 GSM"],
+    colorGsm: {
+      "VTC 120 GSM": "120 GSM",
+      "VTC 200 · 250 · 300 GSM": "200 · 250 · 300 GSM",
+      "VTC 600 · 900 GSM": "600 · 900 GSM",
+    },
+    colorSizes: {
+      "VTC 120 GSM": "63.5 x 91.4 CM · 70 x 100 CM",
+      "VTC 200 · 250 · 300 GSM": "79 x 109 CM",
+      "VTC 600 · 900 GSM": "71 x 101 CM",
+    },
     image: "/images/mahaveer/vtc-black.jpg",
-    colorImages: { "Black": "/images/mahaveer/vtc-black.jpg" },
+    colorImages: {
+      "VTC 120 GSM": "/images/mahaveer/vtc-black.jpg",
+      "VTC 200 · 250 · 300 GSM": "/images/mahaveer/vtc-black.jpg",
+      "VTC 600 · 900 GSM": "/images/mahaveer/vtc-black.jpg",
+    },
     type: "Color",
     app: "Packaging",
     paperTypes: ["Commercial Black Paper and Board"],
