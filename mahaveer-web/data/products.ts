@@ -657,12 +657,14 @@ export const catalogProducts: CatalogProduct[] = [
     gsm: "240 · 300 GSM",
     sizes: "70 x 100 CM",
     colors: 3,
-    // These are 3 distinct SKUs distinguished by cotton content (25% / 35% / 60%), not by
+    // These are 3 distinct SKUs distinguished by cotton content (20% / 35% / 60%), not by
     // colour — the sheet's "Colour Name" field is "Natural" for all three (same shade),
     // which previously collapsed them into a single swatch and hid the real product
-    // variants. Sheet source confirms 25% (not 20%), per SKUs 50091–50093.
-    colorNames: ["25% Cotton Natural", "35% Cotton Natural", "60% Cotton Natural"],
-    colorGsm: { "25% Cotton Natural": "240 GSM", "35% Cotton Natural": "300 GSM", "60% Cotton Natural": "300 GSM" },
+    // variants. Display name corrected to 20% per direct instruction (Sept 2026) —
+    // note the master sheet's SKU 50091 itself still says "25%"; GSM/image/technical
+    // data below are unaffected, only the displayed name changed.
+    colorNames: ["20% Cotton Natural", "35% Cotton Natural", "60% Cotton Natural"],
+    colorGsm: { "20% Cotton Natural": "240 GSM", "35% Cotton Natural": "300 GSM", "60% Cotton Natural": "300 GSM" },
     // Real per-variant Favini Art photos (favini.com/gs/en/products/favini-art), matched
     // via the sheet's own technical notes ("Watercolour Eco 25%", "Watercolour 35%",
     // "Watercolour Cloud 60%"). They visibly differ — 60% has a noticeably coarser grain
@@ -671,7 +673,7 @@ export const catalogProducts: CatalogProduct[] = [
     // reuses one photo for both 25% and 35% (same as their Sumo practice elsewhere),
     // mirrored here rather than guessing a third distinct image.
     colorImages: {
-      "25% Cotton Natural": "/images/favini/cotton-25.jpg",
+      "20% Cotton Natural": "/images/favini/cotton-25.jpg",
       "35% Cotton Natural": "/images/favini/cotton-25.jpg",
       "60% Cotton Natural": "/images/favini/cotton-60.jpg",
     },
@@ -684,7 +686,7 @@ export const catalogProducts: CatalogProduct[] = [
     paperTypes: ["Watercolour Artist Papers"],
     applications: ["Watercolour", "Gouache", "Acrylic", "Tempera", "Professional Watercolour"],
     colourGroups: ["Natural", "Ivory"],
-    description: "Three Favini Art cotton watercolour papers: 25%, 35% and 60% Cloud, each maintained as a separate SKU-level technical profile.",
+    description: "Three Favini Art cotton watercolour papers: 20%, 35% and 60% Cloud, each maintained as a separate SKU-level technical profile.",
     bestFor: "Watercolour / Gouache / Acrylic; Professional Watercolour; Artist & Creative Applications",
     aiSummary: "Select 25% for sustainable artist use, 35% for higher cotton-content wet media, and 60% Cloud for the most premium professional watercolour application.",
     isFavini: true,
