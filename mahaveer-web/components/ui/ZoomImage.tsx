@@ -8,7 +8,7 @@ import Image from "next/image";
 // Minimum on-screen size (px) for the floating zoom panel — thumbnails and swatch
 // tiles render much smaller than this, so the panel is scaled up to stay legible
 // no matter how small the source image container is.
-const PANEL_MIN = 360;
+const PANEL_MIN = 250;
 // Gap (px) between the original image and the floating zoom panel.
 const GAP = 16;
 // White frame thickness (px) around the zoomed crop, so the panel reads as a
