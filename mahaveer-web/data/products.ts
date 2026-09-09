@@ -843,6 +843,10 @@ export const catalogProducts: CatalogProduct[] = [
     gsm: "200 · 250 · 300 · 340 · 400 GSM",
     sizes: "71 x 101 CM",
     colors: 1,
+    // colorNames must match the colorImages key below or the swatch's image never
+    // resolves (falls back to product.name, "Natural Kraft Board", which doesn't
+    // match) — same bug class found and fixed on Kraft Paper.
+    colorNames: ["Kraft Board"],
     image: "/images/mahaveer/kraft-board.jpg",
     colorImages: { "Kraft Board": "/images/mahaveer/kraft-board.jpg" },
     type: "Color",
@@ -871,6 +875,7 @@ export const catalogProducts: CatalogProduct[] = [
     gsm: "125 · 250 · 300 GSM",
     sizes: "63.5 x 90 CM · 63.5 x 91.4 CM · 71 x 101 CM",
     colors: 1,
+    colorNames: ["Eco KLB"],
     image: "/images/mahaveer/eco-klb.jpg",
     colorImages: { "Eco KLB": "/images/mahaveer/eco-klb.jpg" },
     type: "Color",
@@ -1629,6 +1634,7 @@ export const catalogProducts: CatalogProduct[] = [
     gsm: "56 · 105 GSM",
     sizes: "51 x 76 CM",
     colors: 1,
+    colorNames: ["Tyvek"],
     image: "/images/mahaveer/tyvek.jpg",
     colorImages: { "Tyvek": "/images/mahaveer/tyvek.jpg" },
     type: "Specialty",
