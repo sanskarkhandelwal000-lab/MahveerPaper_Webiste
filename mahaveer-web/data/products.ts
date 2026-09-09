@@ -799,9 +799,24 @@ export const catalogProducts: CatalogProduct[] = [
     name: "Natural Kraft Paper",
     gsm: "100 · 170 GSM",
     sizes: "63.5 x 91.4 CM · 76 x 101 CM",
-    colors: 1,
+    colors: 2,
+    // Split by GSM/size group per instruction (Sept 2026), same treatment as VTC —
+    // reuses the one product photo for both groups. Also fixes a real bug: colorImages
+    // was previously keyed "Kraft Paper" with no colorNames set, so the swatch fell
+    // back to product.name ("Natural Kraft Paper") which never matched that key —
+    // no image ever actually rendered on the product page.
+    colorNames: ["Kraft Paper 100 GSM", "Kraft Paper 170 GSM"],
+    colorGsm: { "Kraft Paper 100 GSM": "100 GSM", "Kraft Paper 170 GSM": "170 GSM" },
+    colorSizes: {
+      "Kraft Paper 100 GSM": "63.5 x 91.4 CM · 76 x 101 CM",
+      "Kraft Paper 170 GSM": "63.5 x 91.4 CM",
+    },
+    colorLabels: { "Kraft Paper 100 GSM": "Kraft Paper", "Kraft Paper 170 GSM": "Kraft Paper" },
     image: "/images/mahaveer/kraft-paper.jpg",
-    colorImages: { "Kraft Paper": "/images/mahaveer/kraft-paper.jpg" },
+    colorImages: {
+      "Kraft Paper 100 GSM": "/images/mahaveer/kraft-paper.jpg",
+      "Kraft Paper 170 GSM": "/images/mahaveer/kraft-paper.jpg",
+    },
     type: "Color",
     app: "Packaging",
     paperTypes: ["Paper"],
