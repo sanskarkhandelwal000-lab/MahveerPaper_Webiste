@@ -666,11 +666,11 @@ export const catalogProducts: CatalogProduct[] = [
     colorNames: ["20% Cotton Natural", "35% Cotton Natural", "60% Cotton Natural"],
     colorGsm: { "20% Cotton Natural": "240 GSM", "35% Cotton Natural": "300 GSM", "60% Cotton Natural": "300 GSM" },
     // Real per-variant Favini Art photos (favini.com/gs/en/products/favini-art), matched
-    // via the sheet's own technical notes ("Watercolour Eco 25%", "Watercolour 35%",
+    // via the sheet's own technical notes ("Watercolour Eco 20%", "Watercolour 35%",
     // "Watercolour Cloud 60%"). They visibly differ — 60% has a noticeably coarser grain
-    // than 25/35% — so reusing one generic photo for all three (the original approach)
+    // than 20/35% — so reusing one generic photo for all three (the original approach)
     // would have been wrong; corrected after being asked to verify. Favini's own site
-    // reuses one photo for both 25% and 35% (same as their Sumo practice elsewhere),
+    // reuses one photo for both 20% and 35% (same as their Sumo practice elsewhere),
     // mirrored here rather than guessing a third distinct image.
     colorImages: {
       "20% Cotton Natural": "/images/favini/cotton-25.jpg",
@@ -688,13 +688,13 @@ export const catalogProducts: CatalogProduct[] = [
     colourGroups: ["Natural", "Ivory"],
     description: "Three Favini Art cotton watercolour papers: 20%, 35% and 60% Cloud, each maintained as a separate SKU-level technical profile.",
     bestFor: "Watercolour / Gouache / Acrylic; Professional Watercolour; Artist & Creative Applications",
-    aiSummary: "Select 25% for sustainable artist use, 35% for higher cotton-content wet media, and 60% Cloud for the most premium professional watercolour application.",
+    aiSummary: "Select 20% for sustainable artist use, 35% for higher cotton-content wet media, and 60% Cloud for the most premium professional watercolour application.",
     isFavini: true,
     brand: "Favini",
     finish: "Natural Matte",
     texture: "Rough grain / Cloud felt-marked",
     coatedUncoated: "Uncoated",
-    technicalNotes: "Favini Art Watercolour Eco 25% recycled cotton rag Favini Art Watercolour 35% cotton Favini Art Watercolour Cloud 60% cotton",
+    technicalNotes: "Favini Art Watercolour Eco 20% recycled cotton rag Favini Art Watercolour 35% cotton Favini Art Watercolour Cloud 60% cotton",
   },
 
   // ── BLACKS & KRAFTS ───────────────────────────────────────────────────────
