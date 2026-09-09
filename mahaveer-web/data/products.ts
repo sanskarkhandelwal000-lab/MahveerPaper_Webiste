@@ -161,6 +161,13 @@ export interface CatalogProduct {
    * family-level `sizes` string when a swatch has an entry here, since showing every
    * size on every colour overstates what's actually available in that shade. */
   colorSizes?: Record<string, string>;
+  /** Display heading for a swatch, keyed by the exact colorNames entry — only present
+   * where the colorNames entry itself has to stay unique (e.g. distinguishing GSM/size
+   * groups of the same shade: "VTC 120 GSM" / "VTC 200 · 250 · 300 GSM") but the
+   * customer-facing heading should just show the shared product name ("VTC") instead,
+   * since the GSM/size pills already carry the distinguishing detail. Falls back to the
+   * colorNames entry itself when absent. */
+  colorLabels?: Record<string, string>;
   /** Colour names for this family that have NO verified source (no exact name match on
    * the manufacturer's own site, no client-supplied photo) — e.g. Burano's "Burgundy"
    * vs. Favini's actual "Bordeaux". These are excluded from both colorImages and the
@@ -750,6 +757,13 @@ export const catalogProducts: CatalogProduct[] = [
       "VTC 120 GSM": "63.5 x 91.4 CM · 70 x 100 CM",
       "VTC 200 · 250 · 300 GSM": "79 x 109 CM",
       "VTC 600 · 900 GSM": "71 x 101 CM",
+    },
+    // Displayed heading stays just "VTC" for all three — the GSM/size pills already
+    // show which group is which, per instruction.
+    colorLabels: {
+      "VTC 120 GSM": "VTC",
+      "VTC 200 · 250 · 300 GSM": "VTC",
+      "VTC 600 · 900 GSM": "VTC",
     },
     image: "/images/mahaveer/vtc-black.jpg",
     colorImages: {

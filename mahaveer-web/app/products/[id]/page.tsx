@@ -80,6 +80,10 @@ export default async function ProductPage({ params, searchParams }: Props) {
   const swatches = product.colorNames?.length
     ? product.colorNames.map((name) => ({
         name,
+        // Customer-facing heading — defaults to the colorNames entry itself, but a
+        // family can override it (e.g. VTC's 3 GSM/size groups all just show "VTC",
+        // since the pills below already carry the distinguishing GSM/size detail).
+        label: product.colorLabels?.[name] ?? name,
         // unverifiedColors (no confirmed source — see Unmatched_Favini_Colours.xlsx)
         // deliberately get no hex either, so they fall through to the "Photo coming
         // soon" placeholder instead of a guessed colour block.
@@ -91,6 +95,7 @@ export default async function ProductPage({ params, searchParams }: Props) {
       }))
     : Array.from({ length: Math.max(1, product.colors) }, () => ({
         name: product.name,
+        label: product.name,
         hex: undefined as string | undefined,
         gsmLabel: formatGsm(product.gsm),
         sizesLabel: familySizesLabel,
@@ -334,7 +339,7 @@ export default async function ProductPage({ params, searchParams }: Props) {
                   className="font-sans font-semibold mt-2"
                   style={{ fontSize: "clamp(1.25rem,1.8vw,1.75rem)", color: "#202020" }}
                 >
-                  {swatch.name}
+                  {swatch.label}
                 </h3>
               </MotionDiv>
               );
