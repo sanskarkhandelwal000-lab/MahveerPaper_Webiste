@@ -874,10 +874,23 @@ export const catalogProducts: CatalogProduct[] = [
     name: "Eco Kraft Liner Board",
     gsm: "125 · 250 · 300 GSM",
     sizes: "63.5 x 90 CM · 63.5 x 91.4 CM · 71 x 101 CM",
-    colors: 1,
-    colorNames: ["Eco KLB"],
+    colors: 3,
+    // Split by GSM/size group per instruction (Sept 2026), same treatment as VTC /
+    // Kraft Paper — reuses the one product photo for all three groups.
+    colorNames: ["Eco KLB 125 GSM", "Eco KLB 250 GSM", "Eco KLB 300 GSM"],
+    colorGsm: { "Eco KLB 125 GSM": "125 GSM", "Eco KLB 250 GSM": "250 GSM", "Eco KLB 300 GSM": "300 GSM" },
+    colorSizes: {
+      "Eco KLB 125 GSM": "63.5 x 90 CM",
+      "Eco KLB 250 GSM": "63.5 x 91.4 CM",
+      "Eco KLB 300 GSM": "71 x 101 CM",
+    },
+    colorLabels: { "Eco KLB 125 GSM": "Eco KLB", "Eco KLB 250 GSM": "Eco KLB", "Eco KLB 300 GSM": "Eco KLB" },
     image: "/images/mahaveer/eco-klb.jpg",
-    colorImages: { "Eco KLB": "/images/mahaveer/eco-klb.jpg" },
+    colorImages: {
+      "Eco KLB 125 GSM": "/images/mahaveer/eco-klb.jpg",
+      "Eco KLB 250 GSM": "/images/mahaveer/eco-klb.jpg",
+      "Eco KLB 300 GSM": "/images/mahaveer/eco-klb.jpg",
+    },
     type: "Color",
     app: "Packaging",
     paperTypes: ["Paper", "Board"],
