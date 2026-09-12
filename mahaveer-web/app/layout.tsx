@@ -3,7 +3,7 @@ import { Geist, Newsreader, Manrope, Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { ScrollRestorationFix } from "@/components/providers/ScrollRestorationFix";
-import { ChatWidget } from "@/components/chat/ChatWidget";
+// import { ChatWidget } from "@/components/chat/ChatWidget"; // temporarily disabled, see below
 import { siteConfig } from "@/lib/config";
 import "./globals.css";
 
@@ -84,7 +84,8 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
           <ScrollRestorationFix />
           {children}
-          <ChatWidget />
+          {/* Temporarily disabled (Sept 2026) — re-enable by uncommenting. */}
+          {/* <ChatWidget /> */}
           <Toaster richColors position="top-right" />
         </ThemeProvider>
       </body>
