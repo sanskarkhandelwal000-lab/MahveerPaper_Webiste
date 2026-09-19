@@ -10,6 +10,22 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // WhatsApp-style palette used by the /inbox admin app
+        wa: {
+          green: "#00a884",
+          dark: "#008069",
+          out: "#d9fdd3",
+          wall: "#efeae2",
+          panel: "#f0f2f5",
+          ink: "#111b21",
+          muted: "#667781",
+          line: "#e9edef",
+          unread: "#25d366",
+          tick: "#53bdeb",
+          hover: "#f5f6f6",
+          sel: "#f0f2f5",
+          warn: "#fff3cd",
+        },
         brand: {
           // Figma design tokens (file c0mJUUqcNZPsVA9R4CVksJ, frame 35:1217)
           orange: "#EA580C",

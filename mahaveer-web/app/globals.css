@@ -98,3 +98,10 @@
   }
 
 }
+
+/* Inbox chat wallpaper (subtle dotted pattern on WhatsApp beige) */
+.wa-wall {
+  background-color: #efeae2;
+  background-image: radial-gradient(rgba(11, 20, 26, 0.045) 1px, transparent 1px);
+  background-size: 18px 18px;
+}

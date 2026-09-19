@@ -20,7 +20,9 @@ const securityHeaders = [
   },
 ];
 
+// inbox: native/wasm DB packages must not be bundled
 const nextConfig: NextConfig = {
+  serverExternalPackages: ["@electric-sql/pglite", "pg"],
   async headers() {
     return [
       {
