@@ -28,7 +28,7 @@ import { botEnabled } from "./settings";
  *   6. anything else -> Claude recommends products, sends photo cards with a Request Sample button
  */
 
-const replySchema = z.object({ reply: z.string(), productIds: z.array(z.string()) });
+const replySchema = z.object({ reply: z.string(), productIds: z.array(z.string()), options: z.array(z.string()) });
 const MODEL = "claude-haiku-4-5";
 
 const STOP = /^\s*(stop|unsubscribe|opt[\s-]?out|cancel)\s*[.!]*\s*$/i;
@@ -56,7 +56,9 @@ const clearKey = (id: string, key: keyof BotState) => query("update conversation
 const say = (conversationId: string, body: string) =>
   sendOutbound({ kind: "text", body }, { conversationId, senderType: "bot" });
 
-export async function runBot(m: InboundResult): Promise<void> {
+export async function runBot(inbound: InboundResult): Promise<void> {
+  // A tap on one of our quick-answer options is just the customer typing that answer.
+  const m = inbound.buttonId?.startsWith("OPT::") ? { ...inbound, buttonId: null } : inbound;
   try {
     const text = m.text.trim();
 
@@ -147,6 +149,29 @@ async function handleSampleAnswer(m: InboundResult, s: NonNullable<BotState["awa
   return true;
 }
 
+// ---------- tap-to-answer choices ----------
+
+const cleanOptions = (raw: string[]): string[] => {
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const o of raw) {
+    const t = o.replace(/\s+/g, " ").trim().slice(0, 20);
+    if (t && !seen.has(t.toLowerCase())) { seen.add(t.toLowerCase()); out.push(t); }
+  }
+  return out.slice(0, 10);
+};
+
+/** Up to 3 choices -> tap buttons; 4-10 -> a list menu. Falls back to plain text if WhatsApp refuses. */
+async function sendChoices(conversationId: string, body: string, options: string[]): Promise<void> {
+  const opts = { conversationId, senderType: "bot" as const };
+  const choices = options.map((title, i) => ({ id: `OPT::${i}`, title }));
+  const text = body.slice(0, 1024);
+  const sent = choices.length <= 3
+    ? await sendOutbound({ kind: "interactive", body: text, buttons: choices }, opts)
+    : await sendOutbound({ kind: "list", body: text, buttonLabel: "Choose one", rows: choices }, opts);
+  if (sent.status === "failed") await say(conversationId, `${body}\n\n${options.join(" / ")}`);
+}
+
 // ---------- recommendations ----------
 
 const SAMPLE_WORD = /\bsamples?\b/i;
@@ -169,6 +194,7 @@ Rules:
 - The "colours" number is only a COUNT of how many colour options that product line has — it does not tell you which colours those are. Only claim a product is a specific colour (e.g. "white", "black") if that colour word literally appears in its name or description above. Never say a product "comes in" a colour that isn't stated.
 - When the customer names a colour, only recommend products whose name or description matches that colour, or are explicitly colour-neutral/uncoloured stock. If nothing in the catalogue matches the requested colour, say so plainly instead of substituting a mismatched product.
 - Whenever your reply names one or more specific products, include every named product's id in productIds so its photo card can be sent. Never mention a product by name without also including its id.
+- Quick answers: whenever your reply is a clarifying question (productIds empty), ALSO fill "options" with 2-6 short tap-to-answer choices the customer is likely to pick, e.g. for "what kind of project are you working on" use ["Invitations", "Packaging", "Printing", "Something else"]. Each option is at most 20 characters, plain text, no emoji, and the last one may be an "other" style choice. When you recommend products, or decline an off-topic message, leave "options" empty.
 - When you do recommend, pick the most relevant 1-4 products, most relevant first.
 - Keep replies short and conversational — 1-2 sentences, no bullet lists, no markdown, no asterisks or bold text, plain prose only. Product photo cards with the name, book and GSM are sent automatically right after your reply, so don't re-list specs — just briefly frame why they fit.
 - If asked about pricing or bulk orders, tell them to request a quote at ${siteConfig.url}/contact or email ${siteConfig.contact.emails[0]} — you don't have pricing data.
@@ -222,7 +248,12 @@ async function recommend(m: InboundResult, text: string, st: BotState): Promise<
     reply = "Happy to help with a sample — tell me what you're looking for (colour, use, or paper type) and I'll show you options you can request a sample of.";
   }
 
-  await say(m.conversationId, reply);
+  const options = cleanOptions(res.parsed_output.options);
+  if (products.length === 0 && options.length >= 2 && !SAMPLE_WORD.test(text)) {
+    await sendChoices(m.conversationId, reply, options);
+  } else {
+    await say(m.conversationId, reply);
+  }
   for (const p of products.slice(0, 4)) {
     await sendOutbound(
       { kind: "interactive", body: `${p.name} — ${p.book} · ${p.gsm}`.slice(0, 1024), buttons: [{ id: `SAMPLE::${p.id}`, title: "Request Sample" }], imageLink: image(p) },

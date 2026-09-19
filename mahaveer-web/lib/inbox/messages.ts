@@ -222,7 +222,8 @@ export type OutboundSpec =
   | { kind: "media"; mediaKind: wa.MediaKind; mediaPath: string; mime: string; filename: string; caption?: string }
   | { kind: "template"; templateId: string; params: string[] }
   | { kind: "location"; latitude: number; longitude: number; name?: string; address?: string }
-  | { kind: "interactive"; body: string; buttons: Array<{ id: string; title: string }>; imageLink?: string };
+  | { kind: "interactive"; body: string; buttons: Array<{ id: string; title: string }>; imageLink?: string }
+  | { kind: "list"; body: string; buttonLabel: string; rows: Array<{ id: string; title: string }> };
 
 export interface OutboundOpts {
   conversationId: string;
@@ -248,7 +249,7 @@ export async function sendOutbound(spec: OutboundSpec, opts: OutboundOpts): Prom
   let waId: string | null = null;
   let error: string | null = null;
   let mediaId: string | null = null;
-  const row: Record<string, unknown> = { type: spec.kind === "media" ? spec.mediaKind : spec.kind };
+  const row: Record<string, unknown> = { type: spec.kind === "media" ? spec.mediaKind : spec.kind === "list" ? "interactive" : spec.kind };
 
   try {
     switch (spec.kind) {
@@ -288,6 +289,11 @@ export async function sendOutbound(spec: OutboundSpec, opts: OutboundOpts): Prom
         row.body = spec.body;
         row.interactive = { buttons: spec.buttons.map((b) => b.title) };
         waId = await wa.sendInteractiveButtons(to, spec.body, spec.buttons, spec.imageLink);
+        break;
+      case "list":
+        row.body = spec.body;
+        row.interactive = { buttons: spec.rows.map((r) => r.title) };
+        waId = await wa.sendInteractiveList(to, spec.body, spec.buttonLabel, spec.rows);
         break;
     }
   } catch (e) {

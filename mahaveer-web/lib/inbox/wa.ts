@@ -140,6 +140,22 @@ export const sendInteractiveButtons = (
     },
   });
 
+export const sendInteractiveList = (
+  to: string,
+  body: string,
+  buttonLabel: string,
+  rows: Array<{ id: string; title: string; description?: string }>,
+) =>
+  send({
+    to,
+    type: "interactive",
+    interactive: {
+      type: "list",
+      body: { text: body },
+      action: { button: buttonLabel, sections: [{ title: "Options", rows }] },
+    },
+  });
+
 export async function markRead(messageId: string): Promise<void> {
   if (waMode() === "mock") return;
   await graph(`/${process.env.WA_PHONE_NUMBER_ID}/messages`, {
