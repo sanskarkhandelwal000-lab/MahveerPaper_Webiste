@@ -7,22 +7,10 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { MotionDiv } from "@/components/ui/MotionDiv";
 import { ZoomImage } from "@/components/ui/ZoomImage";
-import { catalogProducts, COLOR_NAME_HEX, BOOKS } from "@/data/products";
+import { catalogProducts, BOOKS } from "@/data/products";
+import { getProductSwatches, slugifySwatchName, formatSizes } from "@/lib/productSwatches";
 
 type Props = { params: Promise<{ id: string }>; searchParams?: Promise<{ from?: string }> };
-
-// "120 · 250 · 300 GSM" → "120, 250, 300 GSM" (Figma pill format)
-function formatGsm(gsm: string): string {
-  const unit = /MM/i.test(gsm) ? "MM" : "GSM";
-  const base = gsm.replace(/\s*(GSM|MM)\s*$/i, "");
-  const values = base.split("·").map(s => s.trim()).filter(Boolean);
-  return `${values.join(", ")} ${unit}`;
-}
-
-// "63 x 91 CM · 79 x 109 CM" → "63 x 91 CM, 79 x 109 CM" (each value keeps its own unit)
-function formatSizes(sizes: string): string {
-  return sizes.split("·").map(s => s.trim()).filter(Boolean).join(", ");
-}
 
 export async function generateStaticParams() {
   return catalogProducts.map(p => ({ id: p.id }));
@@ -73,36 +61,16 @@ export default async function ProductPage({ params, searchParams }: Props) {
   // Book label for breadcrumb: e.g. "Gloss & Metallic"
   const bookLabel = BOOKS.includes(product.book as typeof BOOKS[number]) ? product.book : product.book;
 
-  const familySizesLabel = product.sizes ? formatSizes(product.sizes) : null;
   // One card per real named colour when we have that data — falls back to repeating
   // the family name/image for the handful of products with no colour breakdown.
   // GSM and size are per-colour where the family's values genuinely differ by shade
   // (e.g. Burano: most colours are 250 GSM only, Cobalt/Nero also come in 320 GSM;
   // Tube: Red is 70 x 100 CM only, Black/Brown/Petrol are 72 x 102 CM only) — falls
   // back to the family-wide gsm/sizes string when every colour shares the same values.
-  const swatches = product.colorNames?.length
-    ? product.colorNames.map((name) => ({
-        name,
-        // Customer-facing heading — defaults to the colorNames entry itself, but a
-        // family can override it (e.g. VTC's 3 GSM/size groups all just show "VTC",
-        // since the pills below already carry the distinguishing GSM/size detail).
-        label: product.colorLabels?.[name] ?? name,
-        // unverifiedColors (no confirmed source — see Unmatched_Favini_Colours.xlsx)
-        // deliberately get no hex either, so they fall through to the "Photo coming
-        // soon" placeholder instead of a guessed colour block.
-        hex: product.unverifiedColors?.includes(name) ? undefined : COLOR_NAME_HEX[name],
-        gsmLabel: formatGsm(product.colorGsm?.[name] ?? product.gsm),
-        sizesLabel: product.colorSizes?.[name]
-          ? formatSizes(product.colorSizes[name])
-          : familySizesLabel,
-      }))
-    : Array.from({ length: Math.max(1, product.colors) }, () => ({
-        name: product.name,
-        label: product.name,
-        hex: undefined as string | undefined,
-        gsmLabel: formatGsm(product.gsm),
-        sizesLabel: familySizesLabel,
-      }));
+  // Shared with the /products/search results grid via lib/productSwatches so both
+  // pages always agree on what counts as "one product."
+  const swatches = getProductSwatches(product);
+  const familySizesLabel = product.sizes ? formatSizes(product.sizes) : null;
 
   return (
     <>
@@ -297,7 +265,12 @@ export default async function ProductPage({ params, searchParams }: Props) {
               );
 
               return (
-              <MotionDiv key={`${swatch.name}-${i}`} delay={0.04 + (i % 4) * 0.05}>
+              <MotionDiv
+                key={`${swatch.name}-${i}`}
+                id={`swatch-${slugifySwatchName(swatch.name)}`}
+                className="scroll-mt-[110px]"
+                delay={0.04 + (i % 4) * 0.05}
+              >
                 {colorImage ? (
                   <ZoomImage
                     src={colorImage}

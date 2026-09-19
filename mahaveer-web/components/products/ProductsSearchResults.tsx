@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Suspense, useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { ArrowRight, ArrowLeft, Search, Layers, LayoutGrid, Palette, X } from "lucide-react";
-import { ProductCard } from "@/components/products/ProductCard";
+import { SwatchResultCard } from "@/components/products/SwatchResultCard";
 import { CheckboxDropdown } from "@/components/products/CheckboxDropdown";
 import {
   catalogProducts,
@@ -16,6 +16,7 @@ import {
   APPLICATION_OPTIONS,
   COLOUR_GROUP_OPTIONS,
 } from "@/data/products";
+import { getProductSwatches } from "@/lib/productSwatches";
 
 type DropdownKey = "type" | "app" | "color";
 
@@ -165,12 +166,21 @@ function ProductsSearchResultsInner() {
     return matchType && matchApp && matchColor && matchFsc && matchBrand && matchBio && matchRec;
   }), [appliedTypes, appliedApps, appliedColors, fscOnly, brandOnly, biodegradableOnly, recyclableOnly]);
 
+  // Expand each matching family into one entry per real product — a colour, a
+  // GSM group, whatever the family's own colorNames represent (see
+  // getProductSwatches) — since "the actual products" is what a customer
+  // should see here, not an aggregate family tile with a "12 colours" badge.
+  const allItems = useMemo(
+    () => baseFiltered.flatMap(product => getProductSwatches(product).map(swatch => ({ product, swatch }))),
+    [baseFiltered]
+  );
+
   const bookTabs = useMemo(() => BOOKS
-    .map(book => ({ book, count: baseFiltered.filter(p => p.book === book).length }))
-    .filter(t => t.count > 0), [baseFiltered]);
+    .map(book => ({ book, count: allItems.filter(it => it.product.book === book).length }))
+    .filter(t => t.count > 0), [allItems]);
 
   const activeBookValid = activeBook && bookTabs.some(t => t.book === activeBook) ? activeBook : null;
-  const results = activeBookValid ? baseFiltered.filter(p => p.book === activeBookValid) : baseFiltered;
+  const results = activeBookValid ? allItems.filter(it => it.product.book === activeBookValid) : allItems;
 
   const hasActiveFilters = appliedTypes.length > 0 || appliedApps.length > 0 || appliedColors.length > 0 || fscOnly || brandOnly || biodegradableOnly || recyclableOnly || !!activeBookValid;
 
@@ -360,7 +370,7 @@ function ProductsSearchResultsInner() {
               onClick={() => setActiveBook(null)}
               className={`flex-shrink-0 text-sm font-semibold px-4 py-2 rounded-full transition-colors ${!activeBookValid ? "bg-brand-navy text-white" : "bg-gray-100 text-gray-500 hover:bg-gray-200"}`}
             >
-              All ({baseFiltered.length})
+              All ({allItems.length})
             </button>
             {bookTabs.map(({ book, count }) => (
               <button
@@ -384,13 +394,13 @@ function ProductsSearchResultsInner() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-12">
-            {results.map((product, i) => (
-              <ProductCard
-                key={product.id}
+            {results.map(({ product, swatch }, i) => (
+              <SwatchResultCard
+                key={`${product.id}-${swatch.name}`}
                 product={product}
+                swatch={swatch}
                 delay={0.03 + (i % 8) * 0.04}
-                catalogQuery={`/products/search?${resultsQueryString}`}
-                bookTag
+                backHref={`/products/search?${resultsQueryString}`}
               />
             ))}
           </div>
