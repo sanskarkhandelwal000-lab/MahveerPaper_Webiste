@@ -21,7 +21,11 @@ const templateComponents = (n: number, handle: string) => [
     cards: Array.from({ length: n }, () => ({
       components: [
         { type: "HEADER", format: "IMAGE", example: { header_handle: [handle] } },
-        { type: "BODY", text: "Suggested: {{1}} - {{2}}.", example: { body_text: [["Burano", "Spectrum, 250 GSM"]] } },
+        {
+          type: "BODY",
+          text: "Recommended for your project: {{1}}. Tap Details to see the full photo, sizes and colours, or Request Sample to get a free sample.",
+          example: { body_text: [["Burano (Spectrum, 250 GSM)"]] },
+        },
         { type: "BUTTONS", buttons: [{ type: "QUICK_REPLY", text: "Details" }, { type: "QUICK_REPLY", text: "Request Sample" }] },
       ],
     })),

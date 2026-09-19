@@ -189,7 +189,7 @@ async function sendProducts(conversationId: string, products: Array<(typeof cata
         summary: `Product carousel: ${withImage.map((p) => p.name).join(", ")}`,
         cards: withImage.map((p) => ({
           imageLink: image(p) as string,
-          params: [oneLine(p.name, 40), oneLine(`${p.book}, ${p.gsm}`, 70)],
+          params: [oneLine(`${p.name} (${p.book}, ${p.gsm})`, 70)],
           detailsPayload: `DETAIL::${p.id}`,
           samplePayload: `SAMPLE::${p.id}`,
         })),
