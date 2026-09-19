@@ -19,6 +19,8 @@ export function SettingsPage() {
   const { data: me } = useApi<{ user: { role: string } }>("/auth/me");
   const { data: qr, mutate: mutateQr } = useApi<{ replies: Array<{ id: string; shortcut: string; body: string }> }>("/quick-replies");
   const { data: lb, mutate: mutateLb } = useApi<{ labels: Label[] }>("/labels");
+  const { data: cr, mutate: mutateCr } = useApi<{ templates: Array<{ size: number; status: string | null; reason: string | null }> }>("/carousel");
+  const [crBusy, setCrBusy] = useState(false);
   const [copied, setCopied] = useState(false);
   const [sc, setSc] = useState(""); const [body, setBody] = useState("");
   const [lname, setLname] = useState(""); const [lcolor, setLcolor] = useState("#00a884");
@@ -31,6 +33,15 @@ export function SettingsPage() {
   async function delQr(id: string) { try { await api(`/quick-replies?id=${id}`, { method: "DELETE" }); await mutateQr(); } catch (e) { err(e); } }
   async function addLabel() { try { await api("/labels", { body: { name: lname, color: lcolor } }); setLname(""); await mutateLb(); } catch (e) { err(e); } }
   async function delLabel(id: string) { if (!confirm("Delete this label from all chats?")) return; try { await api(`/labels?id=${id}`, { method: "DELETE" }); await mutateLb(); } catch (e) { err(e); } }
+
+  async function setupCarousel() {
+    setCrBusy(true);
+    try { await api("/carousel", { body: {} }); await mutateCr(); toast.success("Submitted to WhatsApp for approval"); } catch (e) { err(e); } finally { setCrBusy(false); }
+  }
+  async function refreshCarousel() {
+    setCrBusy(true);
+    try { await api("/templates/sync", { body: {} }); await mutateCr(); } catch (e) { err(e); } finally { setCrBusy(false); }
+  }
 
   const ENV_LABELS: Record<string, string> = {
     WA_ACCESS_TOKEN: "WhatsApp access token", WA_PHONE_NUMBER_ID: "Phone number ID", WA_WABA_ID: "Business account ID (for templates)", WA_APP_SECRET: "App secret (verifies webhooks)",
@@ -48,6 +59,24 @@ export function SettingsPage() {
               <span className={`relative h-6 w-11 shrink-0 rounded-full transition ${data.botEnabled ? "bg-wa-green" : "bg-gray-300"}`}><span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-all ${data.botEnabled ? "left-[22px]" : "left-0.5"}`} /></span>
             </button>
             {!isAdmin && <p className="mt-2 text-xs text-wa-muted">Only admins can change this.</p>}
+          </Card>
+
+          <Card title="Product carousel" sub="Scrolling product cards with Details and Request Sample buttons. WhatsApp requires an approved template for this, so it is set up once here. Until it is approved, customers get the single product cards instead.">
+            <ul className="mb-3 divide-y divide-wa-line rounded-lg border border-wa-line">
+              {cr?.templates.map((t) => (
+                <li key={t.size} className="flex items-center justify-between gap-3 px-3 py-2.5 text-sm">
+                  <span>{t.size} products</span>
+                  <span className="flex items-center gap-2">{t.reason && <span className="text-xs text-wa-muted">{t.reason}</span>}<Badge tone={t.status === "APPROVED" ? "green" : t.status === "REJECTED" ? "red" : "amber"}>{t.status ? t.status.toLowerCase() : "not set up"}</Badge></span>
+                </li>
+              ))}
+            </ul>
+            {isAdmin ? (
+              <div className="flex flex-wrap gap-2">
+                <Button onClick={setupCarousel} disabled={crBusy}>{cr?.templates.some((t) => t.status) ? "Set up missing" : "Set up carousel"}</Button>
+                <Button variant="outline" onClick={refreshCarousel} disabled={crBusy}>Check approval</Button>
+              </div>
+            ) : <p className="text-xs text-wa-muted">Only admins can set this up.</p>}
+            <p className="mt-3 text-xs text-wa-muted">Note: WhatsApp bills carousel messages as marketing messages, unlike ordinary replies inside 24 hours.</p>
           </Card>
 
           <Card title="WhatsApp connection" sub={data.waMode === "live" ? "Connected to your WhatsApp Business number." : "Test mode: messages are stored but not sent to WhatsApp. Add your credentials to go live."}>

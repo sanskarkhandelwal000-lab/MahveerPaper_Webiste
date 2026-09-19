@@ -14,6 +14,7 @@ import { siteConfig } from "@/lib/config";
 import { query, queryOne, json } from "./db";
 import { sendOutbound, type InboundResult } from "./messages";
 import { botEnabled } from "./settings";
+import { CAROUSEL_LANG, carouselName, carouselReady } from "./carousel";
 
 /**
  * The WhatsApp bot — a port of the Make.com scenario, using the same catalogue,
@@ -88,6 +89,9 @@ export async function runBot(inbound: InboundResult): Promise<void> {
     // 4. Request Sample button
     if (m.buttonId?.startsWith("SAMPLE::")) return startSample(m, m.buttonId.slice("SAMPLE::".length));
 
+    // 4b. Details button on a product card
+    if (m.buttonId?.startsWith("DETAIL::")) return sendDetails(m, m.buttonId.slice("DETAIL::".length));
+
     // 5. Answering the sample form
     const st = await state(m.conversationId);
     if (st.awaitingSample) {
@@ -147,6 +151,59 @@ async function handleSampleAnswer(m: InboundResult, s: NonNullable<BotState["awa
   await clearKey(m.conversationId, "awaitingSample");
   await say(m.conversationId, `Thanks ${name}! We've got your sample request for ${s.productName} — our team will send it to ${location} and reach out at ${emailPart} shortly.`);
   return true;
+}
+
+// ---------- product cards ----------
+
+const oneLine = (t: string, max: number) => t.replace(/\s+/g, " ").trim().slice(0, max);
+
+/** "Details" tap: full-size photo plus the key facts and a Request Sample button. */
+async function sendDetails(m: InboundResult, productId: string): Promise<void> {
+  const p = catalogProducts.find((x) => x.id === productId);
+  if (!p) return void (await say(m.conversationId, "Sorry, I couldn't find that product. Tell me what you're looking for and I'll suggest options."));
+  const lines = [
+    `${p.name} — ${p.book}`,
+    `Weight: ${p.gsm}`,
+    p.sizes ? `Sizes: ${p.sizes}` : "",
+    p.colors ? `${p.colors} colour${p.colors === 1 ? "" : "s"}${p.colorNames?.length ? `: ${p.colorNames.slice(0, 6).join(", ")}${p.colorNames.length > 6 ? "…" : ""}` : ""}` : "",
+    p.finish ? `Finish: ${p.finish}` : "",
+    p.bestFor ? `Best for: ${p.bestFor}` : "",
+    p.description ? `\n${oneLine(p.description, 300)}` : "",
+  ].filter(Boolean);
+  await sendOutbound(
+    { kind: "interactive", body: lines.join("\n").slice(0, 1024), buttons: [{ id: `SAMPLE::${p.id}`, title: "Request Sample" }], imageLink: image(p) },
+    { conversationId: m.conversationId, senderType: "bot" },
+  );
+}
+
+/** Sends products as a scrolling carousel when an approved template fits; otherwise one card each. */
+async function sendProducts(conversationId: string, products: Array<(typeof catalogProducts)[number]>): Promise<void> {
+  const shown = products.slice(0, 4);
+  const withImage = shown.filter((p) => image(p));
+  if (withImage.length >= 2 && (await carouselReady(withImage.length))) {
+    const sent = await sendOutbound(
+      {
+        kind: "carousel",
+        templateName: carouselName(withImage.length),
+        language: CAROUSEL_LANG,
+        summary: `Product carousel: ${withImage.map((p) => p.name).join(", ")}`,
+        cards: withImage.map((p) => ({
+          imageLink: image(p) as string,
+          params: [oneLine(p.name, 40), oneLine(`${p.book}, ${p.gsm}`, 70)],
+          detailsPayload: `DETAIL::${p.id}`,
+          samplePayload: `SAMPLE::${p.id}`,
+        })),
+      },
+      { conversationId, senderType: "bot" },
+    );
+    if (sent.status !== "failed") return;
+  }
+  for (const p of shown) {
+    await sendOutbound(
+      { kind: "interactive", body: `${p.name} — ${p.book} · ${p.gsm}`.slice(0, 1024), buttons: [{ id: `SAMPLE::${p.id}`, title: "Request Sample" }], imageLink: image(p) },
+      { conversationId, senderType: "bot" },
+    );
+  }
 }
 
 // ---------- tap-to-answer choices ----------
@@ -254,11 +311,6 @@ async function recommend(m: InboundResult, text: string, st: BotState): Promise<
   } else {
     await say(m.conversationId, reply);
   }
-  for (const p of products.slice(0, 4)) {
-    await sendOutbound(
-      { kind: "interactive", body: `${p.name} — ${p.book} · ${p.gsm}`.slice(0, 1024), buttons: [{ id: `SAMPLE::${p.id}`, title: "Request Sample" }], imageLink: image(p) },
-      { conversationId: m.conversationId, senderType: "bot" },
-    );
-  }
+  await sendProducts(m.conversationId, products);
   await patchState(m.conversationId, { lastHadProducts: products.length > 0 });
 }

@@ -156,6 +156,54 @@ export const sendInteractiveList = (
     },
   });
 
+export interface CarouselCard { imageLink: string; params: string[]; detailsPayload: string; samplePayload: string }
+
+/** Media-card carousel template: the only way WhatsApp supports horizontally scrolling cards. */
+export const sendCarousel = (to: string, name: string, language: string, cards: CarouselCard[]) =>
+  send({
+    to,
+    type: "template",
+    template: {
+      name,
+      language: { code: language },
+      components: [
+        {
+          type: "carousel",
+          cards: cards.map((c, i) => ({
+            card_index: i,
+            components: [
+              { type: "header", parameters: [{ type: "image", image: { link: c.imageLink } }] },
+              { type: "body", parameters: c.params.map((text) => ({ type: "text", text })) },
+              { type: "button", sub_type: "quick_reply", index: "0", parameters: [{ type: "payload", payload: c.detailsPayload }] },
+              { type: "button", sub_type: "quick_reply", index: "1", parameters: [{ type: "payload", payload: c.samplePayload }] },
+            ],
+          })),
+        },
+      ],
+    },
+  });
+
+/** Uploads an example image with Meta's resumable-upload API; returns the handle templates need for header examples. */
+export async function uploadTemplateExample(imageUrl: string): Promise<string> {
+  const appId = process.env.WA_APP_ID;
+  if (!appId) throw new WaError("WA_APP_ID is not set (your Meta app's ID).");
+  const img = await fetch(imageUrl);
+  if (!img.ok) throw new WaError(`Could not fetch the example image (${img.status})`);
+  const bytes = Buffer.from(await img.arrayBuffer());
+  const session = await graph<{ id: string }>(
+    `/${appId}/uploads?file_length=${bytes.length}&file_type=image/jpeg&file_name=example.jpg`,
+    { method: "POST" },
+  );
+  const res = await fetch(`${GRAPH}/${session.id}`, {
+    method: "POST",
+    headers: { Authorization: `OAuth ${process.env.WA_ACCESS_TOKEN}`, file_offset: "0" },
+    body: new Uint8Array(bytes),
+  });
+  const data = (await res.json().catch(() => ({}))) as { h?: string; error?: { message: string } };
+  if (!res.ok || !data.h) throw new WaError(data.error?.message ?? "Could not upload the example image");
+  return data.h;
+}
+
 export async function markRead(messageId: string): Promise<void> {
   if (waMode() === "mock") return;
   await graph(`/${process.env.WA_PHONE_NUMBER_ID}/messages`, {

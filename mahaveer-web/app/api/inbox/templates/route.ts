@@ -4,7 +4,7 @@ import { query, json } from "@/lib/inbox/db";
 import { createMetaTemplate, waMode } from "@/lib/inbox/wa";
 
 export const GET = route(async () => ({
-  templates: await query("select id, name, language, category, status, components, rejected_reason from templates order by created_at desc"),
+  templates: await query("select id, name, language, category, status, components, rejected_reason from templates where name not like 'product\\_carousel\\_%' order by created_at desc"),
   waMode: waMode(),
 }));
 

@@ -223,7 +223,8 @@ export type OutboundSpec =
   | { kind: "template"; templateId: string; params: string[] }
   | { kind: "location"; latitude: number; longitude: number; name?: string; address?: string }
   | { kind: "interactive"; body: string; buttons: Array<{ id: string; title: string }>; imageLink?: string }
-  | { kind: "list"; body: string; buttonLabel: string; rows: Array<{ id: string; title: string }> };
+  | { kind: "list"; body: string; buttonLabel: string; rows: Array<{ id: string; title: string }> }
+  | { kind: "carousel"; templateName: string; language: string; summary: string; cards: wa.CarouselCard[] };
 
 export interface OutboundOpts {
   conversationId: string;
@@ -242,14 +243,14 @@ export async function sendOutbound(spec: OutboundSpec, opts: OutboundOpts): Prom
   if (!conv) throw new Error("Conversation not found");
   if (conv.blocked) throw new Error("This contact is blocked");
 
-  const isTemplate = spec.kind === "template";
+  const isTemplate = spec.kind === "template" || spec.kind === "carousel";
   if (!isTemplate && !opts.skipWindowCheck && !windowOpen(conv.last_inbound_at)) throw new WindowClosedError();
 
   const to = conv.wa_id;
   let waId: string | null = null;
   let error: string | null = null;
   let mediaId: string | null = null;
-  const row: Record<string, unknown> = { type: spec.kind === "media" ? spec.mediaKind : spec.kind === "list" ? "interactive" : spec.kind };
+  const row: Record<string, unknown> = { type: spec.kind === "media" ? spec.mediaKind : spec.kind === "list" ? "interactive" : spec.kind === "carousel" ? "template" : spec.kind };
 
   try {
     switch (spec.kind) {
@@ -289,6 +290,11 @@ export async function sendOutbound(spec: OutboundSpec, opts: OutboundOpts): Prom
         row.body = spec.body;
         row.interactive = { buttons: spec.buttons.map((b) => b.title) };
         waId = await wa.sendInteractiveButtons(to, spec.body, spec.buttons, spec.imageLink);
+        break;
+      case "carousel":
+        row.template_name = spec.templateName;
+        row.body = spec.summary;
+        waId = await wa.sendCarousel(to, spec.templateName, spec.language, spec.cards);
         break;
       case "list":
         row.body = spec.body;
