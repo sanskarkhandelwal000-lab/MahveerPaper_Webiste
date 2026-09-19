@@ -28,7 +28,7 @@ const actions = [
     imageLeft: false,
     // Links straight to the pre-filtered FSC view (ProductsCatalog reads ?fsc=1) rather
     // than a generic browse link, since this card is specifically about certification.
-    cta: { label: "Browse FSC-Certified Papers", href: "/products?fsc=1" },
+    cta: { label: "Browse FSC-Certified Papers", href: "/products/search?fsc=1" },
   },
   {
     id: "biodegradable",
@@ -37,7 +37,7 @@ const actions = [
     image: "/images/mahaveer/sustainability-certified.jpg",
     imageAlt: "Biodegradable card next to natural fibre paper stock",
     imageLeft: true,
-    cta: { label: "Browse Biodegradable Papers", href: "/products?biodegradable=1" },
+    cta: { label: "Browse Biodegradable Papers", href: "/products/search?biodegradable=1" },
   },
   {
     id: "recyclable",
@@ -46,7 +46,7 @@ const actions = [
     image: "/images/mahaveer/sustainability-recyclability.jpg",
     imageAlt: "Recyclable card next to recyclable paper packaging",
     imageLeft: false,
-    cta: { label: "Browse Recyclable Papers", href: "/products?recyclable=1" },
+    cta: { label: "Browse Recyclable Papers", href: "/products/search?recyclable=1" },
   },
   {
     id: "standards",
@@ -200,7 +200,7 @@ export default function SustainabilityPage() {
           heading="Need Help Choosing Responsibly?"
           body="Tell us your application and certification requirement. Our team will help you identify suitable options."
           primary={{ label: "Speak to a Paper Specialist", href: "/contact?applicationType=Sustainability%2FFSC+Requirement" }}
-          secondary={{ label: "Explore FSC-Certified Papers", href: "/products?fsc=1" }}
+          secondary={{ label: "Explore FSC-Certified Papers", href: "/products/search?fsc=1" }}
         />
       </main>
       <Footer />

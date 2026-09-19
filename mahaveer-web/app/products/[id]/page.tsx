@@ -41,7 +41,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 function BackToResults({ from }: { from?: string }) {
   const hasFrom = !!from;
-  const href = hasFrom ? `/products?${from}` : "/products";
+  // `from` is either a full path ("/products/search?paperType=...", from the
+  // filtered results grid) or a bare query string (from the plain /products
+  // browse carousels, which don't have their own filter state to round-trip).
+  const href = hasFrom ? (from!.startsWith("/") ? from! : `/products?${from}`) : "/products";
   return (
     <div className="mb-4">
       <Link
@@ -153,7 +156,7 @@ export default async function ProductPage({ params, searchParams }: Props) {
             <span className="text-gray-300">&gt;</span>
             <Link href="/products" className="hover:text-brand-orange transition-colors">Products</Link>
             <span className="text-gray-300">&gt;</span>
-            <Link href={`/products?paperType=${encodeURIComponent(product.paperTypes?.[0] ?? product.book)}`} className="hover:text-brand-orange transition-colors">{bookLabel}</Link>
+            <Link href={`/products/search?book=${encodeURIComponent(product.book)}`} className="hover:text-brand-orange transition-colors">{bookLabel}</Link>
             <span className="text-gray-300">&gt;</span>
             <span className="font-medium" style={{ color: "#202020" }}>{product.name}</span>
           </nav>

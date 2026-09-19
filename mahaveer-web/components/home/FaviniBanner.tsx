@@ -51,7 +51,7 @@ export function FaviniBanner() {
             <MotionDiv delay={0.2}>
               <div className="flex flex-wrap items-center gap-4">
                 <Link
-                  href="/products?brand=favini"
+                  href="/products/search?brand=favini"
                   className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-4 font-semibold text-brand-dark transition-transform hover:-translate-y-0.5"
                 >
                   Explore Favini Papers

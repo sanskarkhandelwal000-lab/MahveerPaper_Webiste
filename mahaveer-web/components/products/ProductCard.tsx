@@ -6,8 +6,30 @@ import { ArrowRight, ImageOff } from "lucide-react";
 import { MotionDiv } from "@/components/ui/MotionDiv";
 import type { CatalogProduct } from "@/data/products";
 
-export function ProductCard({ product, delay = 0, catalogQuery = "" }: { product: CatalogProduct; delay?: number; catalogQuery?: string }) {
-  const href = catalogQuery ? `/products/${product.id}?from=${encodeURIComponent(catalogQuery)}` : `/products/${product.id}`;
+export function ProductCard({
+  product,
+  delay = 0,
+  catalogQuery = "",
+  bookTag = false,
+}: {
+  product: CatalogProduct;
+  delay?: number;
+  /** Either a bare query string (appended to `/products`, e.g. from the browse
+   * carousels) or a full path+query (e.g. "/products/search?paperType=...",
+   * used by the filtered results grid) — either form round-trips correctly
+   * through the product page's "Back to Results" link. */
+  catalogQuery?: string;
+  /** Show a small pill naming the product's Book — used on the flat filtered
+   * results grid, where products aren't already grouped under a Book heading
+   * the way the browse-page carousels are. */
+  bookTag?: boolean;
+}) {
+  const backTarget = catalogQuery
+    ? catalogQuery.startsWith("/")
+      ? catalogQuery
+      : `/products?${catalogQuery}`
+    : "";
+  const href = backTarget ? `/products/${product.id}?from=${encodeURIComponent(backTarget)}` : `/products/${product.id}`;
   return (
     <MotionDiv delay={delay}>
       <Link href={href} onClick={() => sessionStorage.setItem("mp-catalog-scroll", String(window.scrollY))} className="group block" aria-label={`View ${product.name}`}>
@@ -33,6 +55,13 @@ export function ProductCard({ product, delay = 0, catalogQuery = "" }: { product
               <ImageOff className="h-8 w-8" strokeWidth={1.5} />
               <span className="text-xs font-medium">Photo coming soon</span>
             </div>
+          )}
+          {/* Book tag — only on the filtered results grid, where cards from many
+              Books are mixed together in one flat list. */}
+          {bookTag && (
+            <span className="pointer-events-none absolute top-3 left-3 inline-flex items-center bg-brand-navy/90 backdrop-blur-sm text-white text-[10px] font-semibold tracking-wide px-2.5 py-1 rounded-full uppercase">
+              {product.book}
+            </span>
           )}
           {/* Premium Favini mark — bottom-right frosted pill with wordmark */}
           {product.isFavini && product.image && (
