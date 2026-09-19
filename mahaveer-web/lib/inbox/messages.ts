@@ -157,6 +157,7 @@ export async function recordInbound(m: WaInbound, profileName?: string | null): 
 export async function storeInboundMedia(messageId: string, mediaId: string, filename?: string | null): Promise<void> {
   try {
     const { data, mime } = await wa.downloadMedia(mediaId);
+    if (data.length > 20 * 1024 * 1024) return; // too big to keep; the media route re-fetches it from Meta on demand
     const p = await putFile(`in/${messageId}.${extFor(mime, filename)}`, data, mime);
     await query("update messages set media_path = $2, mime_type = $3 where id = $1", [messageId, p, mime]);
   } catch (e) {

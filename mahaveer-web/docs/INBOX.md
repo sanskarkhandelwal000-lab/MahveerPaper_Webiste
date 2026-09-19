@@ -17,16 +17,15 @@ Sign in with `admin@mahaveer.local` / `admin123` (development only). With no Wha
 
 ## Going live — checklist
 
-### 1. Database + file storage (Supabase, free tier is enough to start)
-1. Create a project at supabase.com.
-2. **Project Settings → Database → Connection string → URI** (use the *Transaction pooler*) → `DATABASE_URL`.
-3. **Project Settings → API** → `SUPABASE_URL` and the `service_role` key → `SUPABASE_SERVICE_KEY`.
-   The private `inbox-media` bucket is created automatically. Never expose the service key to the browser.
-4. Tables are created automatically on first start. Nothing to run.
+### 1. Database (all inside Vercel)
+1. Vercel → your project → **Storage** tab → **Create Database** → choose **Neon (Postgres)** from the Marketplace → create it and **Connect to Project** (Production + Preview).
+2. Vercel adds `DATABASE_URL` (and related variables) to the project for you. Nothing to copy by hand.
+3. Tables are created automatically on first start. Chat photos and documents are stored in the same database,
+   so there is no second service. (Optional: set `SUPABASE_URL` + `SUPABASE_SERVICE_KEY` to keep files in Supabase Storage instead.)
 
 ### 2. Website environment variables (Vercel → Settings → Environment Variables)
-`DATABASE_URL`, `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `INBOX_SESSION_SECRET` (32+ random characters),
-`INBOX_ADMIN_EMAIL`, `INBOX_ADMIN_PASSWORD`, `ANTHROPIC_API_KEY` (already set for the site chatbot).
+`INBOX_SESSION_SECRET` (32+ random characters), `INBOX_ADMIN_EMAIL`, `INBOX_ADMIN_PASSWORD`,
+`WA_VERIFY_TOKEN` (any random string), and `ANTHROPIC_API_KEY` (already set for the site chatbot).
 Then redeploy and sign in at `/inbox`; change the password from the account menu.
 
 ### 3. Meta (WhatsApp) credentials — `developers.facebook.com`
@@ -69,5 +68,5 @@ header `Authorization: Bearer $CRON_SECRET` every minute (Vercel Cron on a paid 
 * **Bot vs human:** replying manually pauses the bot for that chat; "Hand back to bot" resumes it. Customers who
   ask for a person (or you flag a chat) show under **Needs a human**.
 * **Opt-out:** customers replying `STOP` are opted out of promotions automatically (`START` opts back in).
-* **Media** is stored in Supabase Storage; WhatsApp only keeps inbound media for ~30 days, so it's saved on arrival.
+* **Media** is stored in the database; WhatsApp only keeps inbound media for ~30 days, so it's saved on arrival. Files you send from the inbox are limited to 4 MB (a Vercel request-size limit). Larger customer files are fetched from WhatsApp on demand.
 * Everything is behind login; `/inbox` and `/api/` are excluded from search engines in `robots.txt`.

@@ -16,7 +16,6 @@ export const GET = route(async ({ req }) => ({
     WA_VERIFY_TOKEN: !!process.env.WA_VERIFY_TOKEN,
     ANTHROPIC_API_KEY: !!process.env.ANTHROPIC_API_KEY,
     DATABASE_URL: !!process.env.DATABASE_URL,
-    SUPABASE_STORAGE: !!(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY),
     INBOX_SESSION_SECRET: !!process.env.INBOX_SESSION_SECRET,
   },
 }));

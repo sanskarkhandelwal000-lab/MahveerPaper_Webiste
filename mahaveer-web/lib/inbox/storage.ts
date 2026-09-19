@@ -1,10 +1,9 @@
-import fs from "node:fs/promises";
-import path from "node:path";
+import { query, queryOne } from "./db";
 
 /**
  * File storage for chat media.
- *  - SUPABASE_URL + SUPABASE_SERVICE_KEY set -> private Supabase Storage bucket "inbox-media"
- *  - otherwise -> local disk under ./.data/media (development)
+ *  - default: the same Postgres database (table media_files) — nothing extra to set up
+ *  - optional: private Supabase Storage bucket if SUPABASE_URL + SUPABASE_SERVICE_KEY are set
  */
 const BUCKET = "inbox-media";
 const supa = () =>
@@ -38,9 +37,10 @@ export async function putFile(filePath: string, data: Buffer, mime: string): Pro
     if (!res.ok) throw new Error(`Storage upload failed (${res.status})`);
     return p;
   }
-  const full = path.join(process.cwd(), ".data", "media", p);
-  await fs.mkdir(path.dirname(full), { recursive: true });
-  await fs.writeFile(full, data);
+  await query(
+    "insert into media_files (path, mime, data) values ($1,$2,$3) on conflict (path) do update set mime = excluded.mime, data = excluded.data",
+    [p, mime, data],
+  );
   return p;
 }
 
@@ -51,11 +51,8 @@ export async function getFile(filePath: string): Promise<Buffer | null> {
     const res = await fetch(`${s.url}/storage/v1/object/${BUCKET}/${p}`, { headers: { Authorization: `Bearer ${s.key}` } });
     return res.ok ? Buffer.from(await res.arrayBuffer()) : null;
   }
-  try {
-    return await fs.readFile(path.join(process.cwd(), ".data", "media", p));
-  } catch {
-    return null;
-  }
+  const row = await queryOne<{ data: Uint8Array }>("select data from media_files where path = $1", [p]);
+  return row ? Buffer.from(row.data) : null;
 }
 
 export function extFor(mime: string, filename?: string | null): string {

@@ -168,6 +168,13 @@ create table if not exists sample_requests (
   created_at timestamptz not null default now()
 );
 
+create table if not exists media_files (
+  path text primary key,
+  mime text not null,
+  data bytea not null,
+  created_at timestamptz not null default now()
+);
+
 create table if not exists settings (
   key text primary key,
   value jsonb not null

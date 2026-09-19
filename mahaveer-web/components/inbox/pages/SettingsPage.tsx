@@ -34,7 +34,7 @@ export function SettingsPage() {
 
   const ENV_LABELS: Record<string, string> = {
     WA_ACCESS_TOKEN: "WhatsApp access token", WA_PHONE_NUMBER_ID: "Phone number ID", WA_WABA_ID: "Business account ID (for templates)", WA_APP_SECRET: "App secret (verifies webhooks)",
-    WA_VERIFY_TOKEN: "Webhook verify token", ANTHROPIC_API_KEY: "Anthropic key (bot)", DATABASE_URL: "Database (Postgres)", SUPABASE_STORAGE: "Media storage (Supabase)", INBOX_SESSION_SECRET: "Login session secret",
+    WA_VERIFY_TOKEN: "Webhook verify token", ANTHROPIC_API_KEY: "Anthropic key (bot)", DATABASE_URL: "Database (Postgres)", INBOX_SESSION_SECRET: "Login session secret",
   };
 
   return (
