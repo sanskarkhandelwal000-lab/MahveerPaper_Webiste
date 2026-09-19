@@ -36,6 +36,10 @@ const STOP = /^\s*(stop|unsubscribe|opt[\s-]?out|cancel)\s*[.!]*\s*$/i;
 const START = /^\s*(start|subscribe|opt[\s-]?in)\s*[.!]*\s*$/i;
 const HUMAN = /\b(human|real person|talk to (a |an )?(someone|person|agent|human|team)|speak (to|with) (a |an )?(someone|person|agent|human|team|executive)|call me|customer (care|support)|representative)\b/i;
 
+// Opening messages like "Hi", "hello there", "Namaste", "good morning" (emoji and punctuation ignored)
+const GREETING = /^(h+i+|hello+|hey+|heya|hii+|hola|namaste|namaskar|pranam|yo|greetings|good\s*(morning|afternoon|evening|day)|gm)(\s+(there|team|sir|madam|mahaveer|mahaveer\s+papers|everyone))?$/i;
+const isGreeting = (t: string) => GREETING.test(t.replace(/[^\p{L}\s]/gu, " ").replace(/\s+/g, " ").trim());
+
 const image = (p: (typeof catalogProducts)[number]) => {
   const rel = p.image ?? Object.values(p.colorImages ?? {})[0];
   return rel ? `${siteConfig.url.replace(/\/$/, "")}${rel}` : undefined;
@@ -92,8 +96,12 @@ export async function runBot(inbound: InboundResult): Promise<void> {
     // 4b. Details button on a product card
     if (m.buttonId?.startsWith("DETAIL::")) return sendDetails(m, m.buttonId.slice("DETAIL::".length));
 
-    // 5. Answering the sample form
     const st = await state(m.conversationId);
+
+    // 4c. Someone opens the conversation with a greeting
+    if (!m.buttonId && !st.awaitingSample && isGreeting(text)) return greet(m);
+
+    // 5. Answering the sample form
     if (st.awaitingSample) {
       const handled = await handleSampleAnswer(m, st.awaitingSample, text);
       if (handled) return;
@@ -204,6 +212,23 @@ async function sendProducts(conversationId: string, products: Array<(typeof cata
       { conversationId, senderType: "bot" },
     );
   }
+}
+
+// ---------- greeting ----------
+
+function timeGreeting(): string {
+  const hour = Number(new Intl.DateTimeFormat("en-IN", { hour: "numeric", hourCycle: "h23", timeZone: "Asia/Kolkata" }).format(new Date()));
+  return hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+}
+
+async function greet(m: InboundResult): Promise<void> {
+  await sendChoices(
+    m.conversationId,
+    `${timeGreeting()}! 👋 Welcome to Mahaveer Papers — premium imported papers and boards.\n\nWhat kind of project are you working on?`,
+    ["Invitations", "Packaging", "Printing", "Stationery", "Something else"],
+  );
+  // The next answer should lead straight to product suggestions
+  await patchState(m.conversationId, { lastHadProducts: false });
 }
 
 // ---------- tap-to-answer choices ----------
