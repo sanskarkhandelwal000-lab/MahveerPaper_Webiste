@@ -29,7 +29,14 @@ import { CAROUSEL_LANG, carouselName, carouselReady } from "./carousel";
  *   6. anything else -> Claude recommends products, sends photo cards with a Request Sample button
  */
 
-const replySchema = z.object({ reply: z.string(), productIds: z.array(z.string()), options: z.array(z.string()) });
+const replySchema = z.object({
+  reply: z.string(),
+  productIds: z.array(z.string()),
+  options: z.array(z.string()),
+  /** Everything the customer has told us so far; "" for anything still unknown. */
+  brief: z.object({ application: z.string(), colour: z.string(), weight: z.string(), finish: z.string(), printing: z.string() }),
+});
+const MAX_QUESTIONS = 5;
 const MODEL = "claude-haiku-4-5";
 
 const STOP = /^\s*(stop|unsubscribe|opt[\s-]?out|cancel)\s*[.!]*\s*$/i;
@@ -45,7 +52,13 @@ const image = (p: (typeof catalogProducts)[number]) => {
   return rel ? `${siteConfig.url.replace(/\/$/, "")}${rel}` : undefined;
 };
 
+/** What we have learned about the customer's project so far ("" / missing = not known yet). */
+interface Brief { application?: string; colour?: string; weight?: string; finish?: string; printing?: string }
+
 interface BotState {
+  brief?: Brief;
+  /** Clarifying questions asked since the last recommendation. */
+  asked?: number;
   awaitingSample?: { sampleId: string; productName: string; attempts: number };
   lastHadProducts?: boolean;
 }
@@ -92,6 +105,9 @@ export async function runBot(inbound: InboundResult): Promise<void> {
 
     // 4. Request Sample button
     if (m.buttonId?.startsWith("SAMPLE::")) return startSample(m, m.buttonId.slice("SAMPLE::".length));
+
+    // 4a. "Something else" at the very first question: explain what to tell us, in stages
+    if (!m.buttonId && /^something else$/i.test(text) && !(await state(m.conversationId)).brief?.application) return askOpenEnded(m);
 
     // 4b. Details button on a product card
     if (m.buttonId?.startsWith("DETAIL::")) return sendDetails(m, m.buttonId.slice("DETAIL::".length));
@@ -216,19 +232,42 @@ async function sendProducts(conversationId: string, products: Array<(typeof cata
 
 // ---------- greeting ----------
 
+/** The 25 catalogue applications, grouped into a menu that fits WhatsApp's 10-row list. */
+const APPLICATION_GROUPS: Array<{ title: string; covers: string[] }> = [
+  { title: "Wedding & Invitations", covers: ["Wedding & Invitation Cards", "Wedding Invitation Overlays"] },
+  { title: "Luxury & Rigid Boxes", covers: ["Luxury Packaging", "Premium Boxes", "Rigid Boxes", "Rigid Box Wrapping", "Sustainable Luxury Packaging"] },
+  { title: "Cartons & Packaging", covers: ["Folding Cartons", "Commercial Packaging", "Sustainable Packaging"] },
+  { title: "Brochures & Printing", covers: ["Premium Brochures", "Premium Printing", "General Printing"] },
+  { title: "Stationery", covers: ["Stationery"] },
+  { title: "Book Covers & Binding", covers: ["Book Covers & Binding"] },
+  { title: "Labels & Tags", covers: ["Premium Product Labels", "Durable Tags", "Exhibition Badges"] },
+  { title: "Art & Watercolour", covers: ["Watercolour", "Professional Watercolour", "Acrylic", "Gouache", "Tempera"] },
+  { title: "Displays & Coasters", covers: ["Displays", "Coasters"] },
+];
+const OTHER = "Something else";
+
 function timeGreeting(): string {
   const hour = Number(new Intl.DateTimeFormat("en-IN", { hour: "numeric", hourCycle: "h23", timeZone: "Asia/Kolkata" }).format(new Date()));
   return hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
 }
 
+async function askOpenEnded(m: InboundResult): Promise<void> {
+  await say(
+    m.conversationId,
+    "No problem — tell me in your own words what you're making, for example a menu card, gift box, notebook cover, business card, label, certificate or sketchbook.\n\n" +
+      "The more you share, the better I can match it: what it's for, the colour or look you want, how thick or sturdy it should feel, and how it will be printed or finished. I'll ask about anything you skip.",
+  );
+  await patchState(m.conversationId, { brief: {}, asked: 0 });
+}
+
 async function greet(m: InboundResult): Promise<void> {
   await sendChoices(
     m.conversationId,
-    `${timeGreeting()}! 👋 Welcome to Mahaveer Papers — premium imported papers and boards.\n\nWhat kind of project are you working on?`,
-    ["Invitations", "Packaging", "Printing", "Stationery", "Something else"],
+    `${timeGreeting()}! 👋 Welcome to Mahaveer Papers — premium imported papers and boards.\n\nWhat will you be using the paper for? Pick the closest match and I'll ask a few quick questions to find the right paper for you.`,
+    [...APPLICATION_GROUPS.map((g) => g.title), OTHER],
   );
-  // The next answer should lead straight to product suggestions
-  await patchState(m.conversationId, { lastHadProducts: false });
+  // Fresh conversation: forget any earlier project
+  await patchState(m.conversationId, { brief: {}, asked: 0 });
 }
 
 // ---------- tap-to-answer choices ----------
@@ -237,7 +276,7 @@ const cleanOptions = (raw: string[]): string[] => {
   const seen = new Set<string>();
   const out: string[] = [];
   for (const o of raw) {
-    const t = o.replace(/\s+/g, " ").trim().slice(0, 20);
+    const t = o.replace(/\s+/g, " ").trim().slice(0, 24);
     if (t && !seen.has(t.toLowerCase())) { seen.add(t.toLowerCase()); out.push(t); }
   }
   return out.slice(0, 10);
@@ -246,7 +285,8 @@ const cleanOptions = (raw: string[]): string[] => {
 /** Up to 3 choices -> tap buttons; 4-10 -> a list menu. Falls back to plain text if WhatsApp refuses. */
 async function sendChoices(conversationId: string, body: string, options: string[]): Promise<void> {
   const opts = { conversationId, senderType: "bot" as const };
-  const choices = options.map((title, i) => ({ id: `OPT::${i}`, title }));
+  const max = options.length <= 3 ? 20 : 24; // WhatsApp: button titles 20 chars, list rows 24
+  const choices = options.map((title, i) => ({ id: `OPT::${i}`, title: title.slice(0, max) }));
   const text = body.slice(0, 1024);
   const sent = choices.length <= 3
     ? await sendOutbound({ kind: "interactive", body: text, buttons: choices }, opts)
@@ -258,10 +298,12 @@ async function sendChoices(conversationId: string, body: string, options: string
 
 const SAMPLE_WORD = /\bsamples?\b/i;
 
-function systemPrompt(catalogText: string, mustRecommendNow: boolean): string {
-  return `${mustRecommendNow ? "IMPORTANT — READ FIRST: your previous reply in this conversation asked a question and recommended nothing. That is not allowed twice in a row. This reply MUST include at least one product id in productIds — pick your best 1-4 matches from whatever the customer has said so far, even if it's still a bit vague. Do not ask another clarifying question as your only content this turn.\n\n" : ""}You are the product recommendation assistant for Mahaveer Papers, a premium imported paper and boards store (Bengaluru & Ahmedabad), replying to a customer over WhatsApp.
+function systemPrompt(catalogText: string, ctx: { asked: number; brief: Brief; mustRecommend: boolean }): string {
+  const known = Object.entries(ctx.brief).filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`).join("; ") || "nothing yet";
+  const groups = APPLICATION_GROUPS.map((g) => `- "${g.title}" = ${g.covers.join(", ")}`).join("\n");
+  return `${ctx.mustRecommend ? `IMPORTANT — READ FIRST: you have already asked ${ctx.asked} questions. Do NOT ask another. This reply MUST recommend 1-4 products (productIds non-empty) using everything the customer has told you, and say briefly what you assumed for anything they skipped.\n\n` : ""}You are the paper consultant for Mahaveer Papers, a premium imported paper and boards store (Bengaluru & Ahmedabad), chatting with a customer over WhatsApp.
 
-Your SOLE purpose is recommending specific products from the catalogue below. You are not a general-purpose assistant, and you don't exist to chat — every single reply should be working toward putting one or more real products (by id) in front of the customer. Asking questions is only a means to that end, never the end itself.
+Work like a good shop expert: first understand the customer's project properly, THEN recommend. Do not throw random products at people.
 
 Catalogue (id | book | name | gsm | colours | type | application | description):
 ${catalogText}
@@ -269,19 +311,31 @@ ${catalogText}
 Mahaveer's own internal knowledge-base policy for this catalogue (treat these as binding facts about what is and isn't true of the range):
 ${buildKnowledgeBaseRules()}
 
+The customer's first-question menu groups the catalogue applications like this:
+${groups}
+
+What we know about their project so far: ${known}.
+Clarifying questions already asked: ${ctx.asked}.
+
+How to run the conversation:
+- Information to gather, in this order, skipping anything already known or already stated in their messages: (1) application / what it is for, (2) colour or look, (3) weight or sturdiness, (4) finish or texture, (5) how it will be printed or finished (only when relevant to printing, packaging or invitations).
+- Ask exactly ONE short question per reply, acknowledging their last answer in a few words first. Never ask two questions at once.
+- Every question comes with tap-to-answer "options" (2-10 items, each at most 20 characters, plain text, no emoji). Suggested choices — colour: "White / Ivory", "Black", "Coloured", "Metallic / Pearl", "Natural / Kraft", "Not sure"; weight: "Light (<150 GSM)", "Medium (150-250)", "Heavy (250+ GSM)", "Not sure"; finish: "Smooth", "Textured", "Matte", "Metallic / Pearl", "Not sure"; printing: "Offset", "Digital", "Foil / Emboss", "Screen print", "Not sure". Adapt them to the project and to what the catalogue really has (for example do not offer a colour nothing in the catalogue matches).
+- Recommend (productIds non-empty, options empty) once you know the application plus at least two more details, OR the customer asks to see options, OR they answer "Not sure" twice. If their message already covers the application plus colour and weight (or colour and finish), that is enough: recommend straight away and mention what you assumed for the rest. Do not interrogate someone who has told you what they need.
+- "Not sure" is a valid answer: pick sensible defaults for that project and say so.
+- If the customer wants something else, is vague ("something nice"), or describes a project the menu does not cover, ask an open question about what they are making, then continue through the list above.
+- Keep memory: fill "brief" with everything known so far (application, colour, weight, finish, printing), using "" for anything unknown. Carry earlier answers forward instead of dropping them.
+
 Rules:
 - Only recommend products from the catalogue above. Never invent a product, id, GSM, colour count, or price.
-- Bias toward recommending, not interrogating. If the customer's message gives you ANY usable signal (an application, a colour, a vibe, an occasion, a material type), immediately recommend your best 1-4 matching products from that alone — don't ask a clarifying question first just because the request isn't fully specified. Only ask a clarifying question when the message is so broad or generic (e.g. "hi", "I need paper") that you genuinely cannot narrow down even a rough starting set.
-- Never ask more than one clarifying question in a row without recommending something. If your PREVIOUS reply was a question (empty productIds), this reply must include at least one product recommendation.
 - The "colours" number is only a COUNT of how many colour options that product line has — it does not tell you which colours those are. Only claim a product is a specific colour (e.g. "white", "black") if that colour word literally appears in its name or description above. Never say a product "comes in" a colour that isn't stated.
 - When the customer names a colour, only recommend products whose name or description matches that colour, or are explicitly colour-neutral/uncoloured stock. If nothing in the catalogue matches the requested colour, say so plainly instead of substituting a mismatched product.
 - Whenever your reply names one or more specific products, include every named product's id in productIds so its photo card can be sent. Never mention a product by name without also including its id.
-- Quick answers: whenever your reply is a clarifying question (productIds empty), ALSO fill "options" with 2-6 short tap-to-answer choices the customer is likely to pick, e.g. for "what kind of project are you working on" use ["Invitations", "Packaging", "Printing", "Something else"]. Each option is at most 20 characters, plain text, no emoji, and the last one may be an "other" style choice. When you recommend products, or decline an off-topic message, leave "options" empty.
-- When you do recommend, pick the most relevant 1-4 products, most relevant first.
-- Keep replies short and conversational — 1-2 sentences, no bullet lists, no markdown, no asterisks or bold text, plain prose only. Product photo cards with the name, book and GSM are sent automatically right after your reply, so don't re-list specs — just briefly frame why they fit.
+- When you do recommend, pick the most relevant 1-4 products, most relevant first, and explain in 1-2 sentences why they fit THEIR project (mention the details they gave you).
+- Keep replies short and conversational — 1-3 sentences, no bullet lists, no markdown, no asterisks or bold text, plain prose only. Product photo cards with the name, book and GSM are sent automatically right after your reply, so don't re-list specs.
 - If asked about pricing or bulk orders, tell them to request a quote at ${siteConfig.url}/contact or email ${siteConfig.contact.emails[0]} — you don't have pricing data.
 - If asked for a sample, reply warmly in 1 short sentence and recommend the product(s) that fit — every product card has a "Request Sample" button they can tap, after which the chat collects their details. Never ask for their details yourself and never point them to a website form.
-- If asked anything that isn't about finding a paper/board product — general chit-chat, jokes, personal questions, other companies, news, coding help, or any other topic — do not engage with it at all, even briefly. In one short sentence, decline and pivot straight back to what kind of paper or board they're looking for.
+- If asked anything that isn't about finding a paper/board product — general chit-chat, jokes, personal questions, other companies, news, coding help, or any other topic — do not engage with it at all, even briefly. In one short sentence, decline and pivot straight back to what they are making.
 - Always respond with the required JSON shape.`;
 }
 
@@ -305,20 +359,23 @@ async function recommend(m: InboundResult, text: string, st: BotState): Promise<
   while (turns.length && turns[0].role !== "user") turns.shift();
   if (!turns.length || turns[turns.length - 1].role !== "user") turns.push({ role: "user", content: text });
 
-  const candidates = filterCatalogByColor(text);
-  const mustRecommendNow = st.lastHadProducts === false;
+  const brief = st.brief ?? {};
+  const asked = st.asked ?? 0;
+  const requestText = `${text} ${brief.colour ?? ""}`;
+  const candidates = filterCatalogByColor(requestText);
+  const mustRecommendNow = asked >= MAX_QUESTIONS;
   const client = new Anthropic({ apiKey });
   const res = await client.beta.messages.parse({
     model: MODEL,
-    max_tokens: 512,
-    system: systemPrompt(buildCatalogPromptContext(candidates), mustRecommendNow),
+    max_tokens: 700,
+    system: systemPrompt(buildCatalogPromptContext(candidates), { asked, brief, mustRecommend: mustRecommendNow }),
     messages: turns,
     output_format: betaZodOutputFormat(replySchema),
   });
   if (!res.parsed_output) throw new Error("Claude returned no parsed output");
 
   let { reply } = res.parsed_output;
-  let products = filterByRequestedColor(resolveProductIds(res.parsed_output.productIds), text);
+  let products = filterByRequestedColor(resolveProductIds(res.parsed_output.productIds), requestText);
   if (mustRecommendNow && products.length === 0) {
     const fb = pickFallbackProducts(candidates, turns.filter((t) => t.role === "user").map((t) => t.content).join(" "));
     if (fb.length) {
@@ -337,5 +394,7 @@ async function recommend(m: InboundResult, text: string, st: BotState): Promise<
     await say(m.conversationId, reply);
   }
   await sendProducts(m.conversationId, products);
-  await patchState(m.conversationId, { lastHadProducts: products.length > 0 });
+  const merged: Brief = { ...brief };
+  for (const [k, v] of Object.entries(res.parsed_output.brief)) if (v.trim()) merged[k as keyof Brief] = v.trim();
+  await patchState(m.conversationId, { brief: merged, asked: products.length ? 0 : asked + 1, lastHadProducts: products.length > 0 });
 }
