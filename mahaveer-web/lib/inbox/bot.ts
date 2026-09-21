@@ -30,8 +30,12 @@ import { CAROUSEL_LANG, carouselName, carouselReady } from "./carousel";
  */
 
 const replySchema = z.object({
+  /** Short intro when recommending; the whole message otherwise. */
   reply: z.string(),
-  productIds: z.array(z.string()),
+  /** Products to show, each with a one-line reason specific to this customer's project. */
+  picks: z.array(z.object({ productId: z.string(), why: z.string() })),
+  /** Optional one-line tip after the list ("" if none). Never a question. */
+  tip: z.string(),
   options: z.array(z.string()),
   /** Everything the customer has told us so far; "" for anything still unknown. */
   brief: z.object({ application: z.string(), colour: z.string(), weight: z.string(), finish: z.string(), printing: z.string() }),
@@ -147,7 +151,7 @@ async function startSample(m: InboundResult, productId: string): Promise<void> {
   await patchState(m.conversationId, { awaitingSample: { sampleId: rows[0].id, productName: p.name, attempts: 0 } });
   await say(
     m.conversationId,
-    `Great choice — ${p.name}! Just reply with your Name, Email and Delivery Address in one message, separated by commas, and I'll get your free sample on its way.\n\nExample: Riya Shah, riya@email.com, 12 MG Road, Bengaluru 560001`,
+    `Great choice — *${p.name}*! Just reply with these three details in one message, separated by commas, and I'll get your free sample on its way:\n\n• Name\n• Email\n• Delivery address\n\n_Example: Riya Shah, riya@email.com, 12 MG Road, Bengaluru 560001_`,
   );
 }
 
@@ -175,8 +179,33 @@ async function handleSampleAnswer(m: InboundResult, s: NonNullable<BotState["awa
     [m.conversationId],
   );
   await clearKey(m.conversationId, "awaitingSample");
-  await say(m.conversationId, `Thanks ${name}! We've got your sample request for ${s.productName} — our team will send it to ${location} and reach out at ${emailPart} shortly.`);
+  await say(m.conversationId, `Thanks ${name}! ✅ Your sample request is in:\n\n• *${s.productName}*\n• Delivery to: ${location}\n• We'll contact you at: ${emailPart}\n\nOur team will be in touch shortly.`);
   return true;
+}
+
+// ---------- message formatting (WhatsApp: *bold*, _italic_, • bullets) ----------
+
+const strip = (t: string) => t.replace(/[*_~`]/g, "").replace(/\s+/g, " ").replace(/\?+\s*$/, "").trim();
+
+/** Trims to max characters at a word boundary (never mid-word), without a dangling comma. */
+function cutWords(t: string, max: number): string {
+  const c = strip(t);
+  if (c.length <= max) return c;
+  const head = c.slice(0, max);
+  const at = Math.max(head.lastIndexOf(", "), head.lastIndexOf(" "));
+  return head.slice(0, at > 20 ? at : max).replace(/[,;:\s]+$/, "");
+}
+const firstSentence = (t: string) => strip(t).split(/(?<=[.!])\s+/)[0] ?? "";
+
+/** Intro, one bold line per product, optional italic tip. */
+function formatRecommendation(intro: string, items: Array<{ name: string; why: string }>, tip: string): string {
+  const lines = items.map((i) => {
+    // The model sometimes starts the reason with the product's own name; drop the repeat
+    const why = strip(i.why).replace(new RegExp(`^${i.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*[—:-]\\s*`, "i"), "");
+    return `• *${cutWords(i.name, 40)}* — ${cutWords(firstSentence(why).replace(/\.$/, ""), 70)}`;
+  });
+  const t = cutWords(firstSentence(tip), 120);
+  return [`${cutWords(firstSentence(intro), 130).replace(/[.!:]+$/, "")}:`, "", ...lines, ...(t ? ["", `_${t}_`] : [])].join("\n");
 }
 
 // ---------- product cards ----------
@@ -198,15 +227,15 @@ const oneLine = (t: string, max: number) => t.replace(/\s+/g, " ").trim().slice(
 async function sendDetails(m: InboundResult, productId: string): Promise<void> {
   const p = catalogProducts.find((x) => x.id === productId);
   if (!p) return void (await say(m.conversationId, "Sorry, I couldn't find that product. Tell me what you're looking for and I'll suggest options."));
-  const lines = [
-    `${p.name} — ${p.book}`,
-    `Weight: ${p.gsm}`,
-    p.sizes ? `Sizes: ${p.sizes}` : "",
-    p.colors ? `${p.colors} colour${p.colors === 1 ? "" : "s"}${p.colorNames?.length ? `: ${p.colorNames.slice(0, 6).join(", ")}${p.colorNames.length > 6 ? "…" : ""}` : ""}` : "",
-    p.finish ? `Finish: ${p.finish}` : "",
-    p.bestFor ? `Best for: ${p.bestFor}` : "",
-    p.description ? `\n${oneLine(p.description, 300)}` : "",
+  const colours = p.colors ? `${p.colors} colour${p.colors === 1 ? "" : "s"}${p.colorNames?.length ? ` (${p.colorNames.slice(0, 5).join(", ")}${p.colorNames.length > 5 ? "…" : ""})` : ""}` : "";
+  const facts = [
+    `• Weight: ${p.gsm}`,
+    p.sizes ? `• Sizes: ${p.sizes}` : "",
+    colours ? `• Colours: ${colours}` : "",
+    p.finish ? `• Finish: ${p.finish}` : "",
+    p.bestFor ? `• Best for: ${p.bestFor}` : "",
   ].filter(Boolean);
+  const lines = [`*${p.name}* — ${p.book}`, "", ...facts, ...(p.description ? ["", `_${oneLine(p.description, 260)}_`] : [])];
   await sendOutbound(
     { kind: "interactive", body: lines.join("\n").slice(0, 1024), buttons: [{ id: `SAMPLE::${p.id}`, title: "Request Sample" }], imageLink: image(p) },
     { conversationId: m.conversationId, senderType: "bot" },
@@ -253,7 +282,7 @@ async function sendProducts(conversationId: string, products: Array<(typeof cata
 async function sendCards(conversationId: string, products: Array<(typeof catalogProducts)[number]>): Promise<void> {
   for (const p of products) {
     await sendOutbound(
-      { kind: "interactive", body: `${p.name} — ${p.book} · ${p.gsm}`.slice(0, 1024), buttons: [{ id: `SAMPLE::${p.id}`, title: "Request Sample" }], imageLink: image(p) },
+      { kind: "interactive", body: `*${p.name}*\n${p.book} · ${p.gsm}`.slice(0, 1024), buttons: [{ id: `SAMPLE::${p.id}`, title: "Request Sample" }], imageLink: image(p) },
       { conversationId, senderType: "bot" },
     );
   }
@@ -296,7 +325,7 @@ async function askOpenEnded(m: InboundResult): Promise<void> {
 async function greet(m: InboundResult): Promise<void> {
   await sendChoices(
     m.conversationId,
-    `${timeGreeting()}! 👋 Welcome to Mahaveer Papers — premium imported papers and boards.\n\nWhat will you be using the paper for? Pick the closest match and I'll show you the best options right away.`,
+    `${timeGreeting()}! 👋 Welcome to *Mahaveer Papers* — premium imported papers and boards.\n\nWhat will you be using the paper for? _Pick the closest match and I'll show you the best options right away._`,
     [...APPLICATION_GROUPS.map((g) => g.title), OTHER],
   );
   // Fresh conversation: forget any earlier project
@@ -334,7 +363,7 @@ const SAMPLE_WORD = /\bsamples?\b/i;
 function systemPrompt(catalogText: string, ctx: { asked: number; brief: Brief; shown: string[]; mustRecommend: boolean }): string {
   const known = Object.entries(ctx.brief).filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`).join("; ") || "nothing yet";
   const groups = APPLICATION_GROUPS.map((g) => `- "${g.title}" = ${g.covers.join(", ")}`).join("\n");
-  return `${ctx.mustRecommend ? `IMPORTANT — READ FIRST: do NOT ask any question this turn (options must be empty). This reply MUST recommend 1-4 products (productIds non-empty) using everything the customer has told you, choosing sensible defaults and saying briefly what you assumed. If their wish cannot be met exactly (for example a colour we do not stock), say so in a few words and recommend the closest real alternatives instead.\n\n` : ""}You are the paper consultant for Mahaveer Papers, a premium imported paper and boards store (Bengaluru & Ahmedabad), chatting with a customer over WhatsApp.
+  return `${ctx.mustRecommend ? `IMPORTANT — READ FIRST: do NOT ask any question this turn (options must be empty). This reply MUST recommend 1-4 products (picks non-empty) using everything the customer has told you, choosing sensible defaults and saying briefly what you assumed. If their wish cannot be met exactly (for example a colour we do not stock), say so in a few words and recommend the closest real alternatives instead.\n\n` : ""}You are the paper consultant for Mahaveer Papers, a premium imported paper and boards store (Bengaluru & Ahmedabad), chatting with a customer over WhatsApp.
 
 Work like a good shop expert: first understand the customer's project properly, THEN recommend. Do not throw random products at people.
 
@@ -367,10 +396,12 @@ Rules:
 - Only recommend products from the catalogue above. Never invent a product, id, GSM, colour count, or price.
 - The "colours" number is only a COUNT of how many colour options that product line has — it does not tell you which colours those are. Only claim a product is a specific colour (e.g. "white", "black") if that colour word literally appears in its name or description above. Never say a product "comes in" a colour that isn't stated.
 - When the customer names a colour, only recommend products whose name or description matches that colour, or are explicitly colour-neutral/uncoloured stock. If nothing in the catalogue matches the requested colour, say so plainly instead of substituting a mismatched product.
-- Whenever your reply names one or more specific products, include every named product's id in productIds so its photo card can be sent. Never mention a product by name without also including its id.
+- Whenever your reply names one or more specific products, include every named product's id in picks so its photo card can be sent. Never mention a product by name without also including its id.
 - When you recommend, do NOT end with a question and leave "options" empty — the customer gets tap buttons to refine automatically.
 - When you do recommend, pick the most relevant 1-4 products, most relevant first, and explain in 1-2 sentences why they fit THEIR project (mention the details they gave you).
-- Keep replies short and conversational — 1-3 sentences, no bullet lists, no markdown, no asterisks or bold text, plain prose only. Product photo cards with the name, book and GSM are sent automatically right after your reply, so don't re-list specs.
+- Message layout (the app formats it for WhatsApp, so never type asterisks, bullets or markdown yourself):
+  * When recommending: "reply" is ONE short intro sentence of at most 15 words with NO product names and NO product descriptions (for example "For black wedding invitations with gold foil, I'd suggest these"). Each product goes in "picks" with a "why" of at most 8 words specific to THIS customer's project (for example "smooth black, holds gold foil well") — no spec dumps, no GSM lists, no full sentences. "tip" is an optional single short line of practical advice ("Heavier weights hold foil best"), or "" — never a question.
+  * When not recommending (a question, a price answer, declining): "reply" is the whole message, 1-3 short sentences.
 - If asked about pricing or bulk orders, tell them to request a quote at ${siteConfig.url}/contact or email ${siteConfig.contact.emails[0]} — you don't have pricing data.
 - If asked for a sample, reply warmly in 1 short sentence and recommend the product(s) that fit — every product card has a "Request Sample" button they can tap, after which the chat collects their details. Never ask for their details yourself and never point them to a website form.
 - If asked anything that isn't about finding a paper/board product — general chit-chat, jokes, personal questions, other companies, news, coding help, or any other topic — do not engage with it at all, even briefly. In one short sentence, decline and pivot straight back to what they are making.
@@ -421,7 +452,9 @@ async function recommend(m: InboundResult, text: string, st: BotState): Promise<
   if (!res.parsed_output) throw new Error("Claude returned no parsed output");
 
   let { reply } = res.parsed_output;
-  let products = filterByRequestedColor(resolveProductIds(res.parsed_output.productIds), requestText);
+  const whyById = new Map(res.parsed_output.picks.map((k) => [k.productId, k.why]));
+  let products = filterByRequestedColor(resolveProductIds(res.parsed_output.picks.map((k) => k.productId)), requestText);
+  let tip = res.parsed_output.tip;
   if (mustRecommendNow && products.length === 0) {
     const group = APPLICATION_GROUPS.find((g) => g.title.toLowerCase() === text.toLowerCase());
     const byApp = group ? groupPicks(group.covers) : [];
@@ -429,8 +462,9 @@ async function recommend(m: InboundResult, text: string, st: BotState): Promise<
     if (fb.length) {
       products = fb;
       reply = group
-        ? `Here are some of our best picks for ${group.title.toLowerCase()} — tell me a colour, thickness or budget and I'll narrow it down.`
-        : "Here are a few options that could work well for that — let me know if you'd like something more specific.";
+        ? `Here are some of our best picks for ${group.title.toLowerCase()}:`
+        : "Here are a few options that could work well for that:";
+      tip = "Tell me a colour, thickness or budget and I'll narrow it down.";
     }
   }
   if (SAMPLE_WORD.test(text) && products.length === 0) {
@@ -440,7 +474,8 @@ async function recommend(m: InboundResult, text: string, st: BotState): Promise<
   // Recommending and then asking another question feels pushy: drop a trailing question.
   if (products.length > 0) {
     const trimmed = reply.replace(/\s*[^.!?—]*\?\s*$/, "").trim();
-    if (trimmed.length >= 40) reply = trimmed;
+    if (trimmed.length >= 15) reply = trimmed;
+    reply = formatRecommendation(reply, products.slice(0, 4).map((p) => ({ name: p.name, why: whyById.get(p.id) || `${p.book} · ${p.gsm}` })), tip);
   }
 
   const options = cleanOptions(res.parsed_output.options);
