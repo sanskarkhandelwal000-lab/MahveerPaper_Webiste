@@ -213,6 +213,16 @@ async function sendDetails(m: InboundResult, productId: string): Promise<void> {
   );
 }
 
+/**
+ * WhatsApp caps a carousel card's text at 160 characters once filled in. The approved template's fixed
+ * wording uses 125 of them, so the product label may be at most CARD_LABEL_MAX characters.
+ */
+const CARD_LABEL_MAX = 35;
+function cardLabel(p: (typeof catalogProducts)[number]): string {
+  const withBook = oneLine(`${p.name} (${p.book})`, 200);
+  return withBook.length <= CARD_LABEL_MAX ? withBook : oneLine(p.name, CARD_LABEL_MAX);
+}
+
 /** Sends products as a scrolling carousel when an approved template fits; otherwise one card each. */
 async function sendProducts(conversationId: string, products: Array<(typeof catalogProducts)[number]>): Promise<void> {
   const shown = products.slice(0, 4);
@@ -226,7 +236,7 @@ async function sendProducts(conversationId: string, products: Array<(typeof cata
         summary: `Product carousel: ${withImage.map((p) => p.name).join(", ")}`,
         cards: withImage.map((p) => ({
           imageLink: image(p) as string,
-          params: [oneLine(`${p.name} (${p.book}, ${p.gsm})`, 70)],
+          params: [cardLabel(p)],
           detailsPayload: `DETAIL::${p.id}`,
           samplePayload: `SAMPLE::${p.id}`,
         })),

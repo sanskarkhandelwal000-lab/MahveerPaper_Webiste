@@ -39,10 +39,13 @@ async function graph<T>(path: string, init: RequestInit & { json?: unknown } = {
     body = JSON.stringify(init.json);
   }
   const res = await fetch(`${GRAPH}${path}`, { ...init, headers, body });
-  const data = (await res.json().catch(() => ({}))) as { error?: { message: string; code?: number; error_user_msg?: string } };
+  const data = (await res.json().catch(() => ({}))) as { error?: { message: string; code?: number; error_user_msg?: string; error_data?: { details?: string } } };
   if (!res.ok || data.error) {
     const e = data.error;
-    throw new WaError(friendly(e?.error_user_msg ?? e?.message ?? `WhatsApp API error ${res.status}`, e?.code), e?.code);
+    throw new WaError(
+      `${friendly(e?.error_user_msg ?? e?.message ?? `WhatsApp API error ${res.status}`, e?.code)}${e?.error_data?.details ? ` — ${e.error_data.details}` : ""}`,
+      e?.code,
+    );
   }
   return data as T;
 }
