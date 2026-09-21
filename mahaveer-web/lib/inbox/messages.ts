@@ -182,6 +182,7 @@ export async function applyStatus(s: {
   if (status === "failed") {
     await query("update messages set status = 'failed', error = $2 where wa_message_id = $1", [s.id, error]);
     await query("update campaign_recipients set status = 'failed', error = $2 where wa_message_id = $1", [s.id, error]);
+    await fallbackFailedCarousel(s.id);
     return;
   }
   const rank = RANK[status];
@@ -198,6 +199,23 @@ export async function applyStatus(s: {
        and case status when 'pending' then 0 when 'sent' then 1 when 'delivered' then 2 when 'read' then 3 else 9 end < $3`,
     [s.id, status, rank],
   );
+}
+
+/**
+ * WhatsApp often refuses a template only after accepting it (payment problem, per-user marketing limit…).
+ * When a bot carousel fails that way, send the same products as ordinary single cards so the customer isn't left with nothing.
+ */
+async function fallbackFailedCarousel(waMessageId: string): Promise<void> {
+  const row = await queryOne<{ conversation_id: string; interactive: { carousel?: string[]; fallback?: boolean } | null }>(
+    `select conversation_id, interactive from messages
+      where wa_message_id = $1 and template_name like 'product\\_carousel\\_%' and sender_type = 'bot'`,
+    [waMessageId],
+  );
+  const ids = row?.interactive?.carousel;
+  if (!row || !ids?.length || row.interactive?.fallback) return;
+  await query("update messages set interactive = interactive || '{\"fallback\": true}'::jsonb where wa_message_id = $1", [waMessageId]);
+  const { sendProductCards } = await import("./bot");
+  await sendProductCards(row.conversation_id, ids);
 }
 
 async function applyCustomerReaction(targetWaId: string, emoji: string): Promise<void> {
@@ -224,7 +242,7 @@ export type OutboundSpec =
   | { kind: "location"; latitude: number; longitude: number; name?: string; address?: string }
   | { kind: "interactive"; body: string; buttons: Array<{ id: string; title: string }>; imageLink?: string }
   | { kind: "list"; body: string; buttonLabel: string; rows: Array<{ id: string; title: string }> }
-  | { kind: "carousel"; templateName: string; language: string; summary: string; cards: wa.CarouselCard[] };
+  | { kind: "carousel"; templateName: string; language: string; summary: string; productIds: string[]; cards: wa.CarouselCard[] };
 
 export interface OutboundOpts {
   conversationId: string;
@@ -294,6 +312,7 @@ export async function sendOutbound(spec: OutboundSpec, opts: OutboundOpts): Prom
       case "carousel":
         row.template_name = spec.templateName;
         row.body = spec.summary;
+        row.interactive = { carousel: spec.productIds };
         waId = await wa.sendCarousel(to, spec.templateName, spec.language, spec.cards);
         break;
       case "list":

@@ -234,6 +234,7 @@ async function sendProducts(conversationId: string, products: Array<(typeof cata
         templateName: carouselName(withImage.length),
         language: CAROUSEL_LANG,
         summary: `Product carousel: ${withImage.map((p) => p.name).join(", ")}`,
+        productIds: withImage.map((p) => p.id),
         cards: withImage.map((p) => ({
           imageLink: image(p) as string,
           params: [cardLabel(p)],
@@ -245,12 +246,21 @@ async function sendProducts(conversationId: string, products: Array<(typeof cata
     );
     if (sent.status !== "failed") return;
   }
-  for (const p of shown) {
+  await sendCards(conversationId, shown);
+}
+
+/** One photo card per product, each with a Request Sample button. Also the fallback when a carousel fails. */
+async function sendCards(conversationId: string, products: Array<(typeof catalogProducts)[number]>): Promise<void> {
+  for (const p of products) {
     await sendOutbound(
       { kind: "interactive", body: `${p.name} — ${p.book} · ${p.gsm}`.slice(0, 1024), buttons: [{ id: `SAMPLE::${p.id}`, title: "Request Sample" }], imageLink: image(p) },
       { conversationId, senderType: "bot" },
     );
   }
+}
+
+export async function sendProductCards(conversationId: string, productIds: string[]): Promise<void> {
+  await sendCards(conversationId, productIds.flatMap((id) => catalogProducts.filter((p) => p.id === id)));
 }
 
 // ---------- greeting ----------
@@ -425,6 +435,12 @@ async function recommend(m: InboundResult, text: string, st: BotState): Promise<
   }
   if (SAMPLE_WORD.test(text) && products.length === 0) {
     reply = "Happy to help with a sample — tell me what you're looking for (colour, use, or paper type) and I'll show you options you can request a sample of.";
+  }
+
+  // Recommending and then asking another question feels pushy: drop a trailing question.
+  if (products.length > 0) {
+    const trimmed = reply.replace(/\s*[^.!?—]*\?\s*$/, "").trim();
+    if (trimmed.length >= 40) reply = trimmed;
   }
 
   const options = cleanOptions(res.parsed_output.options);
