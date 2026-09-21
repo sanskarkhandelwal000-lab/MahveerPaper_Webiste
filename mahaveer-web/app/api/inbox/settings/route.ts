@@ -1,10 +1,11 @@
 import { z } from "zod";
 import { route, body } from "@/lib/inbox/api";
-import { botEnabled, setSetting } from "@/lib/inbox/settings";
+import { botEnabled, carouselEnabled, setSetting } from "@/lib/inbox/settings";
 import { waMode } from "@/lib/inbox/wa";
 
 export const GET = route(async ({ req }) => ({
   botEnabled: await botEnabled(),
+  carouselEnabled: await carouselEnabled(),
   waMode: waMode(),
   webhookUrl: `${req.nextUrl.origin}/api/whatsapp/webhook`,
   hasWaba: !!process.env.WA_WABA_ID,
@@ -21,7 +22,8 @@ export const GET = route(async ({ req }) => ({
 }));
 
 export const PUT = route(async ({ req }) => {
-  const b = await body(req, z.object({ botEnabled: z.boolean() }));
-  await setSetting("bot_enabled", b.botEnabled);
-  return { botEnabled: b.botEnabled };
+  const b = await body(req, z.object({ botEnabled: z.boolean().optional(), carouselEnabled: z.boolean().optional() }));
+  if (b.botEnabled !== undefined) await setSetting("bot_enabled", b.botEnabled);
+  if (b.carouselEnabled !== undefined) await setSetting("carousel_enabled", b.carouselEnabled);
+  return { botEnabled: await botEnabled(), carouselEnabled: await carouselEnabled() };
 }, { admin: true });

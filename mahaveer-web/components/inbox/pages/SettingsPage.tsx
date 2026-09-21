@@ -6,7 +6,7 @@ import { api, useApi } from "@/lib/inbox/client";
 import type { Label } from "@/lib/inbox/types";
 import { Badge, Button, Field, PageHeader, Spinner, inputCls } from "../ui";
 
-interface Settings { botEnabled: boolean; waMode: "live" | "mock"; webhookUrl: string; env: Record<string, boolean> }
+interface Settings { botEnabled: boolean; carouselEnabled: boolean; waMode: "live" | "mock"; webhookUrl: string; env: Record<string, boolean> }
 
 function Card({ title, sub, children }: { title: string; sub?: string; children: React.ReactNode }) {
   return (
@@ -34,6 +34,7 @@ export function SettingsPage() {
   async function addLabel() { try { await api("/labels", { body: { name: lname, color: lcolor } }); setLname(""); await mutateLb(); } catch (e) { err(e); } }
   async function delLabel(id: string) { if (!confirm("Delete this label from all chats?")) return; try { await api(`/labels?id=${id}`, { method: "DELETE" }); await mutateLb(); } catch (e) { err(e); } }
 
+  async function setCarousel(v: boolean) { try { await api("/settings", { method: "PUT", body: { carouselEnabled: v } }); await mutate(); toast.success(v ? "Carousel is on" : "Carousel is off — using single product cards"); } catch (e) { err(e); } }
   async function setupCarousel() {
     setCrBusy(true);
     try { await api("/carousel", { body: {} }); await mutateCr(); toast.success("Submitted to WhatsApp for approval"); } catch (e) { err(e); } finally { setCrBusy(false); }
@@ -62,6 +63,10 @@ export function SettingsPage() {
           </Card>
 
           <Card title="Product carousel" sub="Scrolling product cards with Details and Request Sample buttons. WhatsApp requires an approved template for this, so it is set up once here. Until it is approved, customers get the single product cards instead.">
+            <button role="switch" aria-checked={data.carouselEnabled} disabled={!isAdmin} onClick={() => setCarousel(!data.carouselEnabled)} className="mb-3 flex w-full items-center justify-between gap-3 rounded-lg bg-wa-panel px-4 py-3 text-left disabled:opacity-60">
+              <span><span className="block text-sm font-medium">{data.carouselEnabled ? "Carousel is ON" : "Carousel is OFF"}</span><span className="text-xs text-wa-muted">{data.carouselEnabled ? "Recommendations of 2+ products go out as a scrolling carousel (billed by WhatsApp as a marketing message)." : "Recommendations go out as single product cards (free within 24 hours)."}</span></span>
+              <span className={`relative h-6 w-11 shrink-0 rounded-full transition ${data.carouselEnabled ? "bg-wa-green" : "bg-gray-300"}`}><span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-all ${data.carouselEnabled ? "left-[22px]" : "left-0.5"}`} /></span>
+            </button>
             <ul className="mb-3 divide-y divide-wa-line rounded-lg border border-wa-line">
               {cr?.templates.map((t) => (
                 <li key={t.size} className="flex items-center justify-between gap-3 px-3 py-2.5 text-sm">

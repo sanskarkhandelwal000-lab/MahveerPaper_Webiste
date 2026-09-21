@@ -13,7 +13,7 @@ import {
 import { siteConfig } from "@/lib/config";
 import { query, queryOne, json } from "./db";
 import { sendOutbound, type InboundResult } from "./messages";
-import { botEnabled } from "./settings";
+import { botEnabled, carouselEnabled } from "./settings";
 import { CAROUSEL_LANG, carouselName, carouselReady } from "./carousel";
 
 /**
@@ -227,7 +227,7 @@ function cardLabel(p: (typeof catalogProducts)[number]): string {
 async function sendProducts(conversationId: string, products: Array<(typeof catalogProducts)[number]>): Promise<void> {
   const shown = products.slice(0, 4);
   const withImage = shown.filter((p) => image(p));
-  if (withImage.length >= 2 && (await carouselReady(withImage.length))) {
+  if (withImage.length >= 2 && (await carouselEnabled()) && (await carouselReady(withImage.length))) {
     const sent = await sendOutbound(
       {
         kind: "carousel",

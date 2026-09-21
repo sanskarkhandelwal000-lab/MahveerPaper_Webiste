@@ -13,3 +13,6 @@ export async function setSetting(key: string, value: unknown): Promise<void> {
 }
 
 export const botEnabled = () => getSetting<boolean>("bot_enabled", false);
+
+/** Scrolling product carousel (a paid marketing template). Off = free single product cards. Default on. */
+export const carouselEnabled = () => getSetting<boolean>("carousel_enabled", true);
