@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { X, ArrowUp } from "lucide-react";
-import { KoraMark, MessageBubble, SuggestedPrompts, TypingDots, useChatAssistant } from "@/components/chat/shared";
+import { KoraLogo, KoraMark, MessageBubble, SuggestedPrompts, TypingDots, useChatAssistant } from "@/components/chat/shared";
 
 export function ChatWidget() {
   const pathname = usePathname();
@@ -81,11 +81,9 @@ export function ChatWidget() {
                 onClick={() => setOpen(true)}
                 className="text-left"
               >
-                <p className="font-[family-name:var(--font-newsreader)] text-base font-semibold tracking-wide text-brand-navy">
-                  KORA
-                </p>
+                <KoraLogo markClass="h-6 w-6" textClass="text-lg" />
                 <p className="mt-0.5 text-xs leading-relaxed text-gray-500">
-                  Your paper concierge — tell me what you&apos;re making and I&apos;ll find the right paper.
+                  Ask anything. Anytime. Tell me what you&apos;re making and I&apos;ll find the right paper.
                 </p>
               </button>
               <span
@@ -104,7 +102,7 @@ export function ChatWidget() {
                 animate={{ opacity: [0.5, 0, 0.5], scale: [1, 1.5, 1] }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute inset-0 rounded-full bg-[#e3c274]/40"
+                className="absolute inset-0 rounded-full bg-[#2F5BC0]/30"
                 aria-hidden="true"
               />
             )}
@@ -114,16 +112,16 @@ export function ChatWidget() {
             onClick={() => setOpen((v) => !v)}
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.95 }}
-            aria-label={open ? "Close KORA chat" : "Chat with KORA, our paper concierge"}
+            aria-label={open ? "Close kora chat" : "Chat with kora — ask anything, anytime"}
             aria-expanded={open}
-            className="relative flex h-14 items-center gap-2.5 rounded-full bg-gradient-to-br from-[#12315f] via-brand-navy to-[#00112b] pl-2 pr-5 text-white shadow-[0_14px_36px_-8px_rgba(0,17,43,0.7)] ring-1 ring-[#e3c274]/50 transition-shadow duration-300 hover:shadow-[0_18px_44px_-6px_rgba(227,194,116,0.45)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e3c274] focus-visible:ring-offset-2"
+            className="relative flex h-14 items-center gap-2 rounded-full bg-white pl-3 pr-5 shadow-[0_14px_36px_-8px_rgba(47,91,192,0.55)] ring-1 ring-[#2F5BC0]/20 transition-shadow duration-300 hover:shadow-[0_18px_44px_-6px_rgba(47,91,192,0.7)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2F5BC0] focus-visible:ring-offset-2"
           >
             {open ? (
-              <span className="flex h-10 w-10 items-center justify-center pr-1"><X className="h-5 w-5 text-[#e3c274]" /></span>
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2F5BC0]/10"><X className="h-4 w-4 text-[#2F5BC0]" /></span>
             ) : (
-              <KoraMark className="h-10 w-10 bg-[#0b2349] text-lg" />
+              <KoraMark className="h-8 w-8" />
             )}
-            <span className="font-[family-name:var(--font-newsreader)] text-[15px] font-semibold tracking-[0.22em] text-[#f1dba0]">KORA</span>
+            <span className="font-[family-name:var(--font-manrope)] text-xl font-extrabold leading-none tracking-tight text-[#0f1a2e]">kora</span>
           </motion.button>
         </div>
       </div>
@@ -138,24 +136,23 @@ export function ChatWidget() {
             transition={{ duration: 0.2, ease: "easeOut" }}
             role="dialog"
             aria-modal="true"
-            aria-label="KORA, Mahaveer Papers paper concierge"
+            aria-label="kora — Mahaveer Papers assistant"
             className="fixed bottom-24 right-4 z-50 flex h-[min(600px,calc(100vh-7rem))] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-2xl sm:right-6"
           >
             {/* Header */}
-            <div className="flex items-center gap-3 border-b border-[#e3c274]/30 bg-gradient-to-br from-[#0b2349] to-[#00112b] px-5 py-4 text-white">
-              <KoraMark className="h-10 w-10 text-lg" />
+            <div className="flex items-center gap-3 border-b border-gray-100 bg-white px-5 py-3.5">
               <div className="min-w-0 flex-1">
-                <p className="font-[family-name:var(--font-newsreader)] text-lg font-semibold leading-tight tracking-[0.2em] text-[#f1dba0]">KORA</p>
-                <p className="flex items-center gap-1.5 text-xs leading-tight text-white/60">
-                  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400" />
-                  Paper concierge &middot; Mahaveer Papers
+                <KoraLogo markClass="h-9 w-9" textClass="text-3xl" />
+                <p className="mt-1 flex items-center gap-1.5 text-xs leading-tight text-gray-500">
+                  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />
+                  Ask anything. Anytime. &middot; Mahaveer Papers
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
                 aria-label="Close chat"
-                className="rounded-full p-1.5 text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+                className="rounded-full p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -171,7 +168,7 @@ export function ChatWidget() {
               )}
               {loading && (
                 <div className="flex items-end gap-2">
-                  <KoraMark className="h-7 w-7 shrink-0 text-[13px]" />
+                  <KoraMark className="h-7 w-7" />
                   <div className="w-fit rounded-2xl rounded-bl-sm border border-gray-200 bg-white">
                     <TypingDots />
                   </div>
@@ -192,7 +189,7 @@ export function ChatWidget() {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask KORA about any paper"
+                placeholder="Ask kora about any paper"
                 disabled={loading}
                 className="flex-1 rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-colors focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 disabled:bg-gray-50"
               />

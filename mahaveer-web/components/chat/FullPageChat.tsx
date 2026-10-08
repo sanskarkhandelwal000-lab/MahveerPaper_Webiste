@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowUp } from "lucide-react";
-import { KoraMark, MessageBubble, SuggestedPrompts, TypingDots, useChatAssistant } from "@/components/chat/shared";
+import { KoraLogo, KoraMark, MessageBubble, SuggestedPrompts, TypingDots, useChatAssistant } from "@/components/chat/shared";
 
 export function FullPageChat() {
   const { messages, input, setInput, loading, send, scrollRef } = useChatAssistant();
@@ -9,13 +9,12 @@ export function FullPageChat() {
   return (
     <div className="flex h-dvh flex-col bg-[#ECE9E4]">
       {/* Header */}
-      <div className="flex shrink-0 items-center gap-3 bg-brand-navy px-4 py-3.5 text-white shadow-md">
-        <KoraMark className="h-10 w-10 text-lg" />
+      <div className="flex shrink-0 items-center gap-3 bg-white px-4 py-3 shadow-md">
         <div className="min-w-0 flex-1">
-          <p className="truncate font-[family-name:var(--font-newsreader)] text-lg font-semibold leading-tight tracking-[0.2em] text-[#f1dba0]">KORA</p>
-          <p className="flex items-center gap-1.5 text-xs leading-tight text-white/60">
-            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400" />
-            Paper concierge &middot; Mahaveer Papers
+          <KoraLogo markClass="h-9 w-9" textClass="text-3xl" />
+          <p className="mt-1 flex items-center gap-1.5 text-xs leading-tight text-gray-500">
+            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />
+            Ask anything. Anytime. &middot; Mahaveer Papers
           </p>
         </div>
       </div>
@@ -29,7 +28,7 @@ export function FullPageChat() {
           {messages.length === 1 && <SuggestedPrompts onSelect={(prompt) => send(prompt)} />}
           {loading && (
             <div className="flex items-end gap-2">
-              <KoraMark className="h-7 w-7 shrink-0 text-[13px]" />
+              <KoraMark className="h-7 w-7" />
               <div className="w-fit rounded-2xl rounded-bl-sm border border-gray-200 bg-white">
                 <TypingDots />
               </div>

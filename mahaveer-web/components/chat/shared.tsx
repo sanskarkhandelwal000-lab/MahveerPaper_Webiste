@@ -26,7 +26,7 @@ function makeWelcomeMessage(): ChatMessage {
     isSeed: true,
     createdAt: Date.now(),
     content:
-      "Hello, I'm KORA, your Mahaveer Papers paper concierge. I can help you find the right paper, check what it's best suited for, and get a sample sent over. What are you working on?",
+      "Hello, I'm kora, the Mahaveer Papers assistant — ask anything, anytime. I can help you find the right paper, check what it's best suited for, and get a sample sent over. What are you working on?",
   };
 }
 
@@ -167,23 +167,31 @@ export function ProductCard({ product }: { product: CatalogProduct }) {
   );
 }
 
-/** KORA's monogram: a gold serif K on deep navy. */
+/** kora's logo mark: a blue chat bubble with an orange folded corner and three typing dots. */
 export function KoraMark({ className }: { className?: string }) {
   return (
-    <span
-      aria-hidden="true"
-      className={cn(
-        "flex items-center justify-center rounded-full bg-gradient-to-br from-[#12315f] to-[#00112b] font-[family-name:var(--font-newsreader)] font-semibold leading-none text-[#e3c274] ring-1 ring-[#e3c274]/50",
-        className
-      )}
-    >
-      K
+    <svg viewBox="0 0 64 64" aria-hidden="true" className={cn("shrink-0", className)}>
+      <path d="M14 4h30l14 14v26a10 10 0 0 1-10 10H29L12 63l3-9h-1A10 10 0 0 1 4 44V14A10 10 0 0 1 14 4Z" fill="#2F5BC0" />
+      <path d="M44 4l14 14H50a6 6 0 0 1-6-6V4Z" fill="#F08A24" />
+      <circle cx="19" cy="31" r="4.2" fill="#fff" />
+      <circle cx="31" cy="31" r="4.2" fill="#fff" fillOpacity=".82" />
+      <circle cx="43" cy="31" r="4.2" fill="#fff" fillOpacity=".62" />
+    </svg>
+  );
+}
+
+/** Mark plus the lowercase "kora" wordmark. */
+export function KoraLogo({ className, markClass = "h-8 w-8", textClass = "text-2xl" }: { className?: string; markClass?: string; textClass?: string }) {
+  return (
+    <span className={cn("inline-flex items-center gap-2", className)}>
+      <KoraMark className={markClass} />
+      <span className={cn("font-[family-name:var(--font-manrope)] font-extrabold leading-none tracking-tight text-[#0f1a2e]", textClass)}>kora</span>
     </span>
   );
 }
 
 function AssistantAvatar({ size = "sm" }: { size?: "sm" | "md" }) {
-  return <KoraMark className={cn("shrink-0", size === "sm" ? "h-7 w-7 text-[13px]" : "h-8 w-8 text-sm")} />;
+  return <KoraMark className={size === "sm" ? "h-7 w-7" : "h-8 w-8"} />;
 }
 
 /**
