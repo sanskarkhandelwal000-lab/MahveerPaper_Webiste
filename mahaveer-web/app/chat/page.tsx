@@ -3,7 +3,7 @@ import { FullPageChat } from "@/components/chat/FullPageChat";
 
 export const metadata: Metadata = {
   title: "Chat with Mahaveer Papers",
-  description: "Ask our AI assistant for paper recommendations, samples, and quotes.",
+  description: "Ask KORA, our paper concierge, for paper recommendations, samples, and quotes.",
   robots: { index: false, follow: false },
 };
 

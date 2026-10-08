@@ -1,7 +1,7 @@
 "use client";
 
-import { Sparkles, ArrowUp } from "lucide-react";
-import { MessageBubble, SuggestedPrompts, TypingDots, useChatAssistant } from "@/components/chat/shared";
+import { ArrowUp } from "lucide-react";
+import { KoraMark, MessageBubble, SuggestedPrompts, TypingDots, useChatAssistant } from "@/components/chat/shared";
 
 export function FullPageChat() {
   const { messages, input, setInput, loading, send, scrollRef } = useChatAssistant();
@@ -10,14 +10,12 @@ export function FullPageChat() {
     <div className="flex h-dvh flex-col bg-[#ECE9E4]">
       {/* Header */}
       <div className="flex shrink-0 items-center gap-3 bg-brand-navy px-4 py-3.5 text-white shadow-md">
-        <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-orange/30 to-brand-orange/10 ring-1 ring-brand-orange/30">
-          <Sparkles className="h-5 w-5 text-brand-orange" />
-        </div>
+        <KoraMark className="h-10 w-10 text-lg" />
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-medium leading-tight">Mahaveer Papers</p>
+          <p className="truncate font-[family-name:var(--font-newsreader)] text-lg font-semibold leading-tight tracking-[0.2em] text-[#f1dba0]">KORA</p>
           <p className="flex items-center gap-1.5 text-xs leading-tight text-white/60">
             <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400" />
-            AI Assistant &middot; Replies instantly
+            Paper concierge &middot; Mahaveer Papers
           </p>
         </div>
       </div>
@@ -31,7 +29,7 @@ export function FullPageChat() {
           {messages.length === 1 && <SuggestedPrompts onSelect={(prompt) => send(prompt)} />}
           {loading && (
             <div className="flex items-end gap-2">
-              <div className="h-7 w-7 shrink-0 rounded-full bg-gradient-to-br from-brand-orange/25 to-brand-orange/10 ring-1 ring-brand-orange/25" />
+              <KoraMark className="h-7 w-7 shrink-0 text-[13px]" />
               <div className="w-fit rounded-2xl rounded-bl-sm border border-gray-200 bg-white">
                 <TypingDots />
               </div>

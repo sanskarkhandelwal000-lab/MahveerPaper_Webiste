@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight, ImageOff, Sparkles } from "lucide-react";
+import { ArrowUpRight, ImageOff } from "lucide-react";
 import type { CatalogProduct } from "@/data/products";
 import { cn } from "@/lib/utils";
 
@@ -26,7 +26,7 @@ function makeWelcomeMessage(): ChatMessage {
     isSeed: true,
     createdAt: Date.now(),
     content:
-      "Hi, I'm the Mahaveer Papers AI assistant. I can help you find the right paper, check what it's best suited for, and get a sample sent over. What are you working on?",
+      "Hello, I'm KORA, your Mahaveer Papers paper concierge. I can help you find the right paper, check what it's best suited for, and get a sample sent over. What are you working on?",
   };
 }
 
@@ -167,17 +167,23 @@ export function ProductCard({ product }: { product: CatalogProduct }) {
   );
 }
 
-function AssistantAvatar({ size = "sm" }: { size?: "sm" | "md" }) {
+/** KORA's monogram: a gold serif K on deep navy. */
+export function KoraMark({ className }: { className?: string }) {
   return (
-    <div
+    <span
+      aria-hidden="true"
       className={cn(
-        "flex shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-orange/25 to-brand-orange/10 ring-1 ring-brand-orange/25",
-        size === "sm" ? "h-7 w-7" : "h-8 w-8"
+        "flex items-center justify-center rounded-full bg-gradient-to-br from-[#12315f] to-[#00112b] font-[family-name:var(--font-newsreader)] font-semibold leading-none text-[#e3c274] ring-1 ring-[#e3c274]/50",
+        className
       )}
     >
-      <Sparkles className={cn("text-brand-orange", size === "sm" ? "h-3.5 w-3.5" : "h-4 w-4")} />
-    </div>
+      K
+    </span>
   );
+}
+
+function AssistantAvatar({ size = "sm" }: { size?: "sm" | "md" }) {
+  return <KoraMark className={cn("shrink-0", size === "sm" ? "h-7 w-7 text-[13px]" : "h-8 w-8 text-sm")} />;
 }
 
 /**

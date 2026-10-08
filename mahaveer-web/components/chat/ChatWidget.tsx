@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { Sparkles, X, ArrowUp } from "lucide-react";
-import { MessageBubble, SuggestedPrompts, TypingDots, useChatAssistant } from "@/components/chat/shared";
+import { X, ArrowUp } from "lucide-react";
+import { KoraMark, MessageBubble, SuggestedPrompts, TypingDots, useChatAssistant } from "@/components/chat/shared";
 
 export function ChatWidget() {
   const pathname = usePathname();
@@ -81,11 +81,11 @@ export function ChatWidget() {
                 onClick={() => setOpen(true)}
                 className="text-left"
               >
-                <p className="text-sm font-medium text-brand-ink">
-                  Happy to help! 👋
+                <p className="font-[family-name:var(--font-newsreader)] text-base font-semibold tracking-wide text-brand-navy">
+                  KORA
                 </p>
-                <p className="mt-1 text-xs leading-relaxed text-gray-500">
-                  I&apos;m the AI assistant at Mahaveer Papers — how can I help you today?
+                <p className="mt-0.5 text-xs leading-relaxed text-gray-500">
+                  Your paper concierge — tell me what you&apos;re making and I&apos;ll find the right paper.
                 </p>
               </button>
               <span
@@ -104,7 +104,7 @@ export function ChatWidget() {
                 animate={{ opacity: [0.5, 0, 0.5], scale: [1, 1.5, 1] }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute inset-0 rounded-full bg-brand-orange/50"
+                className="absolute inset-0 rounded-full bg-[#e3c274]/40"
                 aria-hidden="true"
               />
             )}
@@ -112,49 +112,18 @@ export function ChatWidget() {
           <motion.button
             type="button"
             onClick={() => setOpen((v) => !v)}
-            whileHover={{ scale: 1.06 }}
-            whileTap={{ scale: 0.94 }}
-            aria-label={open ? "Close chat" : "Open product assistant chat"}
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.95 }}
+            aria-label={open ? "Close KORA chat" : "Chat with KORA, our paper concierge"}
             aria-expanded={open}
-            className="relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#0c2f66] via-brand-navy to-[#00112b] text-white shadow-[0_12px_32px_-6px_rgba(234,88,12,0.5)] ring-1 ring-white/15 transition-shadow duration-300 hover:shadow-[0_16px_40px_-4px_rgba(234,88,12,0.65)] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2"
+            className="relative flex h-14 items-center gap-2.5 rounded-full bg-gradient-to-br from-[#12315f] via-brand-navy to-[#00112b] pl-2 pr-5 text-white shadow-[0_14px_36px_-8px_rgba(0,17,43,0.7)] ring-1 ring-[#e3c274]/50 transition-shadow duration-300 hover:shadow-[0_18px_44px_-6px_rgba(227,194,116,0.45)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e3c274] focus-visible:ring-offset-2"
           >
-          <AnimatePresence mode="wait" initial={false}>
             {open ? (
-              <motion.span
-                key="close"
-                initial={{ rotate: -90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: 90, opacity: 0 }}
-                transition={{ duration: 0.15 }}
-              >
-                <X className="h-6 w-6" />
-              </motion.span>
+              <span className="flex h-10 w-10 items-center justify-center pr-1"><X className="h-5 w-5 text-[#e3c274]" /></span>
             ) : (
-              <motion.span
-                key="chat"
-                initial={{ rotate: 90, opacity: 0, scale: 0.6 }}
-                animate={{
-                  rotate: 0,
-                  opacity: 1,
-                  scale: 1,
-                  filter: [
-                    "drop-shadow(0 0 0px rgba(234,88,12,0))",
-                    "drop-shadow(0 0 6px rgba(234,88,12,0.7))",
-                    "drop-shadow(0 0 0px rgba(234,88,12,0))",
-                  ],
-                }}
-                exit={{ rotate: -90, opacity: 0, scale: 0.6 }}
-                transition={{
-                  rotate: { duration: 0.2 },
-                  opacity: { duration: 0.2 },
-                  scale: { duration: 0.2 },
-                  filter: { duration: 2.6, repeat: Infinity, ease: "easeInOut" },
-                }}
-              >
-                <Sparkles className="h-6 w-6 text-brand-orange" strokeWidth={2} />
-              </motion.span>
+              <KoraMark className="h-10 w-10 bg-[#0b2349] text-lg" />
             )}
-          </AnimatePresence>
+            <span className="font-[family-name:var(--font-newsreader)] text-[15px] font-semibold tracking-[0.22em] text-[#f1dba0]">KORA</span>
           </motion.button>
         </div>
       </div>
@@ -169,19 +138,17 @@ export function ChatWidget() {
             transition={{ duration: 0.2, ease: "easeOut" }}
             role="dialog"
             aria-modal="true"
-            aria-label="Paper recommendation assistant"
+            aria-label="KORA, Mahaveer Papers paper concierge"
             className="fixed bottom-24 right-4 z-50 flex h-[min(600px,calc(100vh-7rem))] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-2xl sm:right-6"
           >
             {/* Header */}
-            <div className="flex items-center gap-3 bg-brand-navy px-5 py-4 text-white">
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-brand-orange/30 to-brand-orange/10 ring-1 ring-brand-orange/30">
-                <Sparkles className="h-4.5 w-4.5 text-brand-orange" />
-              </div>
+            <div className="flex items-center gap-3 border-b border-[#e3c274]/30 bg-gradient-to-br from-[#0b2349] to-[#00112b] px-5 py-4 text-white">
+              <KoraMark className="h-10 w-10 text-lg" />
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium leading-tight">Paper Assistant</p>
-                <p className="flex items-center gap-1.5 text-xs leading-tight text-white/50">
+                <p className="font-[family-name:var(--font-newsreader)] text-lg font-semibold leading-tight tracking-[0.2em] text-[#f1dba0]">KORA</p>
+                <p className="flex items-center gap-1.5 text-xs leading-tight text-white/60">
                   <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400" />
-                  Online &middot; Mahaveer Papers AI
+                  Paper concierge &middot; Mahaveer Papers
                 </p>
               </div>
               <button
@@ -204,7 +171,7 @@ export function ChatWidget() {
               )}
               {loading && (
                 <div className="flex items-end gap-2">
-                  <div className="h-7 w-7 shrink-0 rounded-full bg-gradient-to-br from-brand-orange/25 to-brand-orange/10 ring-1 ring-brand-orange/25" />
+                  <KoraMark className="h-7 w-7 shrink-0 text-[13px]" />
                   <div className="w-fit rounded-2xl rounded-bl-sm border border-gray-200 bg-white">
                     <TypingDots />
                   </div>
@@ -225,7 +192,7 @@ export function ChatWidget() {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="e.g. white paper for wedding cards"
+                placeholder="Ask KORA about any paper"
                 disabled={loading}
                 className="flex-1 rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-colors focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 disabled:bg-gray-50"
               />
