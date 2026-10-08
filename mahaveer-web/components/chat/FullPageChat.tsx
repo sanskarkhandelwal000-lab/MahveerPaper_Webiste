@@ -1,10 +1,10 @@
 "use client";
 
 import { ArrowUp } from "lucide-react";
-import { KoraLogo, KoraMark, MessageBubble, SuggestedPrompts, TypingDots, useChatAssistant } from "@/components/chat/shared";
+import { KoraLogo, KoraMark, MessageBubble, TypingDots, useChatAssistant } from "@/components/chat/shared";
 
 export function FullPageChat() {
-  const { messages, input, setInput, loading, send, scrollRef } = useChatAssistant();
+  const { messages, input, setInput, loading, send, choose, scrollRef } = useChatAssistant();
 
   return (
     <div className="flex h-dvh flex-col bg-[#ECE9E4]">
@@ -23,9 +23,8 @@ export function FullPageChat() {
       <div ref={scrollRef} className="flex-1 space-y-4 overflow-y-auto px-3 py-4 sm:px-6">
         <div className="mx-auto flex w-full max-w-2xl flex-col gap-4">
           {messages.map((m) => (
-            <MessageBubble key={m.id} message={m} />
+            <MessageBubble key={m.id} message={m} onChoose={choose} />
           ))}
-          {messages.length === 1 && <SuggestedPrompts onSelect={(prompt) => send(prompt)} />}
           {loading && (
             <div className="flex items-end gap-2">
               <KoraMark className="h-7 w-7" />

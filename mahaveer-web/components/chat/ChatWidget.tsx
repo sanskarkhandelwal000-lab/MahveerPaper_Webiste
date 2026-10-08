@@ -4,13 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { X, ArrowUp } from "lucide-react";
-import { KoraLogo, KoraMark, MessageBubble, SuggestedPrompts, TypingDots, useChatAssistant } from "@/components/chat/shared";
+import { KoraLogo, KoraMark, MessageBubble, TypingDots, useChatAssistant } from "@/components/chat/shared";
 
 export function ChatWidget() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [showTeaser, setShowTeaser] = useState(false);
-  const { messages, input, setInput, loading, send, scrollRef } = useChatAssistant();
+  const { messages, input, setInput, loading, send, choose, scrollRef } = useChatAssistant(open);
   const inputRef = useRef<HTMLInputElement>(null);
   const hasOpenedRef = useRef(false);
 
@@ -161,11 +161,8 @@ export function ChatWidget() {
             {/* Messages */}
             <div ref={scrollRef} className="flex-1 space-y-4 overflow-y-auto bg-brand-gray/50 p-4">
               {messages.map((m) => (
-                <MessageBubble key={m.id} message={m} onSampleClick={() => setOpen(false)} />
+                <MessageBubble key={m.id} message={m} onChoose={choose} />
               ))}
-              {messages.length === 1 && (
-                <SuggestedPrompts onSelect={(prompt) => send(prompt)} />
-              )}
               {loading && (
                 <div className="flex items-end gap-2">
                   <KoraMark className="h-7 w-7" />
