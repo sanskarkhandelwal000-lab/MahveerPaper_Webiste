@@ -11,7 +11,7 @@ export function FullPageChat() {
       {/* Header */}
       <div className="flex shrink-0 items-center gap-3 bg-white px-4 py-2.5 shadow-md">
         <div className="min-w-0 flex-1">
-          <KoraLogo markClass="h-5 w-5 sm:h-6 sm:w-6" textClass="text-base sm:text-xl" />
+          <KoraLogo markClass="h-4 w-4 sm:h-6 sm:w-6" textClass="text-sm sm:text-xl" />
           <p className="mt-1 flex items-center gap-1.5 text-xs leading-tight text-gray-500">
             <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />
             Ask anything. Anytime. &middot; Mahaveer Papers
@@ -27,7 +27,7 @@ export function FullPageChat() {
           ))}
           {loading && (
             <div className="flex items-end gap-2">
-              <KoraMark className="h-5 w-5 sm:h-7 sm:w-7" />
+              <KoraMark className="h-4 w-4 sm:h-7 sm:w-7" />
               <div className="w-fit rounded-2xl rounded-bl-sm border border-gray-200 bg-white">
                 <TypingDots />
               </div>
