@@ -81,7 +81,7 @@ export function ChatWidget() {
                 onClick={() => setOpen(true)}
                 className="text-left"
               >
-                <KoraLogo markClass="h-5 w-5" textClass="text-base" />
+                <KoraLogo markClass="h-4 w-4 sm:h-5 sm:w-5" textClass="text-sm sm:text-base" />
                 <p className="mt-0.5 text-xs leading-relaxed text-gray-500">
                   Ask anything. Anytime. Tell me what you&apos;re making and I&apos;ll find the right paper.
                 </p>
@@ -114,14 +114,14 @@ export function ChatWidget() {
             whileTap={{ scale: 0.95 }}
             aria-label={open ? "Close kora chat" : "Chat with kora — ask anything, anytime"}
             aria-expanded={open}
-            className="relative flex h-11 items-center gap-1.5 rounded-full bg-white pl-2.5 pr-4 shadow-[0_14px_36px_-8px_rgba(47,91,192,0.55)] ring-1 ring-[#2F5BC0]/20 transition-shadow duration-300 hover:shadow-[0_18px_44px_-6px_rgba(47,91,192,0.7)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2F5BC0] focus-visible:ring-offset-2"
+            className="relative flex h-9 items-center gap-1 rounded-full bg-white pl-2 pr-3 sm:h-11 sm:gap-1.5 sm:pl-2.5 sm:pr-4 shadow-[0_14px_36px_-8px_rgba(47,91,192,0.55)] ring-1 ring-[#2F5BC0]/20 transition-shadow duration-300 hover:shadow-[0_18px_44px_-6px_rgba(47,91,192,0.7)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2F5BC0] focus-visible:ring-offset-2"
           >
             {open ? (
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#2F5BC0]/10"><X className="h-3.5 w-3.5 text-[#2F5BC0]" /></span>
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#2F5BC0]/10 sm:h-6 sm:w-6"><X className="h-3 w-3 text-[#2F5BC0] sm:h-3.5 sm:w-3.5" /></span>
             ) : (
-              <KoraMark className="h-6 w-6" />
+              <KoraMark className="h-5 w-5 sm:h-6 sm:w-6" />
             )}
-            <span className="font-[family-name:var(--font-manrope)] text-base font-extrabold leading-none tracking-tight text-[#0f1a2e]">kora</span>
+            <span className="font-[family-name:var(--font-manrope)] text-sm font-extrabold leading-none tracking-tight text-[#0f1a2e] sm:text-base">kora</span>
           </motion.button>
         </div>
       </div>
@@ -140,9 +140,9 @@ export function ChatWidget() {
             className="fixed bottom-24 right-4 z-50 flex h-[min(600px,calc(100vh-7rem))] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-2xl sm:right-6"
           >
             {/* Header */}
-            <div className="flex items-center gap-3 border-b border-gray-100 bg-white px-4 py-2.5">
+            <div className="flex items-center gap-3 border-b border-gray-100 bg-white px-4 py-2 sm:py-2.5">
               <div className="min-w-0 flex-1">
-                <KoraLogo markClass="h-6 w-6" textClass="text-xl" />
+                <KoraLogo markClass="h-5 w-5 sm:h-6 sm:w-6" textClass="text-base sm:text-xl" />
                 <p className="mt-1 flex items-center gap-1.5 text-xs leading-tight text-gray-500">
                   <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />
                   Ask anything. Anytime. &middot; Mahaveer Papers
@@ -165,7 +165,7 @@ export function ChatWidget() {
               ))}
               {loading && (
                 <div className="flex items-end gap-2">
-                  <KoraMark className="h-7 w-7" />
+                  <KoraMark className="h-5 w-5 sm:h-7 sm:w-7" />
                   <div className="w-fit rounded-2xl rounded-bl-sm border border-gray-200 bg-white">
                     <TypingDots />
                   </div>
