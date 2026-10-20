@@ -163,7 +163,7 @@ export function TypingDots() {
 }
 
 function AssistantAvatar({ size = "sm" }: { size?: "sm" | "md" }) {
-  return <KoraMark className={size === "sm" ? "h-7 w-7" : "h-8 w-8"} />;
+  return <KoraMark className={size === "sm" ? "h-6 w-6" : "h-7 w-7"} />;
 }
 
 /** One message row; shared so the floating widget and the full-page /chat surface stay identical. */
