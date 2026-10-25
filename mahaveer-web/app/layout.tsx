@@ -3,6 +3,7 @@ import { Geist, Newsreader, Manrope, Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { ScrollRestorationFix } from "@/components/providers/ScrollRestorationFix";
+import { Analytics } from "@vercel/analytics/next";
 import { ChatWidget } from "@/components/chat/ChatWidget";
 import { siteConfig } from "@/lib/config";
 import "./globals.css";
@@ -85,6 +86,7 @@ export default function RootLayout({
           <ScrollRestorationFix />
           {children}
           <ChatWidget />
+          <Analytics />
           <Toaster richColors position="top-right" />
         </ThemeProvider>
       </body>

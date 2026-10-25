@@ -2,6 +2,7 @@
 
 import { Fragment, useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
+import { track } from "@vercel/analytics";
 import { cn } from "@/lib/utils";
 
 export interface ChatOption { id: string; title: string }
@@ -52,7 +53,7 @@ export function useChatAssistant(enabled = true) {
     try { sessionStorage.setItem(STORE, JSON.stringify(messages.slice(-80))); } catch { /* storage unavailable */ }
   }, [messages]);
 
-  const post = useCallback(async (payload: { text?: string; buttonId?: string; title?: string }, shown?: ChatMessage) => {
+  const post = useCallback(async (payload: { text?: string; buttonId?: string; title?: string; start?: boolean }, shown?: ChatMessage) => {
     if (busy.current) return;
     busy.current = true;
     if (shown) setMessages((prev) => [...prev, shown]);
@@ -84,7 +85,7 @@ export function useChatAssistant(enabled = true) {
     let saved: ChatMessage[] = [];
     try { saved = JSON.parse(sessionStorage.getItem(STORE) ?? "[]"); } catch { /* ignore */ }
     if (saved.length) setMessages(saved);
-    else void post({ text: "Hi" });
+    else { void post({ text: "Hi", start: true }); try { track("kora_opened"); } catch { /* analytics blocked */ } }
   }, [enabled, post]);
 
   const send = (overrideText?: string) => {
