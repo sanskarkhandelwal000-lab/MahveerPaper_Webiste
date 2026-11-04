@@ -45,15 +45,41 @@ export function useChatAssistant(enabled = true) {
   const started = useRef(false);
   const busy = useRef(false);
 
+  // Chat-style scrolling: stay pinned to the newest message (also when images load, the typing dots appear or the
+  // keyboard opens and shrinks the window) unless the visitor has scrolled up to read something earlier.
+  const stick = useRef(true);
+  const toBottom = useCallback((smooth = false) => {
+    const box = scrollRef.current;
+    if (box) box.scrollTo({ top: box.scrollHeight, behavior: smooth ? "smooth" : "auto" });
+  }, []);
   useEffect(() => {
     const box = scrollRef.current;
     if (!box) return;
-    // A new bot message is read from its first line (so a greeting with a long menu isn't scrolled past); anything else goes to the bottom
+    const onScroll = () => { stick.current = box.scrollHeight - box.scrollTop - box.clientHeight < 80; };
+    const follow = () => { if (stick.current) toBottom(); };
+    const ro = new ResizeObserver(follow);
+    ro.observe(box);
+    const mo = new MutationObserver(follow);
+    mo.observe(box, { childList: true, subtree: true });
+    box.addEventListener("scroll", onScroll, { passive: true });
+    box.addEventListener("load", follow, true);
+    return () => { ro.disconnect(); mo.disconnect(); box.removeEventListener("scroll", onScroll); box.removeEventListener("load", follow, true); };
+  }, [enabled, toBottom]);
+  const prevCount = useRef(0);
+  useEffect(() => {
     const last = messages[messages.length - 1];
-    const el = last?.role === "assistant" && !loading ? box.querySelector<HTMLElement>(`[data-msg="${last.id}"]`) : null;
-    if (el) box.scrollTo({ top: Math.max(0, el.offsetTop - box.offsetTop - 8), behavior: "smooth" });
-    else box.scrollTo({ top: box.scrollHeight, behavior: "smooth" });
-  }, [messages, loading]);
+    // The opening greeting is read from its first line (it has a long menu); everything after that follows the conversation down
+    if (messages.length === 1 && last?.role === "assistant" && prevCount.current === 0) { stick.current = false; scrollRef.current?.scrollTo({ top: 0 }); }
+    else if (last?.role === "user") { stick.current = true; toBottom(true); }
+    prevCount.current = messages.length;
+  }, [messages, toBottom]);
+
+  /** Call when the text box gets focus: the keyboard is about to cover half the window, so keep the latest message in view. */
+  const pinBottom = useCallback(() => {
+    stick.current = true;
+    toBottom();
+    for (const ms of [120, 350, 700]) setTimeout(() => stick.current && toBottom(), ms); // the keyboard animation takes a moment
+  }, [toBottom]);
 
   useEffect(() => {
     try { sessionStorage.setItem(STORE, JSON.stringify(messages.slice(-80))); } catch { /* storage unavailable */ }
@@ -106,7 +132,23 @@ export function useChatAssistant(enabled = true) {
     void post({ buttonId: o.id, title: o.title }, { id: crypto.randomUUID(), role: "user", text: o.title, createdAt: Date.now() });
   };
 
-  return { messages, input, setInput, loading, send, choose, scrollRef };
+  return { messages, input, setInput, loading, send, choose, scrollRef, pinBottom };
+}
+
+/** The part of the screen that is really visible (above the keyboard, inside the browser bars); null until measured. */
+export function useVisibleViewport(active = true): { top: number; height: number } | null {
+  const [box, setBox] = useState<{ top: number; height: number } | null>(null);
+  useEffect(() => {
+    if (!active) return;
+    const v = window.visualViewport;
+    const update = () => setBox({ top: v?.offsetTop ?? 0, height: v?.height ?? window.innerHeight });
+    update();
+    v?.addEventListener("resize", update);
+    v?.addEventListener("scroll", update);
+    window.addEventListener("orientationchange", update);
+    return () => { v?.removeEventListener("resize", update); v?.removeEventListener("scroll", update); window.removeEventListener("orientationchange", update); };
+  }, [active]);
+  return box;
 }
 
 function formatTime(ts: number): string {

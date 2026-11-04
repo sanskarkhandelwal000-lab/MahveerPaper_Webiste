@@ -10,7 +10,7 @@ export function ChatWidget() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [showTeaser, setShowTeaser] = useState(false);
-  const { messages, input, setInput, loading, send, choose, scrollRef } = useChatAssistant(open);
+  const { messages, input, setInput, loading, send, choose, scrollRef, pinBottom } = useChatAssistant(open);
   const inputRef = useRef<HTMLInputElement>(null);
   const hasOpenedRef = useRef(false);
 
@@ -186,7 +186,7 @@ export function ChatWidget() {
             </div>
 
             {/* Messages */}
-            <div ref={scrollRef} className="flex-1 space-y-4 overflow-y-auto bg-brand-gray/50 p-4">
+            <div ref={scrollRef} className="flex-1 space-y-4 overflow-y-auto overscroll-contain bg-brand-gray/50 p-4">
               {messages.map((m) => (
                 <MessageBubble key={m.id} message={m} onChoose={choose} />
               ))}
@@ -205,8 +205,9 @@ export function ChatWidget() {
               onSubmit={(e) => {
                 e.preventDefault();
                 send();
+                inputRef.current?.focus(); // keep the keyboard open for the next message
               }}
-              className="flex items-center gap-2 border-t border-gray-100 bg-white p-3"
+              className="flex items-center gap-2 border-t border-gray-100 bg-white p-3 [padding-bottom:max(0.75rem,env(safe-area-inset-bottom))] max-sm:[padding-bottom:0.75rem]"
             >
               <input
                 ref={inputRef}
@@ -214,12 +215,16 @@ export function ChatWidget() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask kora about any paper"
-                disabled={loading}
+                onFocus={pinBottom}
+                enterKeyHint="send"
+                autoComplete="off"
+                autoCapitalize="sentences"
                 className="flex-1 rounded-full border border-gray-200 px-4 py-2.5 text-base text-gray-900 sm:text-sm placeholder-gray-400 outline-none transition-colors focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 disabled:bg-gray-50"
               />
               <button
                 type="submit"
                 disabled={loading || !input.trim()}
+                onMouseDown={(e) => e.preventDefault()} /* tapping send must not take focus from the text box (that closes the keyboard) */
                 aria-label="Send message"
                 className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-orange text-white transition-colors hover:bg-brand-orange-dark disabled:cursor-not-allowed disabled:opacity-40"
               >
