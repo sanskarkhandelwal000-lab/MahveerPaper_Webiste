@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer base {
+  /* Never let one wide element widen the page: on phones that shrinks the layout viewport and pushes fixed buttons (kora) off-screen */
+  html, body { max-width: 100%; overflow-x: clip; }
+
   :root {
     --scrollbar-width: 0px;
   }

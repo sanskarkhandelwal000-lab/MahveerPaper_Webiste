@@ -16,7 +16,7 @@ export function About({ showCta = true }: { showCta?: boolean }) {
       <div className="mx-auto flex max-w-[1200px] flex-col items-center gap-10 lg:flex-row lg:items-start lg:gap-[60px]">
         {/* Image mosaic: large left (top-aligned) + two stacked right (offset down ~64px per Figma) */}
         <MotionDiv direction="left" className="flex w-full shrink-0 items-start gap-4 lg:w-[570px]">
-          <div className="relative h-[350px] w-1/2 shrink-0 overflow-hidden rounded-[10px] sm:h-[437px] lg:w-[313.5px]">
+          <div className="relative h-[350px] w-[calc(50%-0.5rem)] shrink-0 overflow-hidden rounded-[10px] sm:h-[437px] lg:w-[313.5px]">
             <Image
               src="/figma/paper-roll.jpg"
               alt="Brown paper roll close-up"
@@ -25,7 +25,7 @@ export function About({ showCta = true }: { showCta?: boolean }) {
               className="object-cover object-bottom"
             />
           </div>
-          <div className="mt-6 flex w-1/2 shrink-0 flex-col gap-4 sm:mt-8 lg:mt-16 lg:w-[240.5px]">
+          <div className="mt-6 flex w-[calc(50%-0.5rem)] shrink-0 flex-col gap-4 sm:mt-8 lg:mt-16 lg:w-[240.5px]">
             <div className="relative h-[160px] overflow-hidden rounded-[10px] sm:h-[153px]">
               <Image
                 src="/figma/about-layers.jpg"
