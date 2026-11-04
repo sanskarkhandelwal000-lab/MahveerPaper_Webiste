@@ -14,8 +14,34 @@ export function ChatWidget() {
   const inputRef = useRef<HTMLInputElement>(null);
   const hasOpenedRef = useRef(false);
 
+  // On phones the chat is a sheet that always fits what is actually visible (address bar, keyboard, notch)
+  const [mobileBox, setMobileBox] = useState<{ top: number; height: number } | null>(null);
   useEffect(() => {
-    if (open) inputRef.current?.focus();
+    if (!open) return;
+    const mq = window.matchMedia("(max-width: 639px)");
+    const v = window.visualViewport;
+    const update = () => {
+      if (!mq.matches) return setMobileBox(null);
+      setMobileBox({ top: (v?.offsetTop ?? 0) + 8, height: (v?.height ?? window.innerHeight) - 16 });
+    };
+    update();
+    v?.addEventListener("resize", update);
+    v?.addEventListener("scroll", update);
+    mq.addEventListener("change", update);
+    const prev = document.body.style.overflow;
+    if (mq.matches) document.body.style.overflow = "hidden";
+    return () => {
+      v?.removeEventListener("resize", update);
+      v?.removeEventListener("scroll", update);
+      mq.removeEventListener("change", update);
+      document.body.style.overflow = prev;
+      setMobileBox(null);
+    };
+  }, [open]);
+
+  useEffect(() => {
+    // Not auto-focused on phones: it would open the keyboard and hide the greeting straight away
+    if (open && window.matchMedia("(min-width: 640px)").matches) inputRef.current?.focus();
   }, [open]);
 
   // Revision brief: the greeting bubble was reappearing on every page load.
@@ -58,7 +84,7 @@ export function ChatWidget() {
   return (
     <>
       {/* Floating launcher button */}
-      <div className="fixed bottom-6 right-6 z-50 flex items-end gap-3">
+      <div className={`fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-50 flex items-end gap-3 sm:bottom-6 sm:right-6 ${open ? "max-sm:hidden" : ""}`}>
         <AnimatePresence>
           {showTeaser && !open && (
             <motion.div
@@ -66,7 +92,7 @@ export function ChatWidget() {
               animate={{ opacity: 1, x: 0, scale: 1 }}
               exit={{ opacity: 0, x: 16, scale: 0.95 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
-              className="relative mb-1 max-w-[230px] rounded-2xl rounded-br-md border border-gray-100 bg-white px-4 py-3 shadow-xl"
+              className="relative mb-1 max-w-[min(230px,calc(100vw-8.5rem))] rounded-2xl rounded-br-md border border-gray-100 bg-white px-4 py-3 shadow-xl"
             >
               <button
                 type="button"
@@ -137,7 +163,8 @@ export function ChatWidget() {
             role="dialog"
             aria-modal="true"
             aria-label="kora — Mahaveer Papers assistant"
-            className="fixed bottom-24 right-4 z-50 flex h-[min(600px,calc(100vh-7rem))] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-2xl sm:right-6"
+            style={mobileBox ? { top: mobileBox.top, height: mobileBox.height } : undefined}
+            className="fixed inset-x-2 z-50 flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-2xl max-sm:bottom-2 max-sm:top-2 sm:inset-x-auto sm:bottom-24 sm:right-6 sm:h-[min(600px,calc(100dvh-7rem))] sm:w-[380px]"
           >
             {/* Header */}
             <div className="flex items-center gap-3 border-b border-gray-100 bg-white px-4 py-1.5 sm:py-2.5">
@@ -188,7 +215,7 @@ export function ChatWidget() {
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask kora about any paper"
                 disabled={loading}
-                className="flex-1 rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-colors focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 disabled:bg-gray-50"
+                className="flex-1 rounded-full border border-gray-200 px-4 py-2.5 text-base text-gray-900 sm:text-sm placeholder-gray-400 outline-none transition-colors focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 disabled:bg-gray-50"
               />
               <button
                 type="submit"

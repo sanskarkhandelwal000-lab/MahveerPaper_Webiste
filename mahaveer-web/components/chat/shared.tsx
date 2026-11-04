@@ -46,7 +46,13 @@ export function useChatAssistant(enabled = true) {
   const busy = useRef(false);
 
   useEffect(() => {
-    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
+    const box = scrollRef.current;
+    if (!box) return;
+    // A new bot message is read from its first line (so a greeting with a long menu isn't scrolled past); anything else goes to the bottom
+    const last = messages[messages.length - 1];
+    const el = last?.role === "assistant" && !loading ? box.querySelector<HTMLElement>(`[data-msg="${last.id}"]`) : null;
+    if (el) box.scrollTo({ top: Math.max(0, el.offsetTop - box.offsetTop - 8), behavior: "smooth" });
+    else box.scrollTo({ top: box.scrollHeight, behavior: "smooth" });
   }, [messages, loading]);
 
   useEffect(() => {
@@ -172,7 +178,7 @@ export function MessageBubble({ message, onChoose }: { message: ChatMessage; onC
   const isUser = message.role === "user";
   const asList = message.kind === "list";
   return (
-    <div className={cn("flex w-full items-end gap-2", isUser && "flex-row-reverse")}>
+    <div data-msg={message.id} className={cn("flex w-full items-end gap-2", isUser && "flex-row-reverse")}>
       {!isUser && <AssistantAvatar />}
       <div className={cn("flex max-w-[88%] flex-col gap-2 sm:max-w-[78%]", isUser && "items-end")}>
         <motion.div
