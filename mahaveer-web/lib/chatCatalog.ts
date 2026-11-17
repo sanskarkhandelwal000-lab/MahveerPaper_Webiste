@@ -104,7 +104,11 @@ const ITALIAN_TO_ENGLISH_COLOR: Record<string, string> = {
 };
 
 function colorNamesForMatching(names: string[]): string[] {
-  return names.flatMap((n) => (ITALIAN_TO_ENGLISH_COLOR[n] ? [n, ITALIAN_TO_ENGLISH_COLOR[n]] : [n]));
+  // Italian words are translated wherever they appear in a name ("Classy Covers Nero" also matches black)
+  return names.flatMap((n) => {
+    const english = n.split(" ").map((w) => ITALIAN_TO_ENGLISH_COLOR[w] ?? w).join(" ");
+    return english !== n ? [n, english] : [n];
+  });
 }
 
 /**

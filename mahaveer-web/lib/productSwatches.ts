@@ -26,6 +26,12 @@ export function formatSizes(sizes: string): string {
   return sizes.split("·").map(s => s.trim()).filter(Boolean).join(", ");
 }
 
+// "Royal Linen Black" → "Black": the shared hex table is keyed by plain colour names
+function withoutFamily(name: string, family: string): string {
+  const f = family.toLowerCase();
+  return name.toLowerCase().startsWith(`${f} `) ? name.slice(f.length + 1) : name;
+}
+
 // One entry per real named colour when a family has that data — falls back to
 // repeating the family name/image for the handful of products with no colour
 // breakdown. Shared by the product page (one card per swatch) and the
@@ -37,7 +43,7 @@ export function getProductSwatches(product: CatalogProduct): ProductSwatch[] {
     ? product.colorNames.map((name) => ({
         name,
         label: product.colorLabels?.[name] ?? name,
-        hex: product.unverifiedColors?.includes(name) ? undefined : COLOR_NAME_HEX[name],
+        hex: product.unverifiedColors?.includes(name) ? undefined : COLOR_NAME_HEX[name] ?? COLOR_NAME_HEX[withoutFamily(name, product.name)],
         gsmLabel: formatGsm(product.colorGsm?.[name] ?? product.gsm),
         sizesLabel: product.colorSizes?.[name] ? formatSizes(product.colorSizes[name]) : familySizesLabel,
       }))
