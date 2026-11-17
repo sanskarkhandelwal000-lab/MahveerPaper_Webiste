@@ -52,22 +52,27 @@ export default function AboutPage() {
       <main id="main-content" tabIndex={-1} className="scroll-mt-[92px]">
         {/* ── HERO ── */}
         <section
-          className="relative min-h-screen flex items-end overflow-hidden pb-20 lg:pb-28"
+          className="relative overflow-hidden bg-[#0e1626] lg:flex lg:min-h-screen lg:items-end lg:bg-transparent lg:pb-28"
           aria-label="About hero"
         >
-          {/* Background photo — layered paper-stock swatches */}
-          <Image
-            src="/images/mahaveer/about-hero.jpg"
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center"
-            aria-hidden="true"
-          />
-          {/* Gradient overlay — subtle bottom darkening for text legibility */}
+          {/* Banner photo. Phones: its own band above the text (the whole composition stays in view);
+              large screens: full-bleed behind the text. */}
+          <div className="relative h-[54svh] min-h-[320px] w-full lg:absolute lg:inset-0 lg:h-auto lg:min-h-0">
+            <Image
+              src="/images/mahaveer/about-hero.jpg"
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-[32%_center] lg:object-center"
+              aria-hidden="true"
+            />
+            {/* Phones: fade the photo into the dark text area below */}
+            <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#0e1626] to-transparent lg:hidden" aria-hidden="true" />
+          </div>
+          {/* Gradient overlay — subtle bottom darkening for text legibility (large screens) */}
           <div
-            className="absolute inset-0"
+            className="absolute inset-0 hidden lg:block"
             style={{
               background:
                 "linear-gradient(to bottom, rgba(10,10,8,0.15) 0%, rgba(10,10,8,0.55) 70%, rgba(10,10,8,0.7) 100%)",
@@ -75,7 +80,7 @@ export default function AboutPage() {
             aria-hidden="true"
           />
 
-          <div className="relative z-10 container-max section-padding pt-32 w-full">
+          <div className="relative z-10 container-max section-padding w-full pb-14 pt-2 lg:pb-0 lg:pt-32">
             <div className="max-w-3xl">
               <MotionDiv>
                 <h1 className="font-display italic text-white mb-6">
