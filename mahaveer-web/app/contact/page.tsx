@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Phone, Mail, MapPin, Building2 } from "lucide-react";
+import { Phone, Mail, MapPin, Building2, MessageCircle } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ContactForm } from "@/components/home/ContactForm";
@@ -20,9 +20,11 @@ const offices = [
     name: "Mahaveer Papers – Head Office (Bengaluru)",
     lines: ["Vasti Mall", "No.10, Cottonpet Main Road", "Bengaluru – 560053"],
     phone: "+91 81052 09002",
-    phoneLabel: "Mobile/WhatsApp",
-    // Explicitly labelled WhatsApp — link to wa.me rather than a plain tel: call.
-    phoneHref: "https://wa.me/918105209002",
+    phoneLabel: "Call Us Now",
+    phoneHref: "tel:+918105209002",
+    // WhatsApp Business number (the one kora and the team inbox run on)
+    whatsapp: "+91 91876 34069",
+    whatsappHref: "https://wa.me/919187634069",
     email: "mppapier@yahoo.co.in",
     emailLabel: "Email Us",
     mapsQuery: "Mahaveer Papers, Vasti Mall, No.10 Cottonpet Main Road, Bengaluru 560053",
@@ -85,12 +87,7 @@ export default function ContactPage() {
                     </address>
 
                     <div className="flex flex-col gap-5 border-t border-gray-100 pt-6 sm:flex-row sm:flex-wrap">
-                      <a
-                        href={office.phoneHref}
-                        target={office.phoneHref.startsWith("https://wa.me") ? "_blank" : undefined}
-                        rel={office.phoneHref.startsWith("https://wa.me") ? "noopener noreferrer" : undefined}
-                        className="flex items-center gap-3 group"
-                      >
+                      <a href={office.phoneHref} className="flex items-center gap-3 group">
                         <div className="flex h-9 w-9 items-center justify-center rounded-full border border-brand-orange group-hover:bg-brand-orange transition-colors shrink-0">
                           <Phone className="h-4 w-4 text-brand-orange group-hover:text-white transition-colors" />
                         </div>
@@ -99,6 +96,23 @@ export default function ContactPage() {
                           <p className="text-sm text-gray-500">{office.phone}</p>
                         </div>
                       </a>
+
+                      {"whatsapp" in office && office.whatsapp && (
+                        <a
+                          href={office.whatsappHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-3 group"
+                        >
+                          <div className="flex h-9 w-9 items-center justify-center rounded-full border border-brand-orange group-hover:bg-brand-orange transition-colors shrink-0">
+                            <MessageCircle className="h-4 w-4 text-brand-orange group-hover:text-white transition-colors" />
+                          </div>
+                          <div>
+                            <p className="text-[15px] font-semibold text-gray-900">WhatsApp Us</p>
+                            <p className="text-sm text-gray-500">{office.whatsapp}</p>
+                          </div>
+                        </a>
+                      )}
 
                       <a
                         href={`mailto:${office.email}`}

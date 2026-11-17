@@ -8,7 +8,9 @@ export const siteConfig = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://mahaveerpapers.com",
   contact: {
     phones: ["080 49891846", "080 42100469"],
-    whatsapp: "+91 81052 09002",
+    // Calls go to the head-office mobile; WhatsApp chats go to the WhatsApp Business number that runs kora
+    phone: "+91 81052 09002",
+    whatsapp: "+91 91876 34069",
     emails: ["sales@mahaveerpapers.com", "mppapier@yahoo.co.in"],
   },
   offices: [

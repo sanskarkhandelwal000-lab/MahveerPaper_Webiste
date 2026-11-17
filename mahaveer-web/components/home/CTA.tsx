@@ -65,7 +65,7 @@ export function CTA() {
 
         <MotionDiv delay={0.2} className="flex items-center justify-center">
           <a
-            href={`tel:${siteConfig.contact.whatsapp.replace(/\s/g, "")}`}
+            href={`tel:${siteConfig.contact.phone.replace(/\s/g, "")}`}
             className="btn-outline"
           >
             Speak to a Paper Specialist

@@ -155,7 +155,7 @@ export function ContactForm({ headingLevel = "h2" }: { headingLevel?: "h1" | "h2
             {/* Contact details */}
             <div className="flex flex-col sm:flex-row gap-6">
               <a
-                href={`tel:${siteConfig.contact.whatsapp.replace(/\s/g, "")}`}
+                href={`tel:${siteConfig.contact.phone.replace(/\s/g, "")}`}
                 className="flex items-center gap-3 group"
               >
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-orange/10 group-hover:bg-brand-orange transition-colors shrink-0">
@@ -164,7 +164,7 @@ export function ContactForm({ headingLevel = "h2" }: { headingLevel?: "h1" | "h2
                 <div>
                   <p className="text-lg font-medium text-brand-ink">Call Us Now</p>
                   <p className="text-base text-brand-body">
-                    {siteConfig.contact.whatsapp}
+                    {siteConfig.contact.phone}
                   </p>
                 </div>
               </a>
